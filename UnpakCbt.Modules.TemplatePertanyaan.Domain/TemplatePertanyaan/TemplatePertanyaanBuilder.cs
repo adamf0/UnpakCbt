@@ -101,6 +101,21 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
                 return this;
             }
 
+            public TemplatePertanyaanBuilder ChangeBobot(int? bobot)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.Bobot = bobot;
+
+                return this;
+            }
+
             public TemplatePertanyaanBuilder ChangeState(string? state)
             {
                 if (HasError) return this;

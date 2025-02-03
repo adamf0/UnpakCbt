@@ -30,6 +30,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.PublicApi
                 result.Value.Pertanyaan,
                 result.Value.Gambar,
                 result.Value.JawabanBenar==null? null:int.Parse(result.Value.JawabanBenar),
+                result.Value.Bobot == null ? null : int.Parse(result.Value.Bobot),
                 result.Value.State
             );
         }

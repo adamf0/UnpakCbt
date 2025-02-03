@@ -59,6 +59,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
                          .ChangePertanyaanImg(request.Gambar)
                          .ChangeState(request.State)
                          .ChangeJawabanBenar(JawabanBenar) //JawabanBenar
+                         .ChangeBobot(request.Bobot)
                          .Build();
 
             if (templatePertanyaan1.IsFailure)

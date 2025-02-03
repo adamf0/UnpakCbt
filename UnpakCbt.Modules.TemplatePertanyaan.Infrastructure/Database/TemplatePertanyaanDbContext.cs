@@ -52,6 +52,9 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.Database
                 entity.Property(e => e.JawabanBenar)
                       .HasColumnName("jawaban_benar");
 
+                entity.Property(e => e.Bobot)
+                      .HasColumnName("bobot");
+
                 entity.Property(e => e.State)
                       .HasColumnName("state");
             });

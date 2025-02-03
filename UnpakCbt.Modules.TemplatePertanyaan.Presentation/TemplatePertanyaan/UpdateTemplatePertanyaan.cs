@@ -23,6 +23,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     request.Pertanyaan,
                     request.Gambar,
                     request.Jawaban,
+                    int.Parse(request.Bobot),
                     request.State
                     )
                 );
@@ -37,10 +38,11 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
             public Guid IdBankSoal { get; set; }
 
             public string Tipe { get; set; }
-            public string Pertanyaan { get; set; }
-            public string Gambar { get; set; }
-            public Guid? Jawaban { get; set; }
-            public string State { get; set; }
+            public string? Pertanyaan { get; set; } = null;
+            public string? Gambar { get; set; } = null;
+            public Guid Jawaban { get; set; }
+            public string Bobot { get; set; }
+            public string? State { get; set; } = null;
         }
     }
 }

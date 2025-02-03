@@ -22,6 +22,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
         public string? PertanyaanImg { get; private set; } //file path
         [Column("jawaban_benar")]
         public int? JawabanBenar { get; private set; } //id jawaban
+        public int? Bobot { get; private set; } //null / 0...n
         public string? State { get; private set; } = null; //init/null
 
         public static TemplatePertanyaanBuilder Update(TemplatePertanyaan prev) => new TemplatePertanyaanBuilder(prev);
@@ -32,6 +33,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
         string? PertanyaanText = null,
         string? PertanyaanImg = null,
         int? JawabanBenar = null,
+        int? Bobot = null,
         string? State = null
         )
         {
@@ -43,6 +45,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
                 PertanyaanText = PertanyaanText,
                 PertanyaanImg = PertanyaanImg,
                 JawabanBenar = JawabanBenar,
+                Bobot = Bobot,
                 State = State
             };
 

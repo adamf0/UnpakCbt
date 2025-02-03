@@ -50,6 +50,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
                 request.Pertanyaan,
                 request.Gambar,
                 JawabanBenar,
+                request.Bobot,
                 request.State
             );
 

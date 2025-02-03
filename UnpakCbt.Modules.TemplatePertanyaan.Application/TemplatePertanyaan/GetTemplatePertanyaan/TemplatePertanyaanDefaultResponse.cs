@@ -15,6 +15,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
         public string Pertanyaan { get; set; }
         public string Gambar { get; set; }
         public string JawabanBenar { get; set; }
+        public string Bobot { get; set; }
         public string State { get; set; }
     }
 }

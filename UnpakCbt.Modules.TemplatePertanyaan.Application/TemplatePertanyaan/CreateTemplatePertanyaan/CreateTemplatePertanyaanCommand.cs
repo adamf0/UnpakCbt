@@ -13,6 +13,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
         string? Pertanyaan,
         string? Gambar,
         Guid? Jawaban,
+        int? Bobot,
         string State
     ) : ICommand<Guid>;
 }

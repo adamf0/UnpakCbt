@@ -14,6 +14,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
         string? Pertanyaan,
         string? Gambar,
         Guid? Jawaban,
+        int Bobot,
         string? State
     ) : ICommand;
 }

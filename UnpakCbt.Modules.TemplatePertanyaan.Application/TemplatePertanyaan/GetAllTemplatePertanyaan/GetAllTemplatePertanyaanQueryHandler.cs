@@ -22,11 +22,14 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
             const string sql =
             """
             SELECT 
-                CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
+                CAST(NULLIF(uuid, '') as VARCHAR(36)) AS Uuid,
                 id_bank_soal as IdBankSoal,
                 tipe as Tipe,
-                pertanyaan_text as PertanyaanText,
-                pertanyaan_img AS PertanyaanImg 
+                pertanyaan_text as Pertanyaan,
+                pertanyaan_img as Gambar,
+                jawaban_benar as JawabanBenar,
+                bobot as Bobot,
+                state as State 
             FROM template_soal  
             """;
 
