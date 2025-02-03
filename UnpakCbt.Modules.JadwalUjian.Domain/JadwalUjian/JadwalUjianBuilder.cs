@@ -1,0 +1,114 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnpakCbt.Common.Domain;
+
+namespace UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian
+{
+    public sealed partial class JadwalUjian
+    {
+        public sealed class JadwalUjianBuilder
+        {
+            private readonly JadwalUjian _akurasiPenelitian;
+            private Result? _result;
+
+            public JadwalUjianBuilder(JadwalUjian akurasiPenelitian)
+            {
+                _akurasiPenelitian = akurasiPenelitian;
+            }
+
+            private bool HasError => _result is not null && _result.IsFailure;
+
+            public Result<JadwalUjian> Build()
+            {
+                return HasError ? Result.Failure<JadwalUjian>(_result!.Error) : Result.Success(_akurasiPenelitian);
+            }
+
+            public JadwalUjianBuilder ChangeDeskripsi(string? Deskripsi)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.Deskripsi = Deskripsi;
+                return this;
+            }
+
+            public JadwalUjianBuilder ChangeKuota(int Kuota)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.Kuota = Kuota;
+                return this;
+            }
+
+            public JadwalUjianBuilder ChangeTanggal(string Tanggal)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.Tanggal = Tanggal;
+                return this;
+            }
+
+            public JadwalUjianBuilder ChangeJamMulai(string JamMulai)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.JamMulai = JamMulai;
+                return this;
+            }
+
+            public JadwalUjianBuilder ChangeJamAkhir(string JamAkhir)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.JamAkhir = JamAkhir;
+                return this;
+            }
+
+            public JadwalUjianBuilder ChangeBankSoal(int IdBankSoal)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.IdBankSoal = IdBankSoal;
+                return this;
+            }
+        }
+    }
+}

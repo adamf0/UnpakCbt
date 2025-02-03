@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Common.Infrastructure\UnpakCbt.Common.Infrastructure.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Application\UnpakCbt.Modules.TemplateJawaban.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Domain\UnpakCbt.Modules.TemplateJawaban.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Presentation\UnpakCbt.Modules.TemplateJawaban.Presentation.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.PublicApi\UnpakCbt.Modules.TemplateJawaban.PublicApi.csproj" />
+	</ItemGroup>
+
+</Project>

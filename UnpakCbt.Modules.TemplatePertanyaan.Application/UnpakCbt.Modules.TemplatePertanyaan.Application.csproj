@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="MediatR" Version="12.4.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Text.Json" Version="9.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\UnpakCbt.BankSoal.Domain\UnpakCbt.Modules.BankSoal.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.BankSoal.PublicApi\UnpakCbt.Modules.BankSoal.PublicApi.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Domain\UnpakCbt.Modules.TemplateJawaban.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.PublicApi\UnpakCbt.Modules.TemplateJawaban.PublicApi.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.Domain\UnpakCbt.Modules.TemplatePertanyaan.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.PublicApi\UnpakCbt.Modules.TemplatePertanyaan.PublicApi.csproj" />
+	</ItemGroup>
+
+</Project>
