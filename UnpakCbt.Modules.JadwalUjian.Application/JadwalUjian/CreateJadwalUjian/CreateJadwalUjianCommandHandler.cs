@@ -9,11 +9,13 @@ using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.Application.Abstractions.Data;
 using UnpakCbt.Modules.BankSoal.PublicApi;
 using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
+using System.Globalization;
 
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
 {
     internal sealed class CreateJadwalUjianCommandHandler(
     IJadwalUjianRepository bankSoalRepository,
+    ICounterRepository counterRepository,
     IUnitOfWork unitOfWork,
     IBankSoalApi bankSoalApi)
     : ICommandHandler<CreateJadwalUjianCommand, Guid>
@@ -25,6 +27,18 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
             if (bankSoal is null)
             {
                 return Result.Failure<Guid>(BankSoalErrors.NotFound(request.IdBankSoal));
+            }
+
+            if (!DateTime.TryParseExact(request.Tanggal + " " + request.JamMulai, "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
+            {
+                return Result.Failure<Guid>(JadwalUjianErrors.InvalidScheduleFormat("start date"));
+            }
+
+            if (!DateTime.TryParseExact(request.Tanggal + " " + request.JamAkhir, "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
+            {
+                return Result.Failure<Guid>(JadwalUjianErrors.InvalidScheduleFormat("end date"));
             }
 
             Result<Domain.JadwalUjian.JadwalUjian> result = Domain.JadwalUjian.JadwalUjian.Create(
@@ -41,7 +55,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
                 return Result.Failure<Guid>(result.Error);
             }
 
+            TimeSpan timeToExpire = mulai - DateTime.UtcNow;
+            string key = "counter_" + result.Value.Uuid.ToString();
+
             bankSoalRepository.Insert(result.Value);
+            await counterRepository.ResetCounterAsync(key, 0, timeToExpire);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

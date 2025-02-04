@@ -36,6 +36,8 @@
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Infrastructure\UnpakCbt.Modules.TemplateJawaban.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.Application\UnpakCbt.Modules.TemplatePertanyaan.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.Infrastructure\UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Ujian.Application\UnpakCbt.Modules.Ujian.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Ujian.Infrastructure\UnpakCbt.Modules.Ujian.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

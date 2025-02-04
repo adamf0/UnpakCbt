@@ -6,6 +6,7 @@ using UnpakCbt.Modules.BankSoal.Infrastructure;
 using UnpakCbt.Modules.TemplatePertanyaan.Infrastructure;
 using UnpakCbt.Modules.TemplateJawaban.Infrastructure;
 using UnpakCbt.Modules.JadwalUjian.Infrastructure;
+using UnpakCbt.Modules.Ujian.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
@@ -24,6 +25,7 @@ builder.Services.AddApplication([
     UnpakCbt.Modules.TemplatePertanyaan.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.TemplateJawaban.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.JadwalUjian.Application.AssemblyReference.Assembly,
+    UnpakCbt.Modules.Ujian.Application.AssemblyReference.Assembly,
 ]);
 
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
@@ -31,6 +33,7 @@ builder.Services.AddBankSoalModule(builder.Configuration);
 builder.Services.AddTemplatePertanyaanModule(builder.Configuration);
 builder.Services.AddTemplateJawabanModule(builder.Configuration);
 builder.Services.AddJadwalUjianModule(builder.Configuration);
+builder.Services.AddUjianModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,6 +48,7 @@ BankSoalModule.MapEndpoints(app);
 TemplatePertanyaanModule.MapEndpoints(app);
 TemplateJawabanModule.MapEndpoints(app);
 JadwalUjianModule.MapEndpoints(app);
+UjianModule.MapEndpoints(app);
 
 if (app.Environment.IsDevelopment())
 {

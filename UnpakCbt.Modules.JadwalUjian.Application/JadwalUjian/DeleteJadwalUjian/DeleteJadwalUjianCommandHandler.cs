@@ -11,6 +11,7 @@ using UnpakCbt.Modules.JadwalUjian.Application.Abstractions.Data;
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
 {
     internal sealed class DeleteJadwalUjianCommandHandler(
+    ICounterRepository counterRepository,
     IJadwalUjianRepository jadwalUjianRepository,
     IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteJadwalUjianCommand>
@@ -23,10 +24,10 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
             {
                 return Result.Failure(JadwalUjianErrors.NotFound(request.uuid));
             }
+            string key = "counter_" + request.uuid.ToString();
 
             await jadwalUjianRepository.DeleteAsync(existingJadwalUjian!);
-            //event update change table position asset, order desc + select first
-
+            await counterRepository.DeleteKeyAsync(key);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

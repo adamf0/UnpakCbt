@@ -11,6 +11,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian
     public sealed record JadwalUjianDefaultResponse
     {
         public string Id { get; set; }
+        public string Uuid { get; set; }
         public string? Deskripsi { get; set; } = default!;
         public string Kouta { get; set; }
         public string Tanggal { get; set; }

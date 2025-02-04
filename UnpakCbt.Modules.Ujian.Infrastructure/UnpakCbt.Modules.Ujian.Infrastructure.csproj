@@ -19,10 +19,9 @@
 	<ItemGroup>
 		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Common.Infrastructure\UnpakCbt.Common.Infrastructure.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Application\UnpakCbt.Modules.JadwalUjian.Application.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Domain\UnpakCbt.Modules.JadwalUjian.Domain.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Presentation\UnpakCbt.Modules.JadwalUjian.Presentation.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.PublicApi\UnpakCbt.Modules.JadwalUjian.PublicApi.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Ujian.Application\UnpakCbt.Modules.Ujian.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Ujian.Domain\UnpakCbt.Modules.Ujian.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Ujian.Presentation\UnpakCbt.Modules.Ujian.Presentation.csproj" />
 	</ItemGroup>
 
 </Project>

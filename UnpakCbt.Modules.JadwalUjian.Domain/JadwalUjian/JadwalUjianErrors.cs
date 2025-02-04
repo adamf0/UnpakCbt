@@ -14,5 +14,13 @@ namespace UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian
 
         public static Error NotFound(Guid Id) =>
             Error.NotFound("JadwalUjianErrors.NotFound", $"The event with the identifier {Id} was not found");
+
+        public static Error IdNotFound(int Id) =>
+            Error.NotFound("JadwalUjianErrors.IdNotFound", $"The event with the identifier {Id} was not found");
+
+        public static Error EmptyDataScheduleFormat() =>
+           Error.Problem("JadwalUjianErrors.EmptyDataScheduleFormat", "Data tanggal, jam mulai & jam keluar is empty");
+        public static Error InvalidScheduleFormat(string type) =>
+            Error.Problem("JadwalUjianErrors.InvalidScheduleFormat", $"There is a format error in ${type}");
     }
 }

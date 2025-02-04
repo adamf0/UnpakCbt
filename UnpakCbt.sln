@@ -27,35 +27,45 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.BankSoal.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.BankSoal.Presentation", "UnpakCbt.BankSoal.Presentation\UnpakCbt.Modules.BankSoal.Presentation.csproj", "{380C422C-6853-4DC5-81C8-8530BCD7A6AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplatePertanyaan.Application", "UnpakCbt.Modules.TemplatePertanyaan.Application\UnpakCbt.Modules.TemplatePertanyaan.Application.csproj", "{61111A0D-B199-437D-B715-B6A1E98EACF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplatePertanyaan.Application", "UnpakCbt.Modules.TemplatePertanyaan.Application\UnpakCbt.Modules.TemplatePertanyaan.Application.csproj", "{61111A0D-B199-437D-B715-B6A1E98EACF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplatePertanyaan.Domain", "UnpakCbt.Modules.TemplatePertanyaan.Domain\UnpakCbt.Modules.TemplatePertanyaan.Domain.csproj", "{7BA512AA-159E-449C-A57F-236C51888EC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplatePertanyaan.Domain", "UnpakCbt.Modules.TemplatePertanyaan.Domain\UnpakCbt.Modules.TemplatePertanyaan.Domain.csproj", "{7BA512AA-159E-449C-A57F-236C51888EC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplatePertanyaan.Infrastructure", "UnpakCbt.Modules.TemplatePertanyaan.Infrastructure\UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.csproj", "{2BDBC8F0-14D7-403C-A326-8313CD130F1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplatePertanyaan.Infrastructure", "UnpakCbt.Modules.TemplatePertanyaan.Infrastructure\UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.csproj", "{2BDBC8F0-14D7-403C-A326-8313CD130F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplatePertanyaan.Presentation", "UnpakCbt.Modules.TemplatePertanyaan.Presentation\UnpakCbt.Modules.TemplatePertanyaan.Presentation.csproj", "{73D34577-105E-4FC5-8375-FE7E0842916A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplatePertanyaan.Presentation", "UnpakCbt.Modules.TemplatePertanyaan.Presentation\UnpakCbt.Modules.TemplatePertanyaan.Presentation.csproj", "{73D34577-105E-4FC5-8375-FE7E0842916A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplateJawaban.Application", "UnpakCbt.Modules.TemplateJawaban.Application\UnpakCbt.Modules.TemplateJawaban.Application.csproj", "{8A9435D7-786D-489B-9629-8E0F1D6C97C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplateJawaban.Application", "UnpakCbt.Modules.TemplateJawaban.Application\UnpakCbt.Modules.TemplateJawaban.Application.csproj", "{8A9435D7-786D-489B-9629-8E0F1D6C97C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplateJawaban.Domain", "UnpakCbt.Modules.TemplateJawaban.Domain\UnpakCbt.Modules.TemplateJawaban.Domain.csproj", "{769B665F-359E-4314-A0BA-A1A534AF70A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplateJawaban.Domain", "UnpakCbt.Modules.TemplateJawaban.Domain\UnpakCbt.Modules.TemplateJawaban.Domain.csproj", "{769B665F-359E-4314-A0BA-A1A534AF70A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplateJawaban.Infrastructure", "UnpakCbt.Modules.TemplateJawaban.Infrastructure\UnpakCbt.Modules.TemplateJawaban.Infrastructure.csproj", "{7770028F-F06F-4857-9722-BA6233D5B805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplateJawaban.Infrastructure", "UnpakCbt.Modules.TemplateJawaban.Infrastructure\UnpakCbt.Modules.TemplateJawaban.Infrastructure.csproj", "{7770028F-F06F-4857-9722-BA6233D5B805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplateJawaban.Presentation", "UnpakCbt.Modules.TemplateJawaban.Presentation\UnpakCbt.Modules.TemplateJawaban.Presentation.csproj", "{782BECFE-C721-41AF-982D-C1E0BA33FC2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplateJawaban.Presentation", "UnpakCbt.Modules.TemplateJawaban.Presentation\UnpakCbt.Modules.TemplateJawaban.Presentation.csproj", "{782BECFE-C721-41AF-982D-C1E0BA33FC2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplateJawaban.PublicApi", "UnpakCbt.Modules.TemplateJawaban.PublicApi\UnpakCbt.Modules.TemplateJawaban.PublicApi.csproj", "{BD166AF7-8C95-4BD1-9CB6-BC25F9CD1FEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplateJawaban.PublicApi", "UnpakCbt.Modules.TemplateJawaban.PublicApi\UnpakCbt.Modules.TemplateJawaban.PublicApi.csproj", "{BD166AF7-8C95-4BD1-9CB6-BC25F9CD1FEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.TemplatePertanyaan.PublicApi", "UnpakCbt.Modules.TemplatePertanyaan.PublicApi\UnpakCbt.Modules.TemplatePertanyaan.PublicApi.csproj", "{AC8406B4-173D-4DE9-89B6-C368C625B66F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.TemplatePertanyaan.PublicApi", "UnpakCbt.Modules.TemplatePertanyaan.PublicApi\UnpakCbt.Modules.TemplatePertanyaan.PublicApi.csproj", "{AC8406B4-173D-4DE9-89B6-C368C625B66F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.BankSoal.PublicApi", "UnpakCbt.Modules.BankSoal.PublicApi\UnpakCbt.Modules.BankSoal.PublicApi.csproj", "{685B769F-1D5D-4E2E-A75E-209654805B77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.BankSoal.PublicApi", "UnpakCbt.Modules.BankSoal.PublicApi\UnpakCbt.Modules.BankSoal.PublicApi.csproj", "{685B769F-1D5D-4E2E-A75E-209654805B77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.JadwalUjian.Application", "UnpakCbt.Modules.JadwalUjian.Application\UnpakCbt.Modules.JadwalUjian.Application.csproj", "{D3523F83-7060-483D-A601-7EA2D12B9971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.JadwalUjian.Application", "UnpakCbt.Modules.JadwalUjian.Application\UnpakCbt.Modules.JadwalUjian.Application.csproj", "{D3523F83-7060-483D-A601-7EA2D12B9971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.JadwalUjian.Domain", "UnpakCbt.Modules.JadwalUjian.Domain\UnpakCbt.Modules.JadwalUjian.Domain.csproj", "{38CD7CAA-771E-46CA-B2DB-0CF434A13B39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.JadwalUjian.Domain", "UnpakCbt.Modules.JadwalUjian.Domain\UnpakCbt.Modules.JadwalUjian.Domain.csproj", "{38CD7CAA-771E-46CA-B2DB-0CF434A13B39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.JadwalUjian.Infrastructure", "UnpakCbt.Modules.JadwalUjian.Infrastructure\UnpakCbt.Modules.JadwalUjian.Infrastructure.csproj", "{6FF05651-A903-4262-9540-51BF01086116}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.JadwalUjian.Infrastructure", "UnpakCbt.Modules.JadwalUjian.Infrastructure\UnpakCbt.Modules.JadwalUjian.Infrastructure.csproj", "{6FF05651-A903-4262-9540-51BF01086116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.JadwalUjian.Presentation", "UnpakCbt.Modules.JadwalUjian.Presentation\UnpakCbt.Modules.JadwalUjian.Presentation.csproj", "{6B048068-3D10-4153-93A2-22F2647BEDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.JadwalUjian.Presentation", "UnpakCbt.Modules.JadwalUjian.Presentation\UnpakCbt.Modules.JadwalUjian.Presentation.csproj", "{6B048068-3D10-4153-93A2-22F2647BEDA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.JadwalUjian.PublicApi", "UnpakCbt.Modules.JadwalUjian.PublicApi\UnpakCbt.Modules.JadwalUjian.PublicApi.csproj", "{3F8A457D-7E92-412F-8E20-AA0C7053DDAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Ujian.Application", "UnpakCbt.Modules.Ujian.Application\UnpakCbt.Modules.Ujian.Application.csproj", "{3C2E29B1-5CFA-4540-B5EA-EB852DB74CE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Ujian.Domain", "UnpakCbt.Modules.Ujian.Domain\UnpakCbt.Modules.Ujian.Domain.csproj", "{3CE3D745-BD22-441B-B526-99ACAB1D337C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Ujian.Infrastructure", "UnpakCbt.Modules.Ujian.Infrastructure\UnpakCbt.Modules.Ujian.Infrastructure.csproj", "{CBD0E89B-BDEB-41A0-9DCB-ED6A47590430}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Ujian.Presentation", "UnpakCbt.Modules.Ujian.Presentation\UnpakCbt.Modules.Ujian.Presentation.csproj", "{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +169,26 @@ Global
 		{6B048068-3D10-4153-93A2-22F2647BEDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B048068-3D10-4153-93A2-22F2647BEDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B048068-3D10-4153-93A2-22F2647BEDA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F8A457D-7E92-412F-8E20-AA0C7053DDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F8A457D-7E92-412F-8E20-AA0C7053DDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F8A457D-7E92-412F-8E20-AA0C7053DDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F8A457D-7E92-412F-8E20-AA0C7053DDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C2E29B1-5CFA-4540-B5EA-EB852DB74CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2E29B1-5CFA-4540-B5EA-EB852DB74CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2E29B1-5CFA-4540-B5EA-EB852DB74CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2E29B1-5CFA-4540-B5EA-EB852DB74CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CE3D745-BD22-441B-B526-99ACAB1D337C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CE3D745-BD22-441B-B526-99ACAB1D337C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CE3D745-BD22-441B-B526-99ACAB1D337C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CE3D745-BD22-441B-B526-99ACAB1D337C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBD0E89B-BDEB-41A0-9DCB-ED6A47590430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBD0E89B-BDEB-41A0-9DCB-ED6A47590430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBD0E89B-BDEB-41A0-9DCB-ED6A47590430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBD0E89B-BDEB-41A0-9DCB-ED6A47590430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +218,11 @@ Global
 		{38CD7CAA-771E-46CA-B2DB-0CF434A13B39} = {1BF1605F-F156-4411-80BD-F35F8C548894}
 		{6FF05651-A903-4262-9540-51BF01086116} = {1BF1605F-F156-4411-80BD-F35F8C548894}
 		{6B048068-3D10-4153-93A2-22F2647BEDA6} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{3F8A457D-7E92-412F-8E20-AA0C7053DDAC} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{3C2E29B1-5CFA-4540-B5EA-EB852DB74CE3} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{3CE3D745-BD22-441B-B526-99ACAB1D337C} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{CBD0E89B-BDEB-41A0-9DCB-ED6A47590430} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0} = {1BF1605F-F156-4411-80BD-F35F8C548894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE6A47FE-8285-48E9-9641-BF63A6853CB4}
