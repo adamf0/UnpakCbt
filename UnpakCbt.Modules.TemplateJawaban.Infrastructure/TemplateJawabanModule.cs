@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Infrastructure.Data;
+using UnpakCbt.Common.Presentation.FileManager;
 using UnpakCbt.Modules.TemplateJawaban.Application.Abstractions.Data;
 using UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban;
 using UnpakCbt.Modules.TemplateJawaban.Infrastructure.Database;
@@ -43,6 +45,8 @@ namespace UnpakCbt.Modules.TemplateJawaban.Infrastructure
             services.AddScoped<ITemplateJawabanRepository, TemplateJawabanRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<TemplateJawabanDbContext>());
+            
+            services.TryAddSingleton<IFileProvider, FileProvider>();
 
             services.AddScoped<ITemplateJawabanApi, TemplateJawabanApi>();
         }

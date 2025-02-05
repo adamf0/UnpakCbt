@@ -15,6 +15,9 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error NotFound(Guid Id) =>
             Error.NotFound("UjianErrors.NotFound", $"The event with the identifier {Id} was not found");
 
+        public static Error NotFoundRefrence() =>
+            Error.NotFound("UjianErrors.NotFoundRefrence", $"The event with the identifier NoReg and PrevJadwalUjian was not found");
+
         public static Error ScheduleExamNotFound(Guid Id) =>
             Error.NotFound("UjianErrors.ScheduleExamNotFound", $"Schedule exam with the identifier {Id} was not found");
 

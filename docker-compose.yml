@@ -1,0 +1,37 @@
+services:
+  redi-counter:
+    container_name: redis-counter
+    image: redis:latest
+    restart: always
+    command:
+      - 'redis-server'
+      - '--save 60 10000'
+      - '--appendonly yes'
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker/redis/data:/var/lib/redis
+    networks:
+      - minio-sample
+
+  minio:
+    container_name: minIO
+    image: minio/minio:latest
+    command: server --console-address ":9001" /data/
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: dev_user
+      MINIO_ROOT_PASSWORD: dev_password
+    networks:
+      - minio-sample
+    volumes:
+      - minio-storage:/data
+
+volumes:
+  minio-storage:
+    
+networks:
+  minio-sample:
+    driver: bridge

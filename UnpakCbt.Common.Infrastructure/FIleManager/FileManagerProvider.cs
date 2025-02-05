@@ -1,12 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Minio;
 using Minio.DataModel.Args;
 using UnpakCbt.Common.Application.FileManager;
 
 namespace UnpakCbt.Common.Infrastructure.FileManager
 {
-    internal class FileManagerProvider(IMinioClient client) : IFileManagerProvider
+    internal class FileManagerProvider : IFileManagerProvider
     {
+        private readonly IMinioClient client;
+        private readonly string _endpoint;
+
+        public FileManagerProvider(IMinioClient client, IConfiguration configuration)
+        {
+            client = client ?? throw new ArgumentNullException(nameof(client));
+            _endpoint = configuration["Minio:Endpoint"] ?? throw new ArgumentNullException("Minio:Endpoint");
+        }
+
         public async Task<bool> BucketExists(string name)
         {
             return await client.BucketExistsAsync(
@@ -61,6 +71,11 @@ namespace UnpakCbt.Common.Infrastructure.FileManager
                 .WithBucket(bucketName.ToLower())
                 .WithObject(fileName.ToLower())
             );
+        }
+
+        public string GetPublicFileUrl(string bucketName, string objectName)
+        {
+            return $"{_endpoint}/{bucketName}/{objectName}";
         }
     }
 }

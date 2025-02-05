@@ -19,6 +19,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 Result result = await sender.Send(
                     new DeleteTemplatePertanyaanCommand(id)
                 );
+                // hapus file [PR]
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);
             }).WithTags(Tags.TemplatePertanyaan);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace UnpakCbt.Common.Application
                 config.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
             });
 
-            //services.AddValidatorsFromAssemblies(moduleAssemblies, includeInternalTypes: true);
+            services.AddValidatorsFromAssemblies(moduleAssemblies, includeInternalTypes: true);
 
             return services;
         }

@@ -19,6 +19,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 Result result = await sender.Send(
                     new DeleteTemplateJawabanCommand(id)
                 );
+                // hapus file [PR]
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);
             }).WithTags(Tags.TemplateJawaban);

@@ -23,18 +23,31 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
     {
         public async Task<Result<Guid>> Handle(RescheduleUjianCommand request, CancellationToken cancellationToken)
         {
-            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetAsync(request.prevIdJadwalUjian, cancellationToken); //ganti bukan id tapi uuid
-            if (existingUjian is null)
+            JadwalUjianResponse? existingPrevJadwalUjian = await jadwalUjianApi.GetAsync(request.prevIdJadwalUjian, cancellationToken);
+            if (existingPrevJadwalUjian is null)
             {
-                Result.Failure(UjianErrors.NotFound(request.prevIdJadwalUjian));
+                Result.Failure(JadwalUjianErrors.NotFound(request.prevIdJadwalUjian));
             }
 
-            JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetAsync(request.newIdJadwalUjian, cancellationToken);
-            checkData(request.newIdJadwalUjian, jadwalUjian);
-            checkDataDate(jadwalUjian);
-            checkFormatAndRangeDate(jadwalUjian);
+            JadwalUjianResponse? newJadwalUjian = await jadwalUjianApi.GetAsync(request.newIdJadwalUjian, cancellationToken);
+            if (existingPrevJadwalUjian is null)
+            {
+                Result.Failure(JadwalUjianErrors.NotFound(request.newIdJadwalUjian));
+            }
 
-            Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian!)
+
+            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetByNoRegWithJadwalAsync(request.NoReg, int.Parse(existingPrevJadwalUjian.Id), cancellationToken);
+
+            if (existingUjian is null)
+            {
+                Result.Failure(UjianErrors.NotFoundRefrence());
+            }
+
+            checkData(request.newIdJadwalUjian, newJadwalUjian);
+            checkDataDate(newJadwalUjian);
+            checkFormatAndRangeDate(newJadwalUjian);
+
+            Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian)
                          .ChangeStatus("cancel")
                          .Build();
 
@@ -43,16 +56,16 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
                 return Result.Failure<Guid>(prevUjian.Error);
             }
 
-            string oldKey = "counter_" + request.prevIdJadwalUjian.ToString();
-            await counterRepository.DecrementCounterAsync(oldKey, null);
-
-            var newUjian = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(jadwalUjian.Id));
+            var newUjian = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(newJadwalUjian.Id));
             if (newUjian.IsFailure)
             {
                 return Result.Failure<Guid>(newUjian.Error);
             }
 
-            var timeToExpire = GetTimeToExpire(jadwalUjian.Tanggal, jadwalUjian.JamMulai);
+            string oldKey = "counter_" + request.prevIdJadwalUjian.ToString();
+            await counterRepository.DecrementCounterAsync(oldKey, null);
+
+            var timeToExpire = GetTimeToExpire(newJadwalUjian.Tanggal, newJadwalUjian.JamMulai);
             string newKey = $"counter_{request.newIdJadwalUjian}";
             await counterRepository.ResetCounterAsync(newKey, 0, timeToExpire);
 

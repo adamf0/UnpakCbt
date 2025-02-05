@@ -12,6 +12,12 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Ujian
             return ujian;
         }
 
+        public async Task<Domain.Ujian.Ujian> GetByNoRegWithJadwalAsync(string NoReg, int IdJadwalUjian, CancellationToken cancellationToken = default)
+        {
+            Domain.Ujian.Ujian ujian = await context.Ujian.SingleOrDefaultAsync(e => e.NoReg == NoReg && e.IdJadwalUjian == IdJadwalUjian, cancellationToken);
+            return ujian;
+        }
+
         public async Task DeleteAsync(Domain.Ujian.Ujian ujian)
         {
             context.Ujian.Remove(ujian);

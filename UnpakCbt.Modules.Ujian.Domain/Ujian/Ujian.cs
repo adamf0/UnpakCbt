@@ -18,8 +18,9 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
 
         [Column(TypeName = "VARCHAR(36)")]
         public Guid Uuid { get; private set; }
-
+        [Column("no_reg")]
         public string NoReg { get; private set; } = null!;
+        [Column("id_jadwal_ujian")]
         public int IdJadwalUjian { get; private set; }
         public string Status { get; private set; }
 

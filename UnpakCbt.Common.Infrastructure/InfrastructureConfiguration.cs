@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Minio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace UnpakCbt.Common.Infrastructure
             services.AddScoped<IDbConnectionFactory>(_ => new DbConnectionFactory(databaseConnectionString));
 
             services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.TryAddSingleton<IMinioClient, MinioClient>();
 
             return services;
         }

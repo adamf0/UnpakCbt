@@ -10,12 +10,18 @@ using UnpakCbt.Modules.Ujian.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using UnpakCbt.Api;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new IgnoreAntiforgeryTokenAttribute()); // Abaikan antiforgery untuk semua request
+});
 builder.Services.AddResponseCompression(options => options.Providers.Add<GzipCompressionProvider>());
 builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
 
@@ -27,6 +33,11 @@ builder.Services.AddApplication([
     UnpakCbt.Modules.JadwalUjian.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.Ujian.Application.AssemblyReference.Assembly,
 ]);
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-TOKEN"; // Token harus dikirim melalui header ini
+    options.Cookie.Name = "XSRF-TOKEN"; // Nama cookie antiforgery
+});
 
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
 builder.Services.AddBankSoalModule(builder.Configuration);
@@ -36,7 +47,17 @@ builder.Services.AddJadwalUjianModule(builder.Configuration);
 builder.Services.AddUjianModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "UnpakCbt API",
+        Version = "v1"
+    });
+
+    c.OperationFilter<SwaggerFileOperationFilter>();
+});
 builder.Services.AddAuthorization();
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -56,9 +77,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseStaticFiles(); // Menyajikan file dari wwwroot secara umum
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
+    RequestPath = "/uploads"
+}); 
 
-app.Use((context, next) =>
+app.UseHttpsRedirection();
+app.UseAntiforgery();
+
+/*app.Use((context, next) =>
 {
     var userAgent = context.Request.Headers.UserAgent.ToString();
 
@@ -99,10 +128,9 @@ app.Use((context, next) =>
 
     context.Response.Headers.Remove("X-Powered-By");
     return next();
-});
+});*/
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

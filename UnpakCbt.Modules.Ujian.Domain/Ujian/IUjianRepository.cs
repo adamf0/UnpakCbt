@@ -10,6 +10,7 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
     {
         void Insert(Ujian Ujian);
         Task<Ujian> GetAsync(Guid Uuid, CancellationToken cancellationToken = default);
+        Task<Ujian> GetByNoRegWithJadwalAsync(string NoReg, int IdJadwalUjian, CancellationToken cancellationToken = default);
         Task DeleteAsync(Ujian Ujian);
     }
 }
