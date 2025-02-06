@@ -9,6 +9,7 @@ using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.UpdateTemplatePertanyaan;
 using UnpakCbt.Modules.TemplatePertanyaan.Presentation;
+using static UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan.CreateTemplatePertanyaan;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 {
@@ -16,7 +17,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
     {
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async (UpdateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
+            app.MapPut("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] UpdateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
                 string? jawabanImgPath = null;
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pertanyaan_img");
@@ -66,7 +67,9 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);
-            }).WithTags(Tags.TemplatePertanyaan);
+            }).WithTags(Tags.TemplatePertanyaan)
+              .Accepts<CreateTemplatePertanyaanRequest>("multipart/form-data")
+              .DisableAntiforgery();
         }
 
         internal sealed class UpdateTemplatePertanyaanRequest

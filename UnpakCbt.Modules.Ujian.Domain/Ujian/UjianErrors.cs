@@ -35,5 +35,8 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
 
         public static Error QuotaExhausted(string current, string max) =>
             Error.Problem("UjianErrors.InvalidRangeDateTime", $"Exam schedule bookings have exceeded the available quota ({current}/{max})");
+
+        public static Error NotFoundReference() =>
+            Error.Problem("UjianErrors.NotFoundReference", $"identifier ujian was not found");
     }
 }

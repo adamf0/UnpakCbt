@@ -36,7 +36,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
 
 
-            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetByNoRegWithJadwalAsync(request.NoReg, int.Parse(existingPrevJadwalUjian.Id), cancellationToken);
+            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetByNoRegWithJadwalAsync(request.NoReg, int.Parse(existingPrevJadwalUjian.Id), cancellationToken); //ini hasilnya selalu null meskipun query bener [PR]
 
             if (existingUjian is null)
             {
@@ -63,7 +63,11 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
 
             string oldKey = "counter_" + request.prevIdJadwalUjian.ToString();
-            await counterRepository.DecrementCounterAsync(oldKey, null);
+            int prevCounter = await counterRepository.GetCounterAsync(oldKey);
+            if (prevCounter > 0)
+            {
+                await counterRepository.DecrementCounterAsync(oldKey, null);
+            }
 
             var timeToExpire = GetTimeToExpire(newJadwalUjian.Tanggal, newJadwalUjian.JamMulai);
             string newKey = $"counter_{request.newIdJadwalUjian}";

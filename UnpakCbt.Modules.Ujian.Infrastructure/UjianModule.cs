@@ -11,6 +11,7 @@ using UnpakCbt.Modules.Ujian.Presentation.Ujian;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Infrastructure.Ujian;
 using UnpakCbt.Modules.Ujian.Infrastructure.Database;
+using UnpakCbt.Modules.Ujian.Infrastructure.Cbt;
 
 namespace UnpakCbt.Modules.Ujian.Infrastructure
 {
@@ -40,6 +41,7 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure
             services.AddDbContext<UjianDbContext>(optionsBuilder => optionsBuilder.UseMySQL(databaseConnectionString));
 
             services.AddScoped<IUjianRepository, UjianRepository>();
+            services.AddScoped<ICbtRepository, CbtRepository>();
             services.AddScoped<ICounterRepository, CounterRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UjianDbContext>());

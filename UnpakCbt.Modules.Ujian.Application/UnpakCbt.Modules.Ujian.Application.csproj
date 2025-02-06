@@ -16,6 +16,7 @@
 		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Domain\UnpakCbt.Modules.JadwalUjian.Domain.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.PublicApi\UnpakCbt.Modules.JadwalUjian.PublicApi.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.PublicApi\UnpakCbt.Modules.TemplatePertanyaan.PublicApi.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.Ujian.Domain\UnpakCbt.Modules.Ujian.Domain.csproj" />
 	</ItemGroup>
 

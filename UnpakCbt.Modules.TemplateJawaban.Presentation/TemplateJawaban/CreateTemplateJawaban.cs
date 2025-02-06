@@ -70,7 +70,6 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
         internal sealed class CreateTemplateJawabanRequest
         {
             [FromForm] public Guid IdTemplateSoal { get; set; }
-
             [FromForm] public string? JawabanText { get; set; }
             [FromForm] public IFormFile? JawabanImg { get; set; }
         }

@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Common.Domain;
+using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetAllTemplatePertanyaan;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetTemplatePertanyaan;
 using ITemplatePertanyaanApi = UnpakCbt.Modules.TemplatePertanyaan.PublicApi.ITemplatePertanyaanApi;
 using TemplatePertanyaanResponseApi = UnpakCbt.Modules.TemplatePertanyaan.PublicApi.TemplatePertanyaanResponse;
@@ -13,6 +10,28 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.PublicApi
 {
     internal sealed class TemplatePertanyaanApi(ISender sender) : ITemplatePertanyaanApi
     {
+        public async Task<List<TemplatePertanyaanResponseApi>> GetAllTemplatePertanyaanByBankSoal(int IdBankSoal, CancellationToken cancellationToken = default)
+        {
+            Result<List<TemplatePertanyaanDefaultResponse>> result = await sender.Send(new GetAllTemplatePertanyaanDefaultByBankSoalQuery(IdBankSoal), cancellationToken);
+
+            if (result.IsFailure)
+            {
+                return new List<TemplatePertanyaanResponseApi>();
+            }
+
+            return result.Value.Select(item => new TemplatePertanyaanResponseApi(
+                item.Id,
+                item.Uuid,
+                int.Parse(item.IdBankSoal),
+                item.Tipe,
+                item.Pertanyaan,
+                item.Gambar,
+                item.JawabanBenar == null ? null : int.Parse(item.JawabanBenar),
+                item.Bobot == null ? null : int.Parse(item.Bobot),
+                item.State
+            )).ToList();
+        }
+
         public async Task<TemplatePertanyaanResponseApi?> GetAsync(Guid TemplatePertanyaanUuid, CancellationToken cancellationToken = default)
         {
             Result<TemplatePertanyaanDefaultResponse> result = await sender.Send(new GetTemplatePertanyaanDefaultQuery(TemplatePertanyaanUuid), cancellationToken);

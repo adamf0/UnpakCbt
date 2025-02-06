@@ -58,15 +58,17 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     request.Tipe,
                     request.Pertanyaan,
                     jawabanImgPath,
-                    request.Jawaban,
-                    request.Bobot == null? null : int.Parse(request.Bobot),
-                    request.State
+                    null,
+                    null,
+                    "init"
                     )
                 );
 
                 return result.Match(Results.Ok, ApiResults.Problem);
 
-            }).WithTags(Tags.TemplatePertanyaan);
+            }).WithTags(Tags.TemplatePertanyaan)
+              .Accepts<CreateTemplatePertanyaanRequest>("multipart/form-data")
+              .DisableAntiforgery();
         }
 
         internal sealed class CreateTemplatePertanyaanRequest
@@ -75,9 +77,6 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
             [FromForm] public string Tipe { get; set; }
             [FromForm] public string? Pertanyaan { get; set; } = null;
             [FromForm] public IFormFile? Gambar { get; set; } = null;
-            [FromForm] public Guid? Jawaban { get; set; }
-            [FromForm] public string? Bobot { get; set; } = null;
-            [FromForm] public string State { get; set; }
         }
     }
 }
