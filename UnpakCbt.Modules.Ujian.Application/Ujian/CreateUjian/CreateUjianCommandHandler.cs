@@ -54,7 +54,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
                 ).Value
             );
             await cbtRepository.InsertAsync(listPertanyaan);
-
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             //add counter
             string key = "counter_" + request.IdJadwalUjian.ToString();
@@ -67,7 +67,6 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
                 }
             }
             await counterRepository.IncrementCounterAsync(key, null);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             //tahap 2: insert ujian_cbt background job
 

@@ -24,11 +24,12 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
             {
                 return Result.Failure(JadwalUjianErrors.NotFound(request.uuid));
             }
-            string key = "counter_" + request.uuid.ToString();
 
             await jadwalUjianRepository.DeleteAsync(existingJadwalUjian!);
-            await counterRepository.DeleteKeyAsync(key);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            
+            string key = "counter_" + request.uuid.ToString();
+            await counterRepository.DeleteKeyAsync(key);
 
             return Result.Success();
         }

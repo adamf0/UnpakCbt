@@ -56,7 +56,11 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
             string oldKey = "counter_" + jadwalUjian.Uuid;
-            await counterRepository.DecrementCounterAsync(oldKey, null);
+            int prevCounter = await counterRepository.GetCounterAsync(oldKey);
+            if (prevCounter > 0)
+            {
+                await counterRepository.DecrementCounterAsync(oldKey, null);
+            }
 
             return Result.Success();
         }

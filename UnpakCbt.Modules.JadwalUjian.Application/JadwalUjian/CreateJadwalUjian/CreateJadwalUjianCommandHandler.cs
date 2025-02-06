@@ -51,10 +51,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir);
 
             TimeSpan timeToExpire = mulai - DateTime.UtcNow;
-            string key = "counter_" + result.Value.Uuid.ToString();
 
             bankSoalRepository.Insert(result.Value);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            string key = "counter_" + result.Value.Uuid.ToString();
             await counterRepository.ResetCounterAsync(key, 0, timeToExpire);
 
             return result.Value.Uuid;
