@@ -26,7 +26,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
             Domain.JadwalUjian.JadwalUjian? existingJadwalUjian = await bankSoalRepository.GetAsync(request.Uuid, cancellationToken);
             BankSoalResponse? bankSoal = await bankSoalApi.GetAsync(request.IdBankSoal, cancellationToken);
             checkData(request.Uuid, existingJadwalUjian, request.IdBankSoal, bankSoal);
-            checkFormat(request.Tanggal, request.JamMulai, request.JamAkhir);
+            //checkFormat(request.Tanggal, request.JamMulai, request.JamAkhir);
 
             Result<Domain.JadwalUjian.JadwalUjian> asset = Domain.JadwalUjian.JadwalUjian.Update(existingJadwalUjian!)
                          .ChangeDeskripsi(request.Deskripsi)
@@ -42,6 +42,8 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                 return Result.Failure<Guid>(asset.Error);
             }
 
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+            
             checkFormat(existingJadwalUjian.Tanggal, existingJadwalUjian.JamMulai, existingJadwalUjian.JamAkhir, true);
             if (isTimeChanged(request.Tanggal, request.JamMulai, request.JamAkhir, existingJadwalUjian))
             {
@@ -50,8 +52,9 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                 await counterRepository.ResetCounterAsync(key, 0, timeToExpire);
             }
 
-            //tahap 1: reset data ujian_cbt, insert ujian_cbt manual
-            await unitOfWork.SaveChangesAsync(cancellationToken);
+            //[PR]            
+            //tahap 1: reset data ujian_cbt, insert ujian_cbt 
+
             //tahap 2: reset data ujian_cbt, insert ujian_cbt background job
 
             return Result.Success();
@@ -75,13 +78,13 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
             if (!DateTime.TryParseExact(Tanggal + " " + JamMulai, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
             {
-                return Result.Failure<Guid>(JadwalUjianErrors.InvalidScheduleFormat(!isExisting? "start date": "existing start date"));
+                return Result.Failure<Guid>(JadwalUjianErrors.InvalidScheduleFormat(!isExisting? "start": "existing start"));
             }
 
             if (!DateTime.TryParseExact(Tanggal + " " + JamAkhir, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
             {
-                return Result.Failure<Guid>(JadwalUjianErrors.InvalidScheduleFormat(!isExisting ? "end date": "existing end date"));
+                return Result.Failure<Guid>(JadwalUjianErrors.InvalidScheduleFormat(!isExisting ? "end": "existing end"));
             }
 
             return null;

@@ -10,33 +10,39 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
     public static class UjianErrors
     {
         public static Error EmptyData() =>
-            Error.NotFound("UjianErrors.EmptyData", $"data is not found");
+            Error.NotFound("UjianErrors.EmptyData", "Data is not found");
 
         public static Error NotFound(Guid Id) =>
-            Error.NotFound("UjianErrors.NotFound", $"The event with the identifier {Id} was not found");
+            Error.Problem("UjianErrors.NotFound", $"Exam schedule with identifier {Id} not found");
 
-        public static Error NotFoundRefrence() =>
-            Error.NotFound("UjianErrors.NotFoundRefrence", $"The event with the identifier NoReg and PrevJadwalUjian was not found");
+        public static Error IdJadwalUjianNotFound(Guid Id) =>
+            Error.Problem("UjianErrors.IdJadwalUjianNotFound", $"Exam schedule with reference IdJadwalUjian {Id} not found");
+
+        public static Error NoRegNotEmpty() =>
+            Error.Problem("TemplatePertanyaan.NoRegNotEmpty", "The registration reference number in the exam schedule cannot be empty");
 
         public static Error ScheduleExamNotFound(Guid Id) =>
-            Error.NotFound("UjianErrors.ScheduleExamNotFound", $"Schedule exam with the identifier {Id} was not found");
+            Error.Problem("UjianErrors.ScheduleExamNotFound", $"Schedule exam with the identifier {Id} was not found");
+
+        public static Error ScheduleExamDoneCancel() =>
+            Error.Problem("UjianErrors.ScheduleExamDoneCancel", "The status exam schedule has been cancelled");
 
         public static Error OutRange(string Mulai, string Akhir) =>
             Error.Problem("UjianErrors.OutRange", $"Request cancelled because exam on {Mulai} to {Akhir} is still ongoing");
 
         public static Error EmptyDataScheduleFormat() =>
-            Error.Problem("UjianErrors.EmptyDataScheduleFormat", "Data tanggal, jam mulai & jam keluar is empty");
+            Error.Problem("UjianErrors.EmptyDataScheduleFormat", "The registration reference tanggal, jam mulai & jam keluar in the exam schedule cannot be empty");
 
         public static Error InvalidScheduleFormat(string type) =>
-            Error.Problem("UjianErrors.InvalidScheduleFormat", $"There is a format error in ${type}");
+            Error.Problem("UjianErrors.InvalidScheduleFormat", $"error occurred parsing {type} exam schedule time");
 
         public static Error InvalidRangeDateTime() =>
             Error.Problem("UjianErrors.InvalidRangeDateTime", "start date can't greater than end date");
 
         public static Error QuotaExhausted(string current, string max) =>
-            Error.Problem("UjianErrors.InvalidRangeDateTime", $"Exam schedule bookings have exceeded the available quota ({current}/{max})");
+            Error.Problem("UjianErrors.QuotaExhausted", $"Exam schedule bookings have exceeded the available quota ({current}/{max})");
 
         public static Error NotFoundReference() =>
-            Error.Problem("UjianErrors.NotFoundReference", $"identifier ujian was not found");
+            Error.Problem("UjianErrors.NotFoundReference", "identifier ujian was not found");
     }
 }

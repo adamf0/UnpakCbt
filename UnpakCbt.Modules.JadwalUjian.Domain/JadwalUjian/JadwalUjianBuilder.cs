@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,28 @@ namespace UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian
 
             public Result<JadwalUjian> Build()
             {
+                if (!DateTime.TryParseExact(_akurasiPenelitian.Tanggal + " " + _akurasiPenelitian.JamMulai, "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.InvalidScheduleFormat("start"));
+                }
+
+                if (!DateTime.TryParseExact(_akurasiPenelitian.Tanggal + " " + _akurasiPenelitian.JamAkhir, "yyyy-MM-dd HH:mm",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.InvalidScheduleFormat("end"));
+                }
+
+                if (_akurasiPenelitian.IdBankSoal <= 0)
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.IdBankSoalNotFound(_akurasiPenelitian.IdBankSoal));
+                }
+
+                if (_akurasiPenelitian.Kuota < -1)
+                {
+                    _result = Result.Failure<JadwalUjian>(JadwalUjianErrors.KuotaInvalid());
+
+                }
                 return HasError ? Result.Failure<JadwalUjian>(_result!.Error) : Result.Success(_akurasiPenelitian);
             }
 

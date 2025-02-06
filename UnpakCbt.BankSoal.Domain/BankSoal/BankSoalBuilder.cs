@@ -23,6 +23,11 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
 
             public Result<BankSoal> Build()
             {
+                if (string.IsNullOrWhiteSpace(_akurasiPenelitian.Judul))
+                {
+                    _result = Result.Failure<BankSoal>(BankSoalErrors.EmptyTitle());
+                }
+
                 return HasError ? Result.Failure<BankSoal>(_result!.Error) : Result.Success(_akurasiPenelitian);
             }
 

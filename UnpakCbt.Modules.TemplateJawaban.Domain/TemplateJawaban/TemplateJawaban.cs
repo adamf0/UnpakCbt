@@ -31,6 +31,14 @@ namespace UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban
         string? JwabanImg = null
         )
         {
+            if (IdTemplateSoal <= 0)
+            {
+                return Result.Failure<TemplateJawaban>(TemplateJawabanErrors.IdTemplateSoalNotFound(IdTemplateSoal));
+            }
+            if (string.IsNullOrEmpty(JawabanText) && string.IsNullOrEmpty(JwabanImg)) {
+                return Result.Failure<TemplateJawaban>(TemplateJawabanErrors.ImgTextNotEmpty());
+            }
+
             var asset = new TemplateJawaban
             {
                 Uuid = Guid.NewGuid(),

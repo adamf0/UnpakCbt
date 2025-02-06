@@ -23,6 +23,27 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
 
             public Result<TemplatePertanyaan> Build()
             {
+                if (_akurasiPenelitian.IdBankSoal <= 0)
+                {
+                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.IdBankSoalNotFound(_akurasiPenelitian.IdBankSoal));
+                }
+                if (string.IsNullOrWhiteSpace(_akurasiPenelitian.Tipe))
+                {
+                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.TipeNotFound(_akurasiPenelitian.Tipe));
+                }
+                if (string.IsNullOrEmpty(_akurasiPenelitian.PertanyaanText) && string.IsNullOrEmpty(_akurasiPenelitian.PertanyaanImg))
+                {
+                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.ImgTextNotEmpty());
+                }
+                if (_akurasiPenelitian.JawabanBenar == null || _akurasiPenelitian.JawabanBenar <= 0)
+                {
+                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.JawabanBenarNotEmpty());
+                }
+                if (_akurasiPenelitian.Bobot == null || _akurasiPenelitian.Bobot <= 0)
+                {
+                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.BobotNotEmpty());
+                }
+
                 return HasError ? Result.Failure<TemplatePertanyaan>(_result!.Error) : Result.Success(_akurasiPenelitian);
             }
 

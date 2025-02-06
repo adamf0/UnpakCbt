@@ -32,6 +32,15 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         string Status = "active"
         )
         {
+            if (string.IsNullOrWhiteSpace(NoReg))
+            {
+                return Result.Failure<Ujian>(UjianErrors.NoRegNotEmpty());
+            }
+            if (IdJadwalUjian<=0)
+            {
+                return Result.Failure<Ujian>(UjianErrors.NoRegNotEmpty());
+            }
+
             var asset = new Ujian
             {
                 Uuid = Guid.NewGuid(),

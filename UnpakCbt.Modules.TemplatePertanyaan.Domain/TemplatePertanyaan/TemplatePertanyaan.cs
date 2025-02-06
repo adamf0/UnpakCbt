@@ -37,6 +37,15 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
         string? State = null
         )
         {
+            if (IdBankSoal <= 0)
+            {
+                return Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.IdBankSoalNotFound(IdBankSoal));
+            }
+            if (string.IsNullOrWhiteSpace(Tipe))
+            {
+                return Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.TipeNotFound(Tipe));
+            }
+
             var asset = new TemplatePertanyaan
             {
                 Uuid = Guid.NewGuid(),

@@ -27,9 +27,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
             checkFormatAndRangeDate(jadwalUjian);
             //check unique data [PR]
 
-
             //insert ujian
-            var result = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(jadwalUjian.Id));
+            var result = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(jadwalUjian?.Id??"0"));
             if (result.IsFailure)
             {
                 return Result.Failure<Guid>(result.Error);
@@ -81,7 +80,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
             return null;
         }
         private Result? checkDataDate(JadwalUjianResponse? jadwalUjian) {
-            if (string.IsNullOrWhiteSpace(jadwalUjian.Tanggal) ||
+            if (string.IsNullOrWhiteSpace(jadwalUjian?.Tanggal) ||
                     string.IsNullOrWhiteSpace(jadwalUjian.JamMulai) ||
                     string.IsNullOrWhiteSpace(jadwalUjian.JamAkhir))
             {
@@ -94,13 +93,13 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
             if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamMulai, "yyyy-MM-dd HH:mm",
                     CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
             {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start date"));
+                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start"));
             }
 
             if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamAkhir, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
             {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end date"));
+                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end"));
             }
 
             var sekarang = DateTime.UtcNow;

@@ -29,6 +29,10 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
         string? Rule
         )
         {
+            if (string.IsNullOrWhiteSpace(Judul)) {
+                return Result.Failure<BankSoal>(BankSoalErrors.EmptyTitle());
+            }
+
             var asset = new BankSoal
             {
                 Uuid = Guid.NewGuid(),

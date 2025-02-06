@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,27 @@ namespace UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian
         int IdBankSoal
         )
         {
+            if (!DateTime.TryParseExact(Tanggal + " " + JamMulai, "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
+            {
+                return Result.Failure<JadwalUjian>(JadwalUjianErrors.InvalidScheduleFormat("start"));
+            }
+
+            if (!DateTime.TryParseExact(Tanggal + " " + JamAkhir, "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
+            {
+                return Result.Failure<JadwalUjian>(JadwalUjianErrors.InvalidScheduleFormat("end"));
+            }
+
+            if (IdBankSoal <= 0) {
+                return Result.Failure<JadwalUjian>(JadwalUjianErrors.IdBankSoalNotFound(IdBankSoal));
+            }
+
+            if (Kuota < -1)
+            {
+                return Result.Failure<JadwalUjian>(JadwalUjianErrors.KuotaInvalid());
+            }
+
             var asset = new JadwalUjian
             {
                 Uuid = Guid.NewGuid(),

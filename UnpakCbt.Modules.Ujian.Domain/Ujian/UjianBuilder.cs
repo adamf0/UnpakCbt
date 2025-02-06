@@ -23,6 +23,15 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
 
             public Result<Ujian> Build()
             {
+                if (string.IsNullOrWhiteSpace(_akurasiPenelitian.NoReg))
+                {
+                    _result = Result.Failure<Ujian>(UjianErrors.NoRegNotEmpty());
+                }
+                if (_akurasiPenelitian.IdJadwalUjian <= 0)
+                {
+                    _result = Result.Failure<Ujian>(UjianErrors.NoRegNotEmpty());
+
+                }
                 return HasError ? Result.Failure<Ujian>(_result!.Error) : Result.Success(_akurasiPenelitian);
             }
 

@@ -10,10 +10,16 @@ namespace UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban
     public static class TemplateJawabanErrors
     {
         public static Error EmptyData() =>
-            Error.NotFound("TemplateJawaban.EmptyData", $"data is not found");
+            Error.NotFound("TemplateJawaban.EmptyData", "Data is not found");
 
         public static Error NotFound(Guid Id) =>
-            Error.NotFound("TemplateJawaban.NotFound", $"The event with the identifier {Id} was not found");
+            Error.Problem("TemplateJawaban.NotFound", $"Answer with identifier {Id} not found");
+
+        public static Error IdTemplateSoalNotFound(int IdTemplateSoal) =>
+            Error.Problem("TemplateJawaban.IdTemplateSoalNotFound", $"Question template reference {IdTemplateSoal} not found in answers");
+
+        public static Error ImgTextNotEmpty() =>
+            Error.Problem("TemplateJawaban.ImgTextNotEmpty", "Image or text answer references in the answer cannot be empty");
 
     }
 }

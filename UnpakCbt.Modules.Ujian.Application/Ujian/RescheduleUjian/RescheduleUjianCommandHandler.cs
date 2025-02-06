@@ -40,7 +40,11 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
 
             if (existingUjian is null)
             {
-                Result.Failure(UjianErrors.NotFoundRefrence());
+                Result.Failure(UjianErrors.NoRegNotEmpty());
+            }
+            if (existingUjian?.Status == "cancel")
+            {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneCancel());
             }
 
             checkData(request.newIdJadwalUjian, newJadwalUjian);
@@ -62,6 +66,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
                 return Result.Failure<Guid>(newUjian.Error);
             }
 
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
             string oldKey = "counter_" + request.prevIdJadwalUjian.ToString();
             int prevCounter = await counterRepository.GetCounterAsync(oldKey);
             if (prevCounter > 0)
@@ -72,8 +78,6 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             var timeToExpire = GetTimeToExpire(newJadwalUjian.Tanggal, newJadwalUjian.JamMulai);
             string newKey = $"counter_{request.newIdJadwalUjian}";
             await counterRepository.ResetCounterAsync(newKey, 0, timeToExpire);
-
-            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success(newUjian.Value.Uuid);
         }
@@ -103,13 +107,13 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamMulai, "yyyy-MM-dd HH:mm",
                     CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
             {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start date"));
+                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start"));
             }
 
             if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamAkhir, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
             {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end date"));
+                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end"));
             }
 
             var sekarang = DateTime.UtcNow;

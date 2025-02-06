@@ -23,6 +23,15 @@ namespace UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban
 
             public Result<TemplateJawaban> Build()
             {
+                if (_akurasiPenelitian.IdTemplateSoal <= 0)
+                {
+                    _result = Result.Failure<TemplateJawaban>(TemplateJawabanErrors.IdTemplateSoalNotFound(_akurasiPenelitian.IdTemplateSoal));
+                }
+                if (string.IsNullOrEmpty(_akurasiPenelitian.JawabanText) && string.IsNullOrEmpty(_akurasiPenelitian.JawabanImg))
+                {
+                    _result = Result.Failure<TemplateJawaban>(TemplateJawabanErrors.ImgTextNotEmpty());
+                }
+
                 return HasError ? Result.Failure<TemplateJawaban>(_result!.Error) : Result.Success(_akurasiPenelitian);
             }
 

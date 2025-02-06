@@ -30,6 +30,10 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             {
                 Result.Failure(UjianErrors.NotFound(request.Uuid));
             }
+            if (existingUjian?.Status == "cancel")
+            {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneCancel());
+            }
 
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetAsync(request.IdJadwalUjian, cancellationToken);
             if (jadwalUjian is null)
@@ -47,13 +51,13 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamMulai, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
             {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start date"));
+                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start"));
             }
 
             if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamAkhir, "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
             {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end date"));
+                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end"));
             }
 
             var sekarang = DateTime.UtcNow;

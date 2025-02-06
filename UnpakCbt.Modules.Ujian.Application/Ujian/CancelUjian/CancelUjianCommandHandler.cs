@@ -35,6 +35,10 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamNotFound(Guid.Parse(jadwalUjian!.Uuid)));
             }
 
+            if (existingUjian?.Status == "cancel") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneCancel());
+            }
+
             Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian!)
                          .ChangeStatus("cancel")
                          .Build();
@@ -44,10 +48,9 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
                 return Result.Failure<Guid>(prevUjian.Error);
             }
 
+            await unitOfWork.SaveChangesAsync(cancellationToken);
             string oldKey = "counter_" + jadwalUjian.Uuid;
             await counterRepository.DecrementCounterAsync(oldKey, null);
-
-            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
         }
