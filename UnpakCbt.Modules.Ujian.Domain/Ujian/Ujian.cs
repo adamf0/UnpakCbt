@@ -38,7 +38,7 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
             }
             if (IdJadwalUjian<=0)
             {
-                return Result.Failure<Ujian>(UjianErrors.NoRegNotEmpty());
+                return Result.Failure<Ujian>(UjianErrors.IdJadwalUjianNotFound(IdJadwalUjian));
             }
 
             var asset = new Ujian

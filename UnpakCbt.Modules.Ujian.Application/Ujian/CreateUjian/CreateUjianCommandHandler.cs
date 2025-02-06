@@ -21,12 +21,16 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
     {
         public async Task<Result<Guid>> Handle(CreateUjianCommand request, CancellationToken cancellationToken)
         {
+            int totalActiveUjian = await ujianRepository.GetCountJadwalActiveAsync(request.NoReg); //active, start, done
+            if (totalActiveUjian > 0) {
+                return Result.Failure<Guid>(UjianErrors.ActiveExam(request.NoReg));
+            }
+
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetAsync(request.IdJadwalUjian, cancellationToken);
             checkData(jadwalUjian, request.IdJadwalUjian);
             checkDataDate(jadwalUjian);
             checkFormatAndRangeDate(jadwalUjian);
-            //check unique data [PR]
-
+            
             //insert ujian
             var result = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(jadwalUjian?.Id??"0"));
             if (result.IsFailure)
@@ -45,9 +49,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
             List<TemplatePertanyaanResponse> listMasterPertanyaan = await templatePertanyaanApi.GetAllTemplatePertanyaanByBankSoal(jadwalUjian.IdBankSoal);
             IEnumerable<Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
                 Cbt.Create(
-                    currentUjian.Id ?? 0,
-                    int.Parse(item.Id),
-                    item.JawabanBenar ?? 0
+                    currentUjian?.Id ?? 0,
+                    int.Parse(item.Id)
                 ).Value
             );
             await cbtRepository.InsertAsync(listPertanyaan);

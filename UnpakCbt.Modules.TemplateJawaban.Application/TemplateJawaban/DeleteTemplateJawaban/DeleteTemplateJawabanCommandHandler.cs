@@ -24,8 +24,20 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTem
                 return Result.Failure(TemplateJawabanErrors.NotFound(request.uuid));
             }
 
-            await templateJawabanRepository.DeleteAsync(existingTemplateJawaban!);
-            //event update change table position asset, order desc + select first
+            string? filePath = null;
+            if (!string.IsNullOrEmpty(existingTemplateJawaban.JawabanImg))
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "jawaban_img");
+                filePath = Path.Combine(uploadsFolder, existingTemplateJawaban.JawabanImg);
+
+            }
+            
+            await templateJawabanRepository.DeleteAsync(existingTemplateJawaban);
+
+            if (filePath != null && File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

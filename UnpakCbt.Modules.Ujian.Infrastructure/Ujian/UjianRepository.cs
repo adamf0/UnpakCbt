@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 using UnpakCbt.Modules.Ujian.Infrastructure.Database;
 
@@ -26,6 +27,13 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Ujian
         public void Insert(Domain.Ujian.Ujian ujian)
         {
             context.Ujian.Add(ujian);
+        }
+
+        public async Task<int> GetCountJadwalActiveAsync(string NoReg, CancellationToken cancellationToken = default)
+        {
+            return await context.Ujian
+                     .Where(u => u.NoReg == NoReg && u.Status.ToLower() != "cancel")
+                     .CountAsync(cancellationToken);
         }
     }
 }

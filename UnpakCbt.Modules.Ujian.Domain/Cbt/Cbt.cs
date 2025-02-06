@@ -23,14 +23,14 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         [Column("id_template_soal")]
         public int IdTemplateSoal { get; private set; }
         [Column("jawaban_benar")]
-        public int JawabanBenar { get; private set; }
+        public int? JawabanBenar { get; private set; }
 
         public static CbtBuilder Update(Cbt prev) => new CbtBuilder(prev);
 
         public static Result<Cbt> Create(
         int IdUjian,
         int IdTemplateSoal,
-        int JawabanBenar
+        int? JawabanBenar = null
         )
         {
             var asset = new Cbt

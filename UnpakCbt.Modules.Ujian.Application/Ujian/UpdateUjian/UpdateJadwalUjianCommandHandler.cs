@@ -32,7 +32,13 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             }
             if (existingUjian?.Status == "cancel")
             {
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneCancel());
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
+            }
+            if (existingUjian?.Status == "done") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
+            }
+            if (existingUjian?.Status == "start") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
             }
 
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetAsync(request.IdJadwalUjian, cancellationToken);
@@ -72,7 +78,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             }
 
             //hapus list pertanyaan
-            await cbtRepository.DeleteAsync(existingUjian.Id??0);
+            await cbtRepository.DeleteAsync(existingUjian?.Id??0);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
 
@@ -80,7 +86,6 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             Result<Domain.Ujian.Ujian> asset = Domain.Ujian.Ujian.Update(existingUjian!)
                          .ChangeNoReg(request.NoReg)
                          .ChangeJadwalUjian(int.Parse(jadwalUjian.Id))
-                         .ChangeStatus(request.Status)
                          .Build();
 
             if (asset.IsFailure)
@@ -91,7 +96,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
 
 
             //insert list pertanyaan
-            if (existingUjian.Id == null) {
+            if (existingUjian?.Id == null) {
                 return Result.Failure<Guid>(UjianErrors.NotFoundReference());
             }
 
@@ -99,8 +104,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             IEnumerable<Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
                 Cbt.Create(
                     existingUjian.Id ?? 0,
-                    int.Parse(item.Id),
-                    item.JawabanBenar ?? 0
+                    int.Parse(item.Id)
                 ).Value
             );
             await cbtRepository.InsertAsync(listPertanyaan);

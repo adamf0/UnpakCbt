@@ -42,7 +42,7 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
                 return this;
             }
 
-            public CbtBuilder ChangeJawabanBenar(int JawabanBenar)
+            public CbtBuilder ChangeJawabanBenar(int? JawabanBenar)
             {
                 if (HasError) return this;
 

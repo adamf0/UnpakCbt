@@ -36,7 +36,13 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
             }
 
             if (existingUjian?.Status == "cancel") {
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneCancel());
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
+            }
+            if (existingUjian?.Status == "done") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
+            }
+            if (existingUjian?.Status == "start") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
             }
 
             Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian!)

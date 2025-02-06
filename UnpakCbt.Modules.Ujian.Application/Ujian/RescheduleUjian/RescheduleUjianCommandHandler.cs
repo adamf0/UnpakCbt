@@ -11,18 +11,27 @@ using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using System.Globalization;
 using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using MediatR;
+using UnpakCbt.Modules.TemplatePertanyaan.PublicApi;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
 {
-    internal sealed class RescheduleUjianCommandHandler( // [Test]
+    internal sealed class RescheduleUjianCommandHandler( 
     Domain.Ujian.ICounterRepository counterRepository,
     IUjianRepository ujianRepository,
+    ICbtRepository cbtRepository,
     IUnitOfWork unitOfWork,
-    IJadwalUjianApi jadwalUjianApi)
+    IJadwalUjianApi jadwalUjianApi,
+    ITemplatePertanyaanApi templatePertanyaanApi)
     : ICommandHandler<RescheduleUjianCommand,Guid>
     {
         public async Task<Result<Guid>> Handle(RescheduleUjianCommand request, CancellationToken cancellationToken)
         {
+            int totalActiveUjian = await ujianRepository.GetCountJadwalActiveAsync(request.NoReg); //active, start, done
+            if (totalActiveUjian > 0)
+            {
+                return Result.Failure<Guid>(UjianErrors.ActiveExam(request.NoReg));
+            }
+
             JadwalUjianResponse? existingPrevJadwalUjian = await jadwalUjianApi.GetAsync(request.prevIdJadwalUjian, cancellationToken);
             if (existingPrevJadwalUjian is null)
             {
@@ -36,7 +45,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
 
 
-            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetByNoRegWithJadwalAsync(request.NoReg, int.Parse(existingPrevJadwalUjian.Id), cancellationToken); //ini hasilnya selalu null meskipun query bener [PR]
+            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetByNoRegWithJadwalAsync(request.NoReg, int.Parse(existingPrevJadwalUjian.Id), cancellationToken);
 
             if (existingUjian is null)
             {
@@ -44,13 +53,20 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
             if (existingUjian?.Status == "cancel")
             {
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneCancel());
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
+            }
+            if (existingUjian?.Status == "done") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
+            }
+            if (existingUjian?.Status == "start") {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
             }
 
             checkData(request.newIdJadwalUjian, newJadwalUjian);
             checkDataDate(newJadwalUjian);
             checkFormatAndRangeDate(newJadwalUjian);
 
+            //cancel ujian lama
             Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian)
                          .ChangeStatus("cancel")
                          .Build();
@@ -59,14 +75,40 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             {
                 return Result.Failure<Guid>(prevUjian.Error);
             }
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var newUjian = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(newJadwalUjian.Id));
+            //insert ujian baru
+            var newUjian = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(newJadwalUjian?.Id ?? "0"));
             if (newUjian.IsFailure)
             {
                 return Result.Failure<Guid>(newUjian.Error);
             }
+            ujianRepository.Insert(newUjian.Value);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            //insert list pertanyaan
+            Domain.Ujian.Ujian? currentUjian = await ujianRepository.GetAsync(newUjian.Value.Uuid, cancellationToken);
+            if (currentUjian.Id == null)
+            {
+                return Result.Failure<Guid>(UjianErrors.NotFoundReference());
+            }
+
+            List<TemplatePertanyaanResponse> listMasterPertanyaan = await templatePertanyaanApi.GetAllTemplatePertanyaanByBankSoal(newJadwalUjian.IdBankSoal);
+            IEnumerable<Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
+                Cbt.Create(
+                    currentUjian?.Id ?? 0,
+                    int.Parse(item.Id)
+                ).Value
+            );
+            await cbtRepository.InsertAsync(listPertanyaan);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+
+
+
+
+
 
             string oldKey = "counter_" + request.prevIdJadwalUjian.ToString();
             int prevCounter = await counterRepository.GetCounterAsync(oldKey);

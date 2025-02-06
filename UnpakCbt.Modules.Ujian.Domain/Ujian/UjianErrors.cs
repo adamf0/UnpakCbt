@@ -15,7 +15,10 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error NotFound(Guid Id) =>
             Error.Problem("UjianErrors.NotFound", $"Exam schedule with identifier {Id} not found");
 
-        public static Error IdJadwalUjianNotFound(Guid Id) =>
+        public static Error IdJawabanBenarNotFound(Guid IdJawabanBenar) =>
+            Error.Problem("UjianErrors.IdJawabanBenarNotFound", $"Exam schedule with reference IdjawabanBenar {IdJawabanBenar} not found");
+
+        public static Error IdJadwalUjianNotFound(int Id) =>
             Error.Problem("UjianErrors.IdJadwalUjianNotFound", $"Exam schedule with reference IdJadwalUjian {Id} not found");
 
         public static Error NoRegNotEmpty() =>
@@ -24,11 +27,29 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error ScheduleExamNotFound(Guid Id) =>
             Error.Problem("UjianErrors.ScheduleExamNotFound", $"Schedule exam with the identifier {Id} was not found");
 
-        public static Error ScheduleExamDoneCancel() =>
-            Error.Problem("UjianErrors.ScheduleExamDoneCancel", "The status exam schedule has been cancelled");
+        public static Error ScheduleExamNoStartExam() =>
+            Error.Problem("UjianErrors.ScheduleExamNoStartExam", "User has not started entering the exam");
+
+        //public static Error IncorrectReferenceJadwal(Guid input, Guid target) =>
+        //    Error.Problem("UjianErrors.IncorrectReferenceJadwal", $"The reference {input} on the exam schedule does not match the actual data ({target})");
+
+        public static Error IncorrectReferenceNoReg(string input, string target) =>
+            Error.Problem("UjianErrors.IncorrectReferenceNoReg", $"The reference {input} on the exam schedule does not match the actual data ({target})");
+
+        public static Error ScheduleExamCancelExam() =>
+            Error.Problem("UjianErrors.ScheduleExamCancelExam", "The status exam schedule has been cancelled");
+
+        public static Error ScheduleExamDoneExam() =>
+            Error.Problem("UjianErrors.ScheduleExamDoneExam", "The status exam schedule has been done");
+
+        public static Error ScheduleExamStartExam() =>
+            Error.Problem("UjianErrors.ScheduleExamStartExam", "The status exam schedule has been started");
 
         public static Error OutRange(string Mulai, string Akhir) =>
             Error.Problem("UjianErrors.OutRange", $"Request cancelled because exam on {Mulai} to {Akhir} is still ongoing");
+
+        public static Error OutRangeExam(string Mulai, string Akhir) =>
+            Error.Problem("UjianErrors.OutRangeExam", $"Request cancelled because exam on {Mulai} to {Akhir}");
 
         public static Error EmptyDataScheduleFormat() =>
             Error.Problem("UjianErrors.EmptyDataScheduleFormat", "The registration reference tanggal, jam mulai & jam keluar in the exam schedule cannot be empty");
@@ -44,5 +65,8 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
 
         public static Error NotFoundReference() =>
             Error.Problem("UjianErrors.NotFoundReference", "identifier ujian was not found");
+
+        public static Error ActiveExam(string NoReg) =>
+            Error.Problem("UjianErrors.ActiveExam", $"Exam schedule with registration number {NoReg} is still active");
     }
 }

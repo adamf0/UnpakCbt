@@ -7,6 +7,7 @@ using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.Abstractions.Data;
 using UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan;
+using static Dapper.SqlMapper;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.DeleteTemplatePertanyaan
 {
@@ -24,9 +25,19 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Del
                 return Result.Failure(TemplatePertanyaanErrors.NotFound(request.uuid));
             }
 
-            await templatePertanyaanRepository.DeleteAsync(existingTemplatePertanyaan!);
-            //event update change table position asset, order desc + select first
-
+            string? filePath = null;
+            if (!string.IsNullOrEmpty(existingTemplatePertanyaan.PertanyaanImg))
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pertanyaan_img");
+                filePath = Path.Combine(uploadsFolder, existingTemplatePertanyaan.PertanyaanImg);
+            }
+            
+            await templatePertanyaanRepository.DeleteAsync(existingTemplatePertanyaan);
+            
+            if (filePath != null && File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnpakCbt.Common.Application.Messaging;
 
-namespace UnpakCbt.Modules.Ujian.Application.Ujian.DeleteUjian
+namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
 {
-    public sealed record DeleteUjianCommand(
+    public sealed record DoneUjianCommand(
         Guid uuid,
         string NoReg
     ) : ICommand;
