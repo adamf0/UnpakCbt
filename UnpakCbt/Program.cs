@@ -41,7 +41,9 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.Name = "XSRF-TOKEN"; // Nama cookie antiforgery
 });
 
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
+builder.Services.AddInfrastructure(
+     Environment.GetEnvironmentVariable("ConnectionStrings__Database") ?? builder.Configuration.GetConnectionString("Database")
+);
 builder.Services.AddBankSoalModule(builder.Configuration);
 builder.Services.AddTemplatePertanyaanModule(builder.Configuration);
 builder.Services.AddTemplateJawabanModule(builder.Configuration);
@@ -89,7 +91,7 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 
-/*app.Use((context, next) =>
+app.Use((context, next) =>
 {
     var userAgent = context.Request.Headers.UserAgent.ToString();
 
@@ -123,14 +125,14 @@ app.Use((context, next) =>
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     context.Response.Headers.ContentType = "application/json; charset=UTF-8";
     context.Response.Headers.StrictTransportSecurity = "max-age=60; includeSubDomains; preload";
-    context.Response.Headers.AccessControlAllowOrigin = "https://localhost";
+    context.Response.Headers.AccessControlAllowOrigin = Environment.GetEnvironmentVariable("Mode")=="prod"? "https://host.docker.internal" : "https://localhost";
     context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin";
     context.Response.Headers["Cross-Origin-Embedder-Policy"] = "require-corp";
     context.Response.Headers["Cross-Origin-Resource-Policy"] = "same-site";
 
     context.Response.Headers.Remove("X-Powered-By");
     return next();
-});*/
+});
 
 app.UseAuthorization();
 app.MapControllers();
