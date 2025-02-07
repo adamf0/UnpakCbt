@@ -14,6 +14,8 @@ using UnpakCbt.Api;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
 
+//[::]:5000/swagger/index.html
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -71,11 +73,11 @@ TemplateJawabanModule.MapEndpoints(app);
 JadwalUjianModule.MapEndpoints(app);
 UjianModule.MapEndpoints(app);
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseStaticFiles(); // Menyajikan file dari wwwroot secara umum
 app.UseStaticFiles(new StaticFileOptions

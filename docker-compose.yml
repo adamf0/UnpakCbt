@@ -1,8 +1,40 @@
+version: '3.8'
+
 services:
-  redi-counter:
-    container_name: redis-counter
+  cbt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cbt
+    environment:
+      - CONNECTIONSTRINGS__DATABASE=server=host.docker.internal;port=3306;user=root;password=;database=unpak_cbt;
+      - MODE=prod
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    depends_on:
+      - seq
+      - counter
+      - minio
+    networks:
+      - minio-sample
+
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    environment:
+      - ACCEPT_EULA=Y
+    restart: always # Restart jika mati
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    networks:
+      - minio-sample
+
+  counter:
+    container_name: counter
     image: redis:latest
-    restart: always
+    restart: always # Restart jika mati
     command:
       - 'redis-server'
       - '--save 60 10000'
@@ -15,15 +47,16 @@ services:
       - minio-sample
 
   minio:
-    container_name: minIO
+    container_name: minio
     image: minio/minio:latest
+    restart: always # Restart jika mati
     command: server --console-address ":9001" /data/
     ports:
       - "9001:9001"
       - "9000:9000"
     environment:
-      MINIO_ROOT_USER: dev_user
-      MINIO_ROOT_PASSWORD: dev_password
+      - MINIO_ROOT_USER=dev_user
+      - MINIO_ROOT_PASSWORD=dev_password
     networks:
       - minio-sample
     volumes:
@@ -31,7 +64,7 @@ services:
 
 volumes:
   minio-storage:
-    
+
 networks:
   minio-sample:
     driver: bridge
