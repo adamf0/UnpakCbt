@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: cbt
     environment:
-      - ConnectionStrings__Database=server=remote-db;port=3306;user=root;password=;database=unpak_cbt;
+      - ConnectionStrings__Database=server=host.docker.internal;port=3306;user=root;password=;database=unpak_cbt;
       - Mode=prod
     ports:
       - "5000:8080"
