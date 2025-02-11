@@ -27,7 +27,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTem
             string? filePath = null;
             if (!string.IsNullOrEmpty(existingTemplateJawaban.JawabanImg))
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "jawaban_img");
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
                 filePath = Path.Combine(uploadsFolder, existingTemplateJawaban.JawabanImg);
 
             }

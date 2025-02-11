@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: cbt
     environment:
-      - ConnectionStrings__Database=server=host.docker.internal;port=3306;user=root;password=;database=unpak_cbt;
+      - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
       - Mode=prod
     ports:
       - "5000:8080"
@@ -16,10 +16,12 @@ services:
       - seq
       - counter
       - minio
+    volumes: 
+      - ./wwwroot:/app/wwwroot
     networks:
       - minio-sample
     extra_hosts:
-      - "remote-db:192.168.1.100"
+      - "remote-db:172.16.20.135"
 
   seq:
     image: datalust/seq:latest

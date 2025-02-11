@@ -28,7 +28,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Del
             string? filePath = null;
             if (!string.IsNullOrEmpty(existingTemplatePertanyaan.PertanyaanImg))
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pertanyaan_img");
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/pertanyaan_img");
                 filePath = Path.Combine(uploadsFolder, existingTemplatePertanyaan.PertanyaanImg);
             }
             

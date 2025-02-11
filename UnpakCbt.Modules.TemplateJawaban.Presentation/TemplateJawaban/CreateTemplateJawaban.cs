@@ -20,7 +20,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
             app.MapPost("TemplateJawaban", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplateJawabanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
                 string? jawabanImgPath = null;
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "jawaban_img");
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
 
                 if (!Directory.Exists(uploadsFolder))
                 {

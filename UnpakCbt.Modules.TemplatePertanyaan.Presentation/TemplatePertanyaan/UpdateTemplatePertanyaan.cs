@@ -20,7 +20,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
             app.MapPut("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] UpdateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
                 string? jawabanImgPath = null;
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pertanyaan_img");
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/pertanyaan_img");
 
                 if (!Directory.Exists(uploadsFolder))
                 {
