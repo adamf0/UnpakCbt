@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Infrastructure.Data;
 using UnpakCbt.Modules.BankSoal.Application.Abstractions.Data;

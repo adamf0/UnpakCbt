@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.TemplatePertanyaan;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.Abstractions.Data;
+using UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.TemplatePertanyaan;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.Database
 {

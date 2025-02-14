@@ -1,15 +1,8 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using System.Text.Json;
 using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 
@@ -25,14 +18,15 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetAllJadwalUjian
             const string sql =
             """
             SELECT 
-                CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
-                deskripsi as Deskripsi,
-                kuota AS Kouta,
-                tanggal AS Tanggal,
-                jam_mulai_ujian AS JamMulai,
-                jam_akhir_ujian AS JamAkhir,
-                id_bank_soal AS IdBankSoal
-            FROM jadwal_ujian 
+                CAST(NULLIF(ju.uuid, '') AS VARCHAR(36)) AS Uuid,
+                ju.deskripsi as Deskripsi,
+                ju.kuota AS Kouta,
+                ju.tanggal AS Tanggal,
+                ju.jam_mulai_ujian AS JamMulai,
+                ju.jam_akhir_ujian AS JamAkhir,
+                bs.uuid AS UuidBankSoal
+            FROM jadwal_ujian ju 
+            LEFT JOIN bank_soal bs ON ju.id_bank_soal = bs.id
             """;
 
             var queryResult = await connection.QueryAsync<JadwalUjianResponse>(sql);

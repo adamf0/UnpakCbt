@@ -1,17 +1,10 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal;
 using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
-using System.Text.Json;
 
 
 namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal

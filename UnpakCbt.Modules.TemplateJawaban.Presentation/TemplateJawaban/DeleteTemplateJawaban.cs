@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System.Text.Encodings.Web;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTemplateJawaban;
-using UnpakCbt.Modules.TemplateJawaban.Presentation;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 {

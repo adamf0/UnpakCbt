@@ -1,9 +1,4 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal;
 using IBankSoalApi = UnpakCbt.Modules.BankSoal.PublicApi.IBankSoalApi;

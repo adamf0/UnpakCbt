@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System.Text.Encodings.Web;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
-using UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian;
 using UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian;
-using UnpakCbt.Modules.Ujian.Presentation;
 
 namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 {

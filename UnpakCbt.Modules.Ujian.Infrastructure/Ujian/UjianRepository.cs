@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 using UnpakCbt.Modules.Ujian.Infrastructure.Database;
 

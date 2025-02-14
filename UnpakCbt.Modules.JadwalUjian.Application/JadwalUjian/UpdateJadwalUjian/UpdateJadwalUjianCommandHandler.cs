@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnpakCbt.Common.Application.Messaging;
+﻿using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.Application.Abstractions.Data;
 using UnpakCbt.Modules.BankSoal.PublicApi;
 using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
 using System.Globalization;
-using MediatR;
 
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
 {

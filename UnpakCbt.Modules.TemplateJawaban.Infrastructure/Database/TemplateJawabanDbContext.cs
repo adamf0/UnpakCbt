@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Modules.TemplateJawaban.Infrastructure.TemplateJawaban;
 using UnpakCbt.Modules.TemplateJawaban.Application.Abstractions.Data;
 

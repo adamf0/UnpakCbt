@@ -1,15 +1,10 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetTemplatePertanyaan;
+using UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetAllTemplatePertanyaan
 {
@@ -22,15 +17,17 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
             const string sql =
             """
             SELECT 
-                CAST(NULLIF(uuid, '') as VARCHAR(36)) AS Uuid,
-                id_bank_soal as IdBankSoal,
-                tipe as Tipe,
-                pertanyaan_text as Pertanyaan,
-                pertanyaan_img as Gambar,
-                jawaban_benar as JawabanBenar,
-                bobot as Bobot,
-                state as State 
-            FROM template_soal  
+                CAST(NULLIF(ts.uuid, '') as VARCHAR(36)) AS Uuid,
+                bs.uuid as UuidBankSoal,
+                ts.tipe as Tipe,
+                ts.pertanyaan_text as Pertanyaan,
+                ts.pertanyaan_img as Gambar,
+                tp.uuid as JawabanBenar,
+                ts.bobot as Bobot,
+                ts.state as State 
+            FROM template_soal ts 
+            LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
+            LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id
             """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;

@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using System.Text.Encodings.Web;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTemplateJawaban;
-using UnpakCbt.Modules.TemplateJawaban.Presentation;
 using static UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban.UpdateTemplateJawaban;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban

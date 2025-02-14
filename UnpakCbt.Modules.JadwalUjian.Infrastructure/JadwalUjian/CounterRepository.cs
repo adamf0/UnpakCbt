@@ -1,9 +1,4 @@
 ﻿using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 
 namespace UnpakCbt.Modules.JadwalUjian.Infrastructure.JadwalUjian

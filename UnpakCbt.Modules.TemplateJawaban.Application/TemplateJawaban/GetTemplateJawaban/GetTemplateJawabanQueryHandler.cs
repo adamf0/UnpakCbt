@@ -1,10 +1,5 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
@@ -23,12 +18,13 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetTempla
             const string sql =
                 $"""
                  SELECT 
-                     id_template_soal as IdTemplateSoal,
-                     CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
-                     jawaban_text as JawabanText,
-                     jawaban_img AS JawabanImg 
-                 FROM template_pilihan 
-                 WHERE uuid = @Uuid
+                      ts.uuid as UuidTemplateSoal,
+                     CAST(NULLIF(tp.uuid, '') AS VARCHAR(36)) AS Uuid,
+                     tp.jawaban_text as JawabanText,
+                     tp.jawaban_img AS JawabanImg 
+                 FROM template_pilihan tp 
+                 LEFT JOIN template_soal ts ON tp.id_template_soal = ts.id
+                 WHERE tp.uuid = @Uuid
                  """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;

@@ -1,6 +1,6 @@
 # #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
@@ -22,6 +22,17 @@ RUN dotnet publish "./UnpakCbt.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Change ownership of the application files to the non-root user
+RUN chown -R app:app /app
+
+# Set strict permissions for files and directories
+RUN find /app -type f -exec chmod 400 {} \;
+RUN find /app -type d -exec chmod 600 {} \;
+
+# Switch to the non-root user
+USER app
+
 ENTRYPOINT ["dotnet", "UnpakCbt.Api.dll"]
 
 

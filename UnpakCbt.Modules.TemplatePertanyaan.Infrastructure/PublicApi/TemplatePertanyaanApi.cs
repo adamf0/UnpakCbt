@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Linq;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetAllTemplatePertanyaan;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetTemplatePertanyaan;

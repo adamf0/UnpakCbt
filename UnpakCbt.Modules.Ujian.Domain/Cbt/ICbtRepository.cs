@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace UnpakCbt.Modules.Ujian.Domain.Ujian
+﻿namespace UnpakCbt.Modules.Ujian.Domain.Ujian
 {
     public interface ICbtRepository
     {

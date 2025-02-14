@@ -59,7 +59,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "UnpakCbt API",
         Version = "v1"
     });
-    c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
+    //c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
 
     c.OperationFilter<SwaggerFileOperationFilter>();
 });

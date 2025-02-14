@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan;
 using UnpakCbt.Modules.TemplatePertanyaan.Infrastructure.Database;
 

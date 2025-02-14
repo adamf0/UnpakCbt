@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian
+﻿namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian
 {
     public sealed record UjianResponse
     {

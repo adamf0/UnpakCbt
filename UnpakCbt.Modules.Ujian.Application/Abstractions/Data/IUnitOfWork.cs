@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UnpakCbt.Modules.Ujian.Application.Abstractions.Data
+﻿namespace UnpakCbt.Modules.Ujian.Application.Abstractions.Data
 {
     public interface IUnitOfWork
     {

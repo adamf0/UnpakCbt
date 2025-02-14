@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  cbt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cbt
+    environment:
+      - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
+      - Mode=prod
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    depends_on:
+      - seq
+      - counter
+      - minio
+    networks:
+      - minio-sample
+    extra_hosts:
+      - "remote-db:172.16.20.135"
+
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    environment:
+      - ACCEPT_EULA=Y
+    restart: always # Restart jika mati
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    networks:
+      - minio-sample
+
+  counter:
+    container_name: counter
+    image: redis:latest
+    restart: always # Restart jika mati
+    command:
+      - 'redis-server'
+      - '--save 60 10000'
+      - '--appendonly yes'
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker/redis/data:/var/lib/redis
+    networks:
+      - minio-sample
+
+  minio:
+    container_name: minio
+    image: minio/minio:latest
+    restart: always # Restart jika mati
+    command: server --console-address ":9001" /data/
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    environment:
+      - MINIO_ROOT_USER=dev_user
+      - MINIO_ROOT_PASSWORD=dev_password
+    networks:
+      - minio-sample
+    volumes:
+      - minio-storage:/data
+
+volumes:
+  minio-storage:
+
+networks:
+  minio-sample:
+    driver: bridge
