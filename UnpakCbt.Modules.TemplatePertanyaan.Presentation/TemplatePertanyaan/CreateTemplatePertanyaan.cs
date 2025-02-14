@@ -16,7 +16,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
         {
             app.MapPost("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
-                string? jawabanImgPath = null;
+                /*string? jawabanImgPath = null;
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/pertanyaan_img");
 
                 if (!Directory.Exists(uploadsFolder))
@@ -49,13 +49,13 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     }
 
                     jawabanImgPath = "pertanyaan_img/" + safeFileName; // Relative path
-                }
+                }*/
 
                 Result<Guid> result = await sender.Send(new CreateTemplatePertanyaanCommand(
                     request.IdBankSoal,
                     request.Tipe,
-                    request.Pertanyaan,
-                    jawabanImgPath,
+                    null, //request.Pertanyaan,
+                    null, //jawabanImgPath,
                     null,
                     null,
                     "init"
@@ -73,8 +73,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
         {
             [FromForm] public Guid IdBankSoal { get; set; }
             [FromForm] public string Tipe { get; set; }
-            [FromForm] public string? Pertanyaan { get; set; } = null;
-            [FromForm] public IFormFile? Gambar { get; set; } = null;
+            /*[FromForm] public string? Pertanyaan { get; set; } = null;
+            [FromForm] public IFormFile? Gambar { get; set; } = null;*/
         }
     }
 }

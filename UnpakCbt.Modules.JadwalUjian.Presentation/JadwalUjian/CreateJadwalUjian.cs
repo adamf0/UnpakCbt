@@ -14,9 +14,15 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
         {
             app.MapPost("JadwalUjian", async (CreateJadwalUjianRequest request, ISender sender) =>
             {
+                int kouta;
+                if (!int.TryParse(request.Kouta, out kouta))
+                {
+                    kouta = 0;
+                }
+
                 Result<Guid> result = await sender.Send(new CreateJadwalUjianCommand(
                     request.Deskripsi,
-                    int.Parse(request.Kouta),
+                    kouta,
                     request.Tanggal, 
                     request.JamMulai,
                     request.JamAkhir,

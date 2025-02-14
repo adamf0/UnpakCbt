@@ -14,10 +14,16 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
         {
             app.MapPut("JadwalUjian", async (UpdateJadwalUjianRequest request, ISender sender) =>
             {
+                int kouta;
+                if (!int.TryParse(request.Kouta, out kouta))
+                {
+                    kouta = 0;
+                }
+
                 Result result = await sender.Send(new UpdateJadwalUjianCommand(
                     request.Id,
                     request.Deskripsi,
-                    int.Parse(request.Kouta),
+                    kouta,
                     request.Tanggal,
                     request.JamMulai,
                     request.JamAkhir,
