@@ -17,7 +17,11 @@ using Microsoft.Extensions.FileProviders;
 //[::]:5000/swagger/index.html
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
+    loggerConfig.ReadFrom.Configuration(context.Configuration);
+    loggerConfig.WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_SERVER_URL") ?? "https://host.docker.internal:5341");
+});
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers(options =>
@@ -63,6 +67,16 @@ builder.Services.AddSwaggerGen(c =>
 
     c.OperationFilter<SwaggerFileOperationFilter>();
 });
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAllOrigins",
+        configurePolicy: policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});*/
 builder.Services.AddAuthorization();
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -87,8 +101,8 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
     RequestPath = "/uploads"
-}); 
-
+});
+//app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 
@@ -134,7 +148,6 @@ app.Use((context, next) =>
     context.Response.Headers.Remove("X-Powered-By");
     return next();
 });
-
 app.UseAuthorization();
 app.MapControllers();
 
