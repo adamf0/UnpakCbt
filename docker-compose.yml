@@ -9,7 +9,7 @@ services:
     environment:
       - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
       - Mode=prod
-      - SEQ_SERVER_URL=https://seb.unpak.ac.id
+      - SEQ_SERVER_URL=https://seb.unpak.ac.id/monitoring
     ports:
       - "5000:8080"
       - "5001:8081"
