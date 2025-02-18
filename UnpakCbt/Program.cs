@@ -13,6 +13,7 @@ using System.IO.Compression;
 using UnpakCbt.Api;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 //[::]:5000/swagger/index.html
 
@@ -63,7 +64,9 @@ builder.Services.AddSwaggerGen(c =>
         Title = "UnpakCbt API",
         Version = "v1"
     });
-    //c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
+    if (Environment.GetEnvironmentVariable("Mode")=="prod") {
+        c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
+    }
 
     c.OperationFilter<SwaggerFileOperationFilter>();
 });
