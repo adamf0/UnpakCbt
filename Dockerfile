@@ -23,15 +23,15 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Change ownership of the application files to the non-root user
-RUN chown -R app:app /app
+# # Change ownership of the application files to the non-root user
+# RUN chown -R app:app /app
 
-# Set strict permissions for files and directories
-RUN find /app -type f -exec chmod 400 {} \;
-RUN find /app -type d -exec chmod 600 {} \;
+# # Set strict permissions for files and directories
+# RUN find /app -type f -exec chmod 400 {} \;
+# RUN find /app -type d -exec chmod 600 {} \;
 
-# Switch to the non-root user
-USER app
+# # Switch to the non-root user
+# USER app
 
 ENTRYPOINT ["dotnet", "UnpakCbt.Api.dll"]
 
