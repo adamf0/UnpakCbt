@@ -1,7 +1,6 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Logging;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
@@ -12,7 +11,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
     Domain.Ujian.ICounterRepository counterRepository,
     IUjianRepository ujianRepository,
     IUnitOfWork unitOfWork,
-    IJadwalUjianApi jadwalUjianApi)
+    IJadwalUjianApi jadwalUjianApi,
+    ILogger<CancelUjianCommand> logger)
     : ICommandHandler<CancelUjianCommand>
     {
         public async Task<Result> Handle(CancelUjianCommand request, CancellationToken cancellationToken)
@@ -20,22 +20,27 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
             Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetAsync(request.uuid, cancellationToken);
             if (existingUjian is null)
             {
-                Result.Failure(UjianErrors.NotFound(request.uuid));
+                logger.LogError($"Ujian dengan referensi Uuid {request.uuid} tidak ditemukan");
+                return Result.Failure(UjianErrors.NotFound(request.uuid));
             }
 
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetByIdAsync(existingUjian?.IdJadwalUjian, cancellationToken);
             if (jadwalUjian is null)
             {
+                logger.LogError($"JadwalUjian dengan referensi id {existingUjian?.IdJadwalUjian} tidak ditemukan");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamNotFound(Guid.Parse(jadwalUjian!.Uuid)));
             }
 
             if (existingUjian?.Status == "cancel") {
+                logger.LogError($"status Ujian dengan referensi Uuid {request?.uuid} sudah cancel");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
             }
             if (existingUjian?.Status == "done") {
+                logger.LogError($"status Ujian dengan referensi Uuid {request?.uuid} sudah done");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
             }
             if (existingUjian?.Status == "start") {
+                logger.LogError($"status Ujian dengan referensi Uuid {request?.uuid} sudah start");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
             }
 
@@ -45,76 +50,22 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
 
             if (prevUjian.IsFailure)
             {
+                logger.LogError("domain bisnis Ujian tidak sesuai aturan");
                 return Result.Failure<Guid>(prevUjian.Error);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            logger.LogInformation($"berhasil cancel Ujian dengan referensi Uuid {request.uuid}");
+
             string oldKey = "counter_" + jadwalUjian.Uuid;
             int prevCounter = await counterRepository.GetCounterAsync(oldKey);
             if (prevCounter > 0)
             {
                 await counterRepository.DecrementCounterAsync(oldKey, null);
+                logger.LogInformation($"berhasil decrement key {oldKey}");
             }
 
             return Result.Success();
-        }
-
-        private Result? checkData(Guid id, JadwalUjianResponse? jadwalUjian)
-        {
-            if (jadwalUjian is null)
-            {
-                return Result.Failure<Guid>(JadwalUjianErrors.NotFound(id));
-            }
-
-            return null;
-        }
-        private Result? checkDataDate(JadwalUjianResponse? jadwalUjian)
-        {
-            if (string.IsNullOrWhiteSpace(jadwalUjian.Tanggal) ||
-                    string.IsNullOrWhiteSpace(jadwalUjian.JamMulai) ||
-                    string.IsNullOrWhiteSpace(jadwalUjian.JamAkhir))
-            {
-                return Result.Failure<Guid>(JadwalUjianErrors.EmptyDataScheduleFormat());
-            }
-
-            return null;
-        }
-        private Result? checkFormatAndRangeDate(JadwalUjianResponse? jadwalUjian)
-        {
-            if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamMulai, "yyyy-MM-dd HH:mm",
-                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var mulai))
-            {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("start date"));
-            }
-
-            if (!DateTime.TryParseExact(jadwalUjian.Tanggal + " " + jadwalUjian.JamAkhir, "yyyy-MM-dd HH:mm",
-                CultureInfo.InvariantCulture, DateTimeStyles.None, out var akhir))
-            {
-                return Result.Failure<Guid>(UjianErrors.InvalidScheduleFormat("end date"));
-            }
-
-            var sekarang = DateTime.UtcNow;
-            if (mulai > akhir)
-            {
-                return Result.Failure<Guid>(UjianErrors.InvalidRangeDateTime());
-            }
-
-            if (sekarang >= mulai && sekarang <= akhir)
-            {
-                return Result.Failure<Guid>(UjianErrors.OutRange(mulai.ToString("yyyy-MM-dd HH:mm"), akhir.ToString("yyyy-MM-dd HH:mm")));
-            }
-
-            return null;
-        }
-        private static TimeSpan GetTimeToExpire(string Tanggal, string JamMulai)
-        {
-            return TryParseDateTime(Tanggal, JamMulai, out var mulai)
-                ? mulai - DateTime.UtcNow
-                : TimeSpan.Zero;
-        }
-        private static bool TryParseDateTime(string tanggal, string jam, out DateTime result)
-        {
-            return DateTime.TryParseExact($"{tanggal} {jam}", "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out result);
         }
     }
 }

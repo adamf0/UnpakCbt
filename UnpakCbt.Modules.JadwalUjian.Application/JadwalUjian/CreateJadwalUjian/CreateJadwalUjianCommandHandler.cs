@@ -5,6 +5,7 @@ using UnpakCbt.Modules.JadwalUjian.Application.Abstractions.Data;
 using UnpakCbt.Modules.BankSoal.PublicApi;
 using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
 {
@@ -12,7 +13,8 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
     IJadwalUjianRepository bankSoalRepository,
     ICounterRepository counterRepository,
     IUnitOfWork unitOfWork,
-    IBankSoalApi bankSoalApi)
+    IBankSoalApi bankSoalApi,
+    ILogger<CreateJadwalUjianCommand> logger)
     : ICommandHandler<CreateJadwalUjianCommand, Guid>
     {
         public async Task<Result<Guid>> Handle(CreateJadwalUjianCommand request, CancellationToken cancellationToken)
@@ -21,6 +23,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
 
             if (bankSoal is null)
             {
+                logger.LogError($"BankSoal dengan referensi id {request.IdBankSoal} tidak ditemukan");
                 return Result.Failure<Guid>(BankSoalErrors.NotFound(request.IdBankSoal));
             }
 
@@ -35,6 +38,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
 
             if (result.IsFailure)
             {
+                logger.LogError("domain bisnis JadwalUjian tidak sesuai aturan");
                 return Result.Failure<Guid>(result.Error);
             }
 
@@ -49,9 +53,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
 
             bankSoalRepository.Insert(result.Value);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            logger.LogInformation($"berhasil simpan JadwalUjian dengan hasil Uuid {result.Value.Uuid}");
 
             string key = "counter_" + result.Value.Uuid.ToString();
             await counterRepository.ResetCounterAsync(key, 0, timeToExpire);
+            logger.LogInformation($"berhasil setup {key}");
 
             return result.Value.Uuid;
         }

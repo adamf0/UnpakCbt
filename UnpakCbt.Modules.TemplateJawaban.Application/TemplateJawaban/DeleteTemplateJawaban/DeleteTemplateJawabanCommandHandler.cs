@@ -1,13 +1,16 @@
-﻿using UnpakCbt.Common.Application.Messaging;
+﻿using Microsoft.Extensions.Logging;
+using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.TemplateJawaban.Application.Abstractions.Data;
+using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTemplateJawaban;
 using UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTemplateJawaban
 {
     internal sealed class DeleteTemplateJawabanCommandHandler(
     ITemplateJawabanRepository templateJawabanRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    ILogger<DeleteTemplateJawabanCommand> logger)
     : ICommandHandler<DeleteTemplateJawabanCommand>
     {
         public async Task<Result> Handle(DeleteTemplateJawabanCommand request, CancellationToken cancellationToken)
@@ -16,6 +19,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTem
 
             if (existingTemplateJawaban is null)
             {
+                logger.LogError($"TemplateJawaban dengan referensi Uuid {request.uuid} tidak ditemukan");
                 return Result.Failure(TemplateJawabanErrors.NotFound(request.uuid));
             }
 
@@ -24,14 +28,16 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTem
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
                 filePath = Path.Combine(uploadsFolder, existingTemplateJawaban.JawabanImg);
-
+                logger.LogInformation($"setup path file {filePath}");
             }
             
             await templateJawabanRepository.DeleteAsync(existingTemplateJawaban);
+            logger.LogInformation($"berhasil hapus TemplateJawaban dengan referensi Uuid {request.uuid}");
 
             if (filePath != null && File.Exists(filePath))
             {
                 File.Delete(filePath);
+                logger.LogInformation($"berhasil hapus file {filePath}");
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);

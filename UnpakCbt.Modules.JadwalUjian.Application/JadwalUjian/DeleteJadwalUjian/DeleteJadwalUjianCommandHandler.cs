@@ -7,13 +7,16 @@ using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.Application.Abstractions.Data;
+using Microsoft.Extensions.Logging;
+using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian;
 
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
 {
     internal sealed class DeleteJadwalUjianCommandHandler(
     ICounterRepository counterRepository,
     IJadwalUjianRepository jadwalUjianRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    ILogger<DeleteJadwalUjianCommand> logger)
     : ICommandHandler<DeleteJadwalUjianCommand>
     {
         public async Task<Result> Handle(DeleteJadwalUjianCommand request, CancellationToken cancellationToken)
@@ -22,14 +25,17 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
 
             if (existingJadwalUjian is null)
             {
+                logger.LogError($"JadwalUjian dengan referensi Uuid {request.uuid} tidak ditemukan");
                 return Result.Failure(JadwalUjianErrors.NotFound(request.uuid));
             }
 
             await jadwalUjianRepository.DeleteAsync(existingJadwalUjian!);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+            logger.LogInformation($"berhasil hapus JadwalUjian dengan referensi Uuid {request.uuid}");
+
             string key = "counter_" + request.uuid.ToString();
             await counterRepository.DeleteKeyAsync(key);
+            logger.LogInformation($"berhasil hapus {key}");
 
             return Result.Success();
         }

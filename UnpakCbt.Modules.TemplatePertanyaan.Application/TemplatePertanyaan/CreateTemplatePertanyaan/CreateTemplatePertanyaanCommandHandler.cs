@@ -1,4 +1,5 @@
-﻿using UnpakCbt.Common.Application.Messaging;
+﻿using Microsoft.Extensions.Logging;
+using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
 using UnpakCbt.Modules.BankSoal.PublicApi;
@@ -13,7 +14,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
     ITemplatePertanyaanRepository templatePertanyaanRepository,
     IUnitOfWork unitOfWork,
     IBankSoalApi bankSoalApi,
-    ITemplateJawabanApi templateJawabanApi)
+    ITemplateJawabanApi templateJawabanApi,
+    ILogger<CreateTemplatePertanyaanCommand> logger)
     : ICommandHandler<CreateTemplatePertanyaanCommand, Guid>
     {
         public async Task<Result<Guid>> Handle(CreateTemplatePertanyaanCommand request, CancellationToken cancellationToken)
@@ -22,6 +24,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
 
             if (bankSoal is null)
             {
+                logger.LogError($"BankSoal dengan referensi Uuid {request.IdBankSoal} tidak ditemukan");
                 return Result.Failure<Guid>(BankSoalErrors.NotFound(request.IdBankSoal));
             }
 
@@ -32,6 +35,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
 
                 if (templateJawaban is null)
                 {
+                    logger.LogError($"TemplateJawaban dengan referensi Uuid {request.Jawaban} tidak ditemukan");
                     return Result.Failure<Guid>(TemplateJawabanErrors.NotFound(request.Jawaban ?? Guid.Empty));
                 }
 
@@ -50,12 +54,15 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
 
             if (result.IsFailure)
             {
+                logger.LogError("domain bisnis TemplatePertanyaan tidak sesuai aturan");
                 return Result.Failure<Guid>(result.Error);
             }
 
             templatePertanyaanRepository.Insert(result.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            logger.LogInformation($"berhasil simpan TemplatePertanyaan dengan hasil Uuid {result.Value.Uuid}");
+
 
             return result.Value.Uuid;
         }

@@ -1,4 +1,5 @@
-﻿using UnpakCbt.Common.Application.Messaging;
+﻿using Microsoft.Extensions.Logging;
+using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.TemplateJawaban.Application.Abstractions.Data;
 using UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban;
@@ -10,7 +11,8 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTem
     internal sealed class CreateTemplateJawabanCommandHandler(
     ITemplateJawabanRepository templateJawabanRepository,
     IUnitOfWork unitOfWork,
-    ITemplatePertanyaanApi templatePertanyaanApi)
+    ITemplatePertanyaanApi templatePertanyaanApi,
+    ILogger<CreateTemplateJawabanCommand> logger)
     : ICommandHandler<CreateTemplateJawabanCommand, Guid>
     {
         public async Task<Result<Guid>> Handle(CreateTemplateJawabanCommand request, CancellationToken cancellationToken)
@@ -19,6 +21,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTem
 
             if (templatePertanyaan is null)
             {
+                logger.LogError($"TemplatePertanyaan dengan referensi Uuid {request.IdTemplateSoal} tidak ditemukan");
                 return Result.Failure<Guid>(TemplatePertanyaanErrors.NotFound(request.IdTemplateSoal));
             }
 
@@ -30,12 +33,14 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTem
 
             if (result.IsFailure)
             {
+                logger.LogError("domain bisnis TemplateJawaban tidak sesuai aturan");
                 return Result.Failure<Guid>(result.Error);
             }
 
             templateJawabanRepository.Insert(result.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            logger.LogInformation($"berhasil simpan TemplateJawaban dengan hasil uuid {result.Value.Uuid}");
 
             return result.Value.Uuid;
         }

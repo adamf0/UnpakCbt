@@ -1,4 +1,5 @@
-﻿using UnpakCbt.Common.Application.Messaging;
+﻿using Microsoft.Extensions.Logging;
+using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
 using UnpakCbt.Modules.BankSoal.PublicApi;
@@ -13,7 +14,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
     ITemplatePertanyaanRepository templatePertanyaanRepository,
     IUnitOfWork unitOfWork,
     IBankSoalApi bankSoalApi,
-    ITemplateJawabanApi templateJawabanApi)
+    ITemplateJawabanApi templateJawabanApi,
+    ILogger<UpdateTemplatePertanyaanCommand> logger)
     : ICommandHandler<UpdateTemplatePertanyaanCommand>
     {
         public async Task<Result> Handle(UpdateTemplatePertanyaanCommand request, CancellationToken cancellationToken)
@@ -22,6 +24,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
 
             if (bankSoal is null)
             {
+                logger.LogError($"BankSoal dengan referensi Uuid {request.IdBankSoal} tidak ditemukan");
                 return Result.Failure<Guid>(BankSoalErrors.NotFound(request.IdBankSoal));
             }
 
@@ -32,6 +35,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
 
                 if (templateJawaban is null)
                 {
+                    logger.LogError($"TemplateJawaban dengan referensi Uuid {request.Jawaban} tidak ditemukan");
                     return Result.Failure<Guid>(TemplateJawabanErrors.NotFound(request.Jawaban ?? Guid.Empty));
                 }
 
@@ -42,7 +46,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
 
             if (existingTemplatePertanyaan is null)
             {
-                Result.Failure(TemplatePertanyaanErrors.NotFound(request.Uuid));
+                logger.LogError($"TemplatePertanyan dengan referensi uuid {request.Uuid} tidak ditemukan");
+                return Result.Failure(TemplatePertanyaanErrors.NotFound(request.Uuid));
             }
 
             Result<Domain.TemplatePertanyaan.TemplatePertanyaan> templatePertanyaan1 = Domain.TemplatePertanyaan.TemplatePertanyaan.Update(existingTemplatePertanyaan!)
@@ -57,10 +62,12 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
 
             if (templatePertanyaan1.IsFailure)
             {
+                logger.LogError("domain bisnis TemplatePertanyan tidak sesuai aturan");
                 return Result.Failure<Guid>(templatePertanyaan1.Error);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            logger.LogInformation($"berhasil update TemplatePertanyaan dengan referensi Uuid {request.Uuid}");
 
             return Result.Success();
         }
