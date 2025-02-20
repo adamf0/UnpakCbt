@@ -37,6 +37,9 @@ namespace UnpakCbt.Modules.BankSoal.Infrastructure.Database
 
                 entity.Property(e => e.Rule)
                       .HasColumnName("rule");
+
+                entity.Property(e => e.Status)
+                      .HasColumnName("status");
             });
         }
     }

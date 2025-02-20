@@ -53,6 +53,20 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
                 _akurasiPenelitian.Rule = rule;
                 return this;
             }
+
+            public BankSoalBuilder ChangeStatus(string? status = null)
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<BankSoal>(BankSoalErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.Status = status;
+                return this;
+            }
         }
     }
 }

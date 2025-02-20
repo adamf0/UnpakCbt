@@ -21,7 +21,8 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal
                      id as Id,
                      CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
                      judul as Judul,
-                     rule AS Rule 
+                     rule AS Rule,
+                     status AS Status 
                  FROM bank_soal 
                  WHERE uuid = @Uuid
                  """;

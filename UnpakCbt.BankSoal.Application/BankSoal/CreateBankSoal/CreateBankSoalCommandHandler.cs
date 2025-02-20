@@ -14,7 +14,8 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.CreateBankSoal
         {
             Result<Domain.BankSoal.BankSoal> result = Domain.BankSoal.BankSoal.Create(
                 request.Judul,
-                request.Rule
+                request.Rule,
+                "non-active"
             );
 
             if (result.IsFailure)

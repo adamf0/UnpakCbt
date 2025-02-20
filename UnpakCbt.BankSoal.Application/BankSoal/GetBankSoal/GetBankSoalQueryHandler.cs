@@ -20,7 +20,9 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal
                  SELECT 
                      CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
                      judul as Judul,
-                     rule AS Rule 
+                     rule AS Rule,
+                     status AS Status,
+                     (select count(*) from jadwal_ujian where jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung 
                  FROM bank_soal 
                  WHERE uuid = @Uuid
                  """;

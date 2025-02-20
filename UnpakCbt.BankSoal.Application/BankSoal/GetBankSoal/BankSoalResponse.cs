@@ -8,5 +8,7 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal
         public string Judul { get; set; } = default!;
         [Column(TypeName = "TEXT")]
         public string Rule { get; set; } = "{}";
+        public string Status { get; set; }
+        public int JadwalTerhubung { get; set; }
     }
 }

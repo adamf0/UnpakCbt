@@ -16,12 +16,14 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
 
         public string Judul { get; private set; } = null!;
         public string? Rule { get; private set; } = null;
-        
+        public string? Status { get; private set; } = null;
+
         public static BankSoalBuilder Update(BankSoal prev) => new BankSoalBuilder(prev);
 
         public static Result<BankSoal> Create(
         string Judul,
-        string? Rule
+        string? Rule,
+        string? Status
         )
         {
             if (string.IsNullOrWhiteSpace(Judul)) {
@@ -32,7 +34,8 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
             {
                 Uuid = Guid.NewGuid(),
                 Judul = Judul,
-                Rule = Rule
+                Rule = Rule,
+                Status = Status
             };
 
             asset.Raise(new BankSoalCreatedDomainEvent(asset.Uuid));

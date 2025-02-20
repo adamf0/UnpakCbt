@@ -8,6 +8,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
         {
             CreateBankSoal.MapEndpoint(app);
             UpdateBankSoal.MapEndpoint(app);
+            StatusBankSoal.MapEndpoint(app);
             DeleteBankSoal.MapEndpoint(app);
             GetBankSoal.MapEndpoint(app);
             GetAllBankSoal.MapEndpoint(app);
