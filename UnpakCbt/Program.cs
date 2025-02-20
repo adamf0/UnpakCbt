@@ -64,9 +64,9 @@ builder.Services.AddSwaggerGen(c =>
         Title = "UnpakCbt API",
         Version = "v1"
     });
-    if (Environment.GetEnvironmentVariable("Mode")=="prod") {
+    //if (Environment.GetEnvironmentVariable("Mode")=="prod") {
         c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
-    }
+    //}
 
     c.OperationFilter<SwaggerFileOperationFilter>();
 });
