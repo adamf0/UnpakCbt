@@ -11,6 +11,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
             DeleteTemplatePertanyaan.MapEndpoint(app);
             GetTemplatePertanyaan.MapEndpoint(app);
             GetAllTemplatePertanyaan.MapEndpoint(app);
+            GetAllTemplatePertanyaanByBankSoal.MapEndpoint(app);
         }
     }
 }
