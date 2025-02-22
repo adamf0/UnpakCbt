@@ -29,7 +29,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
                  FROM template_soal ts 
                  LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
                  LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id 
-                 WHERE uuid = @Uuid
+                 WHERE ts.uuid = @Uuid
                  """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;

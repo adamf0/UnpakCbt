@@ -13,7 +13,6 @@ using System.IO.Compression;
 using UnpakCbt.Api;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 //[::]:5000/swagger/index.html
 

@@ -16,4 +16,12 @@
 		<ProjectReference Include="..\UnpakCbt.Common.Presentation\UnpakCbt.Common.Presentation.csproj" />
 	</ItemGroup>
 
+	<Target Name="DisableNullableForVisualStudioBuild"
+        BeforeTargets="CoreCompile"
+        Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+		<PropertyGroup>
+			<Nullable>disable</Nullable>
+		</PropertyGroup>
+	</Target>
+	
 </Project>
