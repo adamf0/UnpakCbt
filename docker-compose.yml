@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
+    image: cbt:0.1.0
     environment:
       - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
       - Mode=prod
