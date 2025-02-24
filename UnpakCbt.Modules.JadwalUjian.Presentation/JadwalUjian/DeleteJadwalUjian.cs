@@ -19,6 +19,10 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
                 }
+                if (!SecurityCheck.isValidGuid(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
 
                 Result result = await sender.Send(
                     new DeleteJadwalUjianCommand(Guid.Parse(id))

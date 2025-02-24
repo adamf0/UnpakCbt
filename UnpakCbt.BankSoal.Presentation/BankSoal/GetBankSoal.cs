@@ -19,6 +19,10 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
                 }
+                if (!SecurityCheck.isValidGuid(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
 
                 Result<BankSoalResponse> result = await sender.Send(new GetBankSoalQuery(Guid.Parse(id)));
 

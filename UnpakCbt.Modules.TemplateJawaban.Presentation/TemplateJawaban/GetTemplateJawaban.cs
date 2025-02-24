@@ -19,6 +19,10 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
                 }
+                if (!SecurityCheck.isValidGuid(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
 
                 Result<TemplateJawabanResponse> result = await sender.Send(new GetTemplateJawabanQuery(Guid.Parse(id)));
 

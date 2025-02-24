@@ -7,6 +7,7 @@ using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
 using UnpakCbt.Common.Presentation.Security;
+using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.UpdateTemplatePertanyaan;
 using static UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan.CreateTemplatePertanyaan;
 
@@ -29,6 +30,19 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 if (!SecurityCheck.NotContainInvalidCharacters(request.Jawaban))
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban mengandung karakter berbahaya"))));
+                }
+
+                if (!SecurityCheck.isValidGuid(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
+                if (!SecurityCheck.isValidGuid(request.IdBankSoal))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format"))));
+                }
+                if (!SecurityCheck.isValidGuid(request.Jawaban))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban harus Guid format"))));
                 }
 
                 string? jawabanImgPath = null;

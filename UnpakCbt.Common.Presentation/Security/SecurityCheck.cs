@@ -17,10 +17,18 @@ namespace UnpakCbt.Common.Presentation.Security
             "[𝟘𝟢🄀Ｏ⓪🯰𝟙𝟣🄁𝟏⓵１𝟚𝟤🄂𝟐⓶２𝟛𝟥🄃𝟑⓷３𝟜𝟦🄄𝟒⓸４𝟝𝟧🄅𝟓⓹５𝟞𝟨🄆𝟔⓺６𝟟𝟩🄇𝟕⓻７𝟠𝟪🄈𝟖⓼８𝟡𝟫🄉𝟗⓽９˗‐‑‒–—―а𝖆𝒂𝓪𝗮𝚊]",
             RegexOptions.Compiled);
 
+        private static readonly Regex GuidRegex = new Regex(
+        "^[{(]?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}[)}]?$",
+        RegexOptions.Compiled);
+
         public static bool NotContainInvalidCharacters(string guid)
         {
             string guidStr = guid.ToString();
             return !InvalidCharactersRegex.IsMatch(guidStr) && !HomoglyphRegex.IsMatch(guidStr);
+        }
+
+        public static bool isValidGuid(string guid) {
+            return GuidRegex.IsMatch(guid);
         }
     }
 }

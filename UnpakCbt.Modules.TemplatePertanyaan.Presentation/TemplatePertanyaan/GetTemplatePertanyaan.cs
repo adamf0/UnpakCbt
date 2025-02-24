@@ -19,6 +19,10 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya"))));
                 }
+                if (!SecurityCheck.isValidGuid(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
 
                 Result<TemplatePertanyaanResponse> result = await sender.Send(new GetTemplatePertanyaanQuery(Guid.Parse(id)));
 

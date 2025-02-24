@@ -27,6 +27,20 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJawabanBenar mengandung karakter berbahaya"))));
                 }
+
+                if (!SecurityCheck.isValidGuid(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
+                if (!SecurityCheck.isValidGuid(request.IdJadwalUjian))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian harus Guid format"))));
+                }
+                if (!SecurityCheck.isValidGuid(request.IdJawabanBenar))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJawabanBenar harus Guid format"))));
+                }
+
                 Result result = await sender.Send(new UpdateCbtCommand(
                     Guid.Parse(request.Id),
                     request.NoReg,

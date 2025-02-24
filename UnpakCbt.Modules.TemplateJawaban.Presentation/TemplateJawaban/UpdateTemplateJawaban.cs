@@ -26,6 +26,15 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal mengandung karakter berbahaya"))));
                 }
 
+                if (!SecurityCheck.isValidGuid(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                }
+                if (!SecurityCheck.isValidGuid(request.IdTemplateSoal))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal harus Guid format"))));
+                }
+
                 string? jawabanImgPath = null;
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
 

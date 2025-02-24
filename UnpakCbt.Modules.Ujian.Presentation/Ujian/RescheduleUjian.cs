@@ -24,6 +24,15 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian mengandung karakter berbahaya"))));
                 }
 
+                if (!SecurityCheck.isValidGuid(request.PrevIdJadwalUjian))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "PrevIdJadwalUjian harus Guid format"))));
+                }
+                if (!SecurityCheck.isValidGuid(request.NewIdJadwalUjian))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian harus Guid format"))));
+                }
+
                 Result<Guid> result = await sender.Send(new RescheduleUjianCommand(
                     request.NoReg,
                     Guid.Parse(request.PrevIdJadwalUjian),
