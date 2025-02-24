@@ -10,7 +10,7 @@ services:
     security_opt:
       - "no-new-privileges:true"
     environment:
-      - ConnectionStrings__Database=server=host.docker.internal;port=3306;user=root;password=;database=unpak_cbt;
+      - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
       - Mode=prod
       - SEQ_SERVER_URL=https://seb.unpak.ac.id/monitoring
     ports:
