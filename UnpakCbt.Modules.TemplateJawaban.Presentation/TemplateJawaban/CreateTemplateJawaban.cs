@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTemplateJawaban;
 using static UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban.UpdateTemplateJawaban;
 
@@ -17,6 +18,11 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
         {
             app.MapPost("TemplateJawaban", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplateJawabanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.IdTemplateSoal))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal mengandung karakter berbahaya"))));
+                }
+
                 string? jawabanImgPath = null;
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
 
@@ -53,7 +59,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 }
 
                 Result<Guid> result = await sender.Send(new CreateTemplateJawabanCommand(
-                    request.IdTemplateSoal,
+                    Guid.Parse(request.IdTemplateSoal),
                     request.JawabanText,
                     jawabanImgPath
                     )
@@ -67,7 +73,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 
         internal sealed class CreateTemplateJawabanRequest
         {
-            [FromForm] public Guid IdTemplateSoal { get; set; }
+            [FromForm] public string IdTemplateSoal { get; set; }
             [FromForm] public string? JawabanText { get; set; }
             [FromForm] public IFormFile? JawabanImg { get; set; }
         }

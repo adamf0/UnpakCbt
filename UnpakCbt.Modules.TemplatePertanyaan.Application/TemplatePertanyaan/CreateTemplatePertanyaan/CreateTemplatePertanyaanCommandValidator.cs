@@ -1,13 +1,26 @@
 ﻿using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.CreateTemplatePertanyaan
 {
     public sealed class CreateTemplatePertanyaanCommandValidator : AbstractValidator<CreateTemplatePertanyaanCommand>
     {
+        private static readonly Regex GuidV4Regex = new(
+            @"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static bool BeValidGuidV4(Guid guid)
+        {
+            return GuidV4Regex.IsMatch(guid.ToString());
+        }
+
         public CreateTemplatePertanyaanCommandValidator() 
         {
             RuleFor(c => c.IdBankSoal)
-                .NotEmpty().WithMessage("'IdBankSoal' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'IdBankSoal' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'IdBankSoal' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.Tipe)
                 .NotEmpty().WithMessage("'Tipe' tidak boleh kosong.");

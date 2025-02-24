@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.UpdateTemplateJawaban;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
@@ -16,6 +17,15 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
         {
             app.MapPut("TemplateJawaban", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] UpdateTemplateJawabanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+                if (!SecurityCheck.NotContainInvalidCharacters(request.IdTemplateSoal))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal mengandung karakter berbahaya"))));
+                }
+
                 string? jawabanImgPath = null;
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
 
@@ -52,8 +62,8 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 }
 
                 Result result = await sender.Send(new UpdateTemplateJawabanCommand(
-                     request.Id,
-                     request.IdTemplateSoal,
+                     Guid.Parse(request.Id),
+                     Guid.Parse(request.IdTemplateSoal),
                      request.JawabanText,
                      jawabanImgPath
                  ));
@@ -66,8 +76,8 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 
         internal sealed class UpdateTemplateJawabanRequest
         {
-            [FromForm] public Guid Id { get; set; }
-            [FromForm] public Guid IdTemplateSoal { get; set; }
+            [FromForm] public string Id { get; set; }
+            [FromForm] public string IdTemplateSoal { get; set; }
             [FromForm] public string? JawabanText { get; set; }
             [FromForm] public IFormFile? JawabanImg { get; set; }
         }

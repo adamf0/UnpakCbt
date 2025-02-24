@@ -1,14 +1,24 @@
 ﻿using FluentValidation;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
 {
     public sealed class UpdateJadwalUjianCommandValidator : AbstractValidator<UpdateJadwalUjianCommand>
     {
+        private static readonly Regex GuidV4Regex = new(
+            @"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static bool BeValidGuidV4(Guid guid)
+        {
+            return GuidV4Regex.IsMatch(guid.ToString());
+        }
         public UpdateJadwalUjianCommandValidator() 
         {
             RuleFor(c => c.Uuid)
-                .NotEmpty().WithMessage("'Uuid' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'Uuid' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'Uuid' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.Kuota)
                 .NotEmpty().WithMessage("'Kuota' tidak boleh kosong.")
@@ -29,7 +39,8 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                 .GreaterThan(c => c.JamMulai).WithMessage("'JamAkhir' harus lebih besar dari 'JamMulai'.");
 
             RuleFor(c => c.IdBankSoal)
-                .NotEmpty().WithMessage("'IdBankSoal' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'IdBankSoal' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'IdBankSoal' harus dalam format UUID v4 yang valid.");
         }
 
         private bool BeValidDate(string tanggal)

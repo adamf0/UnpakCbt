@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.BankSoal.Application.BankSoal.UpdateBankSoal;
 
 namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
@@ -14,8 +15,13 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
         {
             app.MapPut("BankSoal", async (UpdateBankSoalRequest request, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+
                 Result result = await sender.Send(new UpdateBankSoalCommand(
-                    request.Id,
+                    Guid.Parse(request.Id),
                     request.Judul,
                     request.Rule
                     )
@@ -27,7 +33,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
 
         internal sealed class UpdateBankSoalRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
             public string Judul { get; set; }
 
             public string Rule { get; set; }

@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using System.Text.RegularExpressions;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.BankSoal.Application.BankSoal.StatusBankSoal;
 
 namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
@@ -14,8 +16,13 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
         {
             app.MapPut("BankSoal/status", async (StatusBankSoalRequest request, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+
                 Result result = await sender.Send(new StatusBankSoalCommand(
-                    request.Id,
+                    Guid.Parse(request.Id),
                     request.Status
                     )
                 );
@@ -26,7 +33,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
 
         internal sealed class StatusBankSoalRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
             public string Status { get; set; }
         }
     }

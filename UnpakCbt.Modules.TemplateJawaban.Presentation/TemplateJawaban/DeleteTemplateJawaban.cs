@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTemplateJawaban;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
@@ -12,10 +13,15 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
     {
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapDelete("TemplateJawaban/{id}", async (Guid id, ISender sender) =>
+            app.MapDelete("TemplateJawaban/{id}", async (string id, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+
                 Result result = await sender.Send(
-                    new DeleteTemplateJawabanCommand(id)
+                    new DeleteTemplateJawabanCommand(Guid.Parse(id))
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);

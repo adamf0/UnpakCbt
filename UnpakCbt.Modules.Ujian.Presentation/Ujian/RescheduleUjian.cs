@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian;
 
 namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
@@ -14,10 +15,19 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapPost("Ujian/Reschedule", async (RescheduleUjianRequest request, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.PrevIdJadwalUjian))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "PrevIdJadwalUjian mengandung karakter berbahaya"))));
+                }
+                if (!SecurityCheck.NotContainInvalidCharacters(request.NewIdJadwalUjian))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian mengandung karakter berbahaya"))));
+                }
+
                 Result<Guid> result = await sender.Send(new RescheduleUjianCommand(
                     request.NoReg,
-                    request.PrevIdJadwalUjian,
-                    request.NewIdJadwalUjian
+                    Guid.Parse(request.PrevIdJadwalUjian),
+                    Guid.Parse(request.NewIdJadwalUjian)
                     )
                 );
 
@@ -29,8 +39,8 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         internal sealed class RescheduleUjianRequest
         {            
             public string NoReg { get; set; }
-            public Guid PrevIdJadwalUjian { get; set; }
-            public Guid NewIdJadwalUjian { get; set; }
+            public string PrevIdJadwalUjian { get; set; }
+            public string NewIdJadwalUjian { get; set; }
         }
     }
 }

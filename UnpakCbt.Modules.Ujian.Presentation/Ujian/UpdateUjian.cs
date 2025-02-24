@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian;
 
 namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
@@ -14,10 +15,19 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapPut("Ujian", async (UpdateUjianRequest request, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+                if (!SecurityCheck.NotContainInvalidCharacters(request.IdJadwalUjian))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya"))));
+                }
+
                 Result result = await sender.Send(new UpdateUjianCommand(
-                    request.Id,
+                    Guid.Parse(request.Id),
                     request.NoReg,
-                    request.IdJadwalUjian,
+                    Guid.Parse(request.IdJadwalUjian),
                     request.Status
                     )
                 );
@@ -28,9 +38,9 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
         internal sealed class UpdateUjianRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
             public string NoReg { get; set; }
-            public Guid IdJadwalUjian { get; set; }
+            public string IdJadwalUjian { get; set; }
             public string Status { get; set; }
         }
     }

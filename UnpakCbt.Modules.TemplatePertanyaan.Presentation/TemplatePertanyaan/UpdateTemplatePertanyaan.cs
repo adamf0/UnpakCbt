@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.UpdateTemplatePertanyaan;
 using static UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan.CreateTemplatePertanyaan;
 
@@ -17,6 +18,19 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
         {
             app.MapPut("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] UpdateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+                if (!SecurityCheck.NotContainInvalidCharacters(request.IdBankSoal))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya"))));
+                }
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Jawaban))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban mengandung karakter berbahaya"))));
+                }
+
                 string? jawabanImgPath = null;
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/pertanyaan_img");
 
@@ -53,12 +67,12 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 }
 
                 Result result = await sender.Send(new UpdateTemplatePertanyaanCommand(
-                    request.Id,
-                    request.IdBankSoal,
+                    Guid.Parse(request.Id),
+                    Guid.Parse(request.IdBankSoal),
                     request.Tipe,
                     request.Pertanyaan,
                     jawabanImgPath,
-                    request.Jawaban,
+                    Guid.Parse(request.Jawaban),
                     int.Parse(request.Bobot),
                     request.State
                     )
@@ -72,12 +86,12 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 
         internal sealed class UpdateTemplatePertanyaanRequest
         {
-            [FromForm] public Guid Id { get; set; }
-            [FromForm] public Guid IdBankSoal { get; set; }
+            [FromForm] public string Id { get; set; }
+            [FromForm] public string IdBankSoal { get; set; }
             [FromForm] public string Tipe { get; set; }
             [FromForm] public string? Pertanyaan { get; set; } = null;
             [FromForm] public IFormFile? Gambar { get; set; } = null;
-            [FromForm] public Guid Jawaban { get; set; }
+            [FromForm] public string Jawaban { get; set; }
             [FromForm] public string Bobot { get; set; }
             [FromForm] public string? State { get; set; } = null;
         }

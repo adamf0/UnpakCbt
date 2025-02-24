@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.CreateTemplatePertanyaan;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
@@ -16,43 +17,13 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
         {
             app.MapPost("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
             {
-                /*string? jawabanImgPath = null;
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/pertanyaan_img");
-
-                if (!Directory.Exists(uploadsFolder))
+                if (!SecurityCheck.NotContainInvalidCharacters(request.IdBankSoal))
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya"))));
                 }
 
-                if (request.Gambar != null && request.Gambar.Length > 0)
-                {
-                    string safeFileName = fileProvider.GenerateFileName(request.Gambar);
-                    string extension = fileProvider.GetSafeExtension(request.Gambar);
-
-                    var filePath = Path.Combine(uploadsFolder, safeFileName);
-
-                    // Optional file size and extension validation
-                    if (request.Gambar.Length > 5 * 1024 * 1024) // 5 MB limit
-                    {
-                        return Results.BadRequest("File size is too large.");
-                    }
-
-                    var allowedExtensions = new[] { "png", "jpg", "jpeg" };
-                    if (!allowedExtensions.Contains(extension.ToLower()))
-                    {
-                        return Results.BadRequest("Invalid file type.");
-                    }
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await request.Gambar.CopyToAsync(stream);
-                    }
-
-                    jawabanImgPath = "pertanyaan_img/" + safeFileName; // Relative path
-                }*/
-
                 Result<Guid> result = await sender.Send(new CreateTemplatePertanyaanCommand(
-                    request.IdBankSoal,
+                    Guid.Parse(request.IdBankSoal),
                     request.Tipe,
                     null, //request.Pertanyaan,
                     null, //jawabanImgPath,
@@ -71,7 +42,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 
         internal sealed class CreateTemplatePertanyaanRequest
         {
-            [FromForm] public Guid IdBankSoal { get; set; }
+            [FromForm] public string IdBankSoal { get; set; }
             [FromForm] public string Tipe { get; set; }
             /*[FromForm] public string? Pertanyaan { get; set; } = null;
             [FromForm] public IFormFile? Gambar { get; set; } = null;*/

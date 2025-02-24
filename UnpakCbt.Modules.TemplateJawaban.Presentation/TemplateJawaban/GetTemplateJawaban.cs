@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetTemplateJawaban;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
@@ -12,9 +13,14 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
     {
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("TemplateJawaban/{id}", async (Guid id, ISender sender) =>
+            app.MapGet("TemplateJawaban/{id}", async (string id, ISender sender) =>
             {
-                Result<TemplateJawabanResponse> result = await sender.Send(new GetTemplateJawabanQuery(id));
+                if (!SecurityCheck.NotContainInvalidCharacters(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+
+                Result<TemplateJawabanResponse> result = await sender.Send(new GetTemplateJawabanQuery(Guid.Parse(id)));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.TemplateJawaban);

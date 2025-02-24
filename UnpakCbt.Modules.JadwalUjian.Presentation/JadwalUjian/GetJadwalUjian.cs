@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian;
 
 namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
@@ -12,9 +13,14 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
     {
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("JadwalUjian/{id}", async (Guid id, ISender sender) =>
+            app.MapGet("JadwalUjian/{id}", async (string id, ISender sender) =>
             {
-                Result<JadwalUjianResponse> result = await sender.Send(new GetJadwalUjianQuery(id));
+                if (!SecurityCheck.NotContainInvalidCharacters(id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+
+                Result<JadwalUjianResponse> result = await sender.Send(new GetJadwalUjianQuery(Guid.Parse(id)));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.JadwalUjian);

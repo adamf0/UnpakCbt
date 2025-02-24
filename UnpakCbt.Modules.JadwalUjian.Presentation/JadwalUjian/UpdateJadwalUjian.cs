@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian;
 
 namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
@@ -14,6 +15,15 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
         {
             app.MapPut("JadwalUjian", async (UpdateJadwalUjianRequest request, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+                if (!SecurityCheck.NotContainInvalidCharacters(request.IdBankSoal))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya"))));
+                }
+
                 int kouta;
                 if (!int.TryParse(request.Kouta, out kouta))
                 {
@@ -21,13 +31,13 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                 }
 
                 Result result = await sender.Send(new UpdateJadwalUjianCommand(
-                    request.Id,
+                    Guid.Parse(request.Id),
                     request.Deskripsi,
                     kouta,
                     request.Tanggal,
                     request.JamMulai,
                     request.JamAkhir,
-                    request.IdBankSoal
+                    Guid.Parse(request.IdBankSoal)
                     )
                 );
 
@@ -37,14 +47,14 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
 
         internal sealed class UpdateJadwalUjianRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
             public string? Deskripsi { get; set; }
 
             public string Kouta { get; set; }
             public string Tanggal { get; set; }
             public string JamMulai { get; set; }
             public string JamAkhir { get; set; }
-            public Guid IdBankSoal { get; set; }
+            public string IdBankSoal { get; set; }
         }
     }
 }

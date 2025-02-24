@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian;
 
 namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
@@ -14,8 +15,13 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapPut("Ujian/Start/{id}", async (StartUjianRequest request, ISender sender) =>
             {
+                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                {
+                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                }
+
                 Result result = await sender.Send(
-                    new StartUjianCommand(request.Id, request.NoReg)
+                    new StartUjianCommand(Guid.Parse(request.Id), request.NoReg)
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);
@@ -23,7 +29,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         }
         internal sealed class StartUjianRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
             public string NoReg { get; set; }
         }
     }
