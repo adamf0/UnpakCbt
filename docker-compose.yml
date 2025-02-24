@@ -7,8 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: cbt
     image: cbt:0.1.0
+    security_opt:
+      - "no-new-privileges:true"
     environment:
-      - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
+      - ConnectionStrings__Database=server=host.docker.internal;port=3306;user=root;password=;database=unpak_cbt;
       - Mode=prod
       - SEQ_SERVER_URL=https://seb.unpak.ac.id/monitoring
     ports:
