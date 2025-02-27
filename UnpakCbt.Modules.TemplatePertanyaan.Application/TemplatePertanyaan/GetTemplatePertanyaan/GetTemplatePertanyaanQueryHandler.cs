@@ -19,11 +19,11 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
                 $"""
                  SELECT 
                      CAST(NULLIF(ts.uuid, '') as VARCHAR(36)) AS Uuid,
-                     bs.uuid as UuidBankSoal,
+                     CAST(NULLIF(bs.uuid, '') as VARCHAR(36)) as UuidBankSoal,
                      ts.tipe as Tipe,
                      ts.pertanyaan_text as Pertanyaan,
                      ts.pertanyaan_img as Gambar,
-                     tp.uuid as JawabanBenar,
+                     CAST(NULLIF(tp.uuid, '') as VARCHAR(36)) as UuidJawabanBenar,
                      ts.bobot as Bobot,
                      ts.state as State 
                  FROM template_soal ts 

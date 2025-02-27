@@ -4,6 +4,6 @@
     {
         public string Uuid { get; set; }
         public string NoReg { get; set; } = default!;
-        public int JadwalUjian { get; set; }
+        public string UuidJadwalUjian { get; set; }
     }
 }

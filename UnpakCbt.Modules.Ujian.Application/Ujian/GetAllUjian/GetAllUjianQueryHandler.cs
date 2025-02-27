@@ -18,11 +18,12 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetAllUjian
             const string sql =
             """
             SELECT 
-                CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
-                no_reg as NoReg,
-                id_jadwal_ujian AS JadwalUjian,
-                status AS Status
-            FROM ujian
+                CAST(NULLIF(ujian.uuid, '') AS VARCHAR(36)) AS Uuid,
+                ujian.no_reg as NoReg,
+                CAST(NULLIF(jadwal_ujian.uuid, '') AS VARCHAR(36)) AS UuidJadwalUjian,
+                ujian.status AS Status
+            FROM ujian 
+            JOIN jadwal_ujian ON ujian.id_jadwal_ujian = jadwal_ujian.id
             """;
 
             var queryResult = await connection.QueryAsync<UjianResponse>(sql);

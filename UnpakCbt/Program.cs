@@ -54,16 +54,13 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.Name = "XSRF-TOKEN"; // Nama cookie antiforgery
 });
 
-var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
-var logger = loggerFactory.CreateLogger("JadwalUjianModule");
-
 builder.Services.AddInfrastructure(
      Environment.GetEnvironmentVariable("ConnectionStrings__Database") ?? builder.Configuration.GetConnectionString("Database")
 );
 builder.Services.AddBankSoalModule(builder.Configuration);
 builder.Services.AddTemplatePertanyaanModule(builder.Configuration);
 builder.Services.AddTemplateJawabanModule(builder.Configuration);
-builder.Services.AddJadwalUjianModule(builder.Configuration, logger);
+builder.Services.AddJadwalUjianModule(builder.Configuration);
 builder.Services.AddUjianModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();

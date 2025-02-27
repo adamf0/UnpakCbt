@@ -13,9 +13,6 @@ using UnpakCbt.Modules.JadwalUjian.Application.Abstractions.Data;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using UnpakCbt.Modules.JadwalUjian.Infrastructure.PublicApi;
 using StackExchange.Redis;
-using Microsoft.Extensions.Logging;
-using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace UnpakCbt.Modules.JadwalUjian.Infrastructure
 {
@@ -28,23 +25,21 @@ namespace UnpakCbt.Modules.JadwalUjian.Infrastructure
 
         public static IServiceCollection AddJadwalUjianModule(
             this IServiceCollection services,
-            IConfiguration configuration,
-            ILogger logger
+            IConfiguration configuration
         )
         {
-            services.AddInfrastructure(configuration, logger);
+            services.AddInfrastructure(configuration);
 
             return services;
         }
 
-        private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration, ILogger logger)
+        private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             string databaseConnectionString = configuration.GetConnectionString("Database")!;
             string redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379";
-            logger.LogInformation($"redisConnectionString nilainya {redisConnectionString},abortConnect=false");
 
             services.AddScoped<IDbConnectionFactory>(_ => new DbConnectionFactory(databaseConnectionString));
-            services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect($"{redisConnectionString},abortConnect=false"));
+            services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(redisConnectionString));
 
             services.AddDbContext<JadwalUjianDbContext>(optionsBuilder => optionsBuilder.UseMySQL(databaseConnectionString));
 

@@ -7,7 +7,7 @@
         public string Tipe { get; set; }
         public string Pertanyaan { get; set; }
         public string Gambar { get; set; }
-        public string JawabanBenar { get; set; }
+        public string UuidJawabanBenar { get; set; }
         public string Bobot { get; set; }
         public string State { get; set; }
     }
