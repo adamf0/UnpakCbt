@@ -64,13 +64,10 @@ namespace UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban
             {
                 if (HasError) return this;
 
-                /*if (string.IsNullOrWhiteSpace(nama))
+                if (!string.IsNullOrWhiteSpace(jawabanImg))
                 {
-                    _result = Result.Failure<TemplateJawaban>(TemplateJawabanErrors.NamaNotFound);
-                    return this;
-                }*/
-
-                _akurasiPenelitian.JawabanImg = jawabanImg;
+                    _akurasiPenelitian.JawabanImg = jawabanImg;
+                }
 
                 return this;
             }

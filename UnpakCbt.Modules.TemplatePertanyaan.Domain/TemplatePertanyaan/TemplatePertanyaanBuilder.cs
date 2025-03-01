@@ -91,13 +91,10 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
             {
                 if (HasError) return this;
 
-                /*if (string.IsNullOrWhiteSpace(nama))
+                if (!string.IsNullOrWhiteSpace(pertanyaanImg))
                 {
-                    _result = Result.Failure<TemplatePertanyaan>(TemplatePertanyaanErrors.NamaNotFound);
-                    return this;
-                }*/
-
-                _akurasiPenelitian.PertanyaanImg = pertanyaanImg;
+                    _akurasiPenelitian.PertanyaanImg = pertanyaanImg;
+                }
 
                 return this;
             }

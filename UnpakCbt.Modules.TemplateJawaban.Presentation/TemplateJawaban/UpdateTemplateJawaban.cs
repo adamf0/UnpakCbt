@@ -62,9 +62,12 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                         return Results.BadRequest("Invalid file type.");
                     }
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
                     {
                         await request.JawabanImg.CopyToAsync(stream);
+                        stream.Close();
+                        File.SetAttributes(filePath, FileAttributes.Normal);
+                        File.SetAttributes(filePath, (FileAttributes)Convert.ToInt32("600", 8));
                     }
 
                     jawabanImgPath = "jawaban_img/" + safeFileName; // Relative path

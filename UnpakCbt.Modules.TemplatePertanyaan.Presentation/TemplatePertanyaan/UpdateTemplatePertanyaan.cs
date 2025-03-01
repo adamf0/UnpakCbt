@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using System.Runtime.InteropServices;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
@@ -71,10 +72,17 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     {
                         return Results.BadRequest("Invalid file type.");
                     }
+                    /*if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    {
+                        File.SetUnixFileMode(filePath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+                    }*/
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (var stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
                     {
                         await request.Gambar.CopyToAsync(stream);
+                        stream.Close();
+                        File.SetAttributes(filePath, FileAttributes.Normal);
+                        File.SetAttributes(filePath, (FileAttributes)Convert.ToInt32("600", 8));
                     }
 
                     jawabanImgPath = "pertanyaan_img/" + safeFileName; // Relative path
