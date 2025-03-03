@@ -34,5 +34,12 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Ujian
                      .Where(u => u.NoReg == NoReg && u.Status.ToLower() != "cancel")
                      .CountAsync(cancellationToken);
         }
+
+        public async Task<int> GetCountJadwalByJadwalUjianAsync(int IdJadwalUjian, CancellationToken cancellationToken = default)
+        {
+            return await context.Ujian
+                     .Where(u => u.IdJadwalUjian == IdJadwalUjian && u.Status.ToLower() != "cancel")
+                     .CountAsync(cancellationToken);
+        }
     }
 }

@@ -6,6 +6,7 @@ using UnpakCbt.Modules.Ujian.Domain.Ujian;
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.DeleteUjian
 {
     internal sealed class DeleteUjianCommandHandler(
+    Domain.Ujian.ICounterRepository counterRepository,
     IUjianRepository ujianRepository,
     ICbtRepository cbtRepository,
     IUnitOfWork unitOfWork)
@@ -24,10 +25,23 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DeleteUjian
                 return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.NoReg, existingUjian?.NoReg??"-"));
             }
 
-            await cbtRepository.DeleteAsync(existingUjian?.Id ?? 0);
-            await ujianRepository.DeleteAsync(existingUjian!);
+            string key = "counter_" + existingUjian.Uuid.ToString();
+            bool checkKey = await counterRepository.KeyExistsAsync(key);
+            int postCounter = await counterRepository.GetCounterAsync(key);
+            if (checkKey && (postCounter - 1) <1) {
+                return Result.Failure<Guid>(UjianErrors.FailDecrement(key));
+            }
 
+            await cbtRepository.DeleteAsync(existingUjian?.Id ?? 0);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            await ujianRepository.DeleteAsync(existingUjian!);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            if (checkKey)
+            {
+                counterRepository.DecrementCounterAsync(key, null);
+            }
 
             return Result.Success();
         }

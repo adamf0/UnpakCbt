@@ -59,7 +59,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
 
             string oldKey = "counter_" + jadwalUjian.Uuid;
             int prevCounter = await counterRepository.GetCounterAsync(oldKey);
-            if (prevCounter > 0)
+            bool checkKey = await counterRepository.KeyExistsAsync(oldKey);
+            if (checkKey && prevCounter > 0)
             {
                 await counterRepository.DecrementCounterAsync(oldKey, null);
                 logger.LogInformation($"berhasil decrement key {oldKey}");

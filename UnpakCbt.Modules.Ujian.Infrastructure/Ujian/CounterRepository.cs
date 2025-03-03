@@ -67,5 +67,10 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Ujian
                 await _redisDb.KeyExpireAsync(key, timeToExpire);
             }
         }
+
+        public async Task<bool> KeyExistsAsync(string key)
+        {
+            return await _redisDb.KeyExistsAsync(key);
+        }
     }
 }

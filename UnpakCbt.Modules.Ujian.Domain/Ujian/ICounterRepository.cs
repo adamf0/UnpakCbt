@@ -2,6 +2,7 @@
 {
     public interface ICounterRepository
     {
+        Task<bool> KeyExistsAsync(string key);
         Task<int> GetCounterAsync(string key);
         Task<int> IncrementCounterAsync(string key, TimeSpan? timeout);
         Task<int> DecrementCounterAsync(string key, TimeSpan? timeout);

@@ -6,14 +6,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.1.3
+    image: cbt:0.1.4
     security_opt:
       - "no-new-privileges:true"
       - apparmor=docker-default
     environment:
       - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
       - Mode=prod
-      - SEQ_SERVER_URL=http://host.docker.internal:6379
+      # - SEQ_SERVER_URL=http://host.docker.internal:5341
     ports:
       - "5000:8080"
       - "5001:8081"

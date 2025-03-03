@@ -33,7 +33,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
 
             JadwalUjianResponse? newJadwalUjian = await jadwalUjianApi.GetAsync(request.newIdJadwalUjian, cancellationToken);
-            if (existingPrevJadwalUjian is null)
+            if (newJadwalUjian is null)
             {
                 Result.Failure(JadwalUjianErrors.NotFound(request.newIdJadwalUjian));
             }
@@ -54,6 +54,23 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
             if (existingUjian?.Status == "start") {
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
+            }
+
+            string key = "counter_" + request.newIdJadwalUjian.ToString();
+            bool checkNewKey = await counterRepository.KeyExistsAsync(key);
+            int kuotaNewJadwal = (newJadwalUjian?.Kuota ?? 0);
+            int totalData = await ujianRepository.GetCountJadwalByJadwalUjianAsync(int.Parse(newJadwalUjian?.Id ?? "0"));
+
+            if (kuotaNewJadwal > 0) {
+                int postCounter = await counterRepository.GetCounterAsync(key) + 1;
+                if (totalData > kuotaNewJadwal)
+                { //check total data tabel
+                    return Result.Failure<Guid>(UjianErrors.QuotaExhausted2(postCounter.ToString(), kuotaNewJadwal.ToString()));
+                }
+                if (checkNewKey && postCounter > kuotaNewJadwal) //check data redis
+                {
+                    return Result.Failure<Guid>(UjianErrors.QuotaExhausted(postCounter.ToString(), kuotaNewJadwal.ToString()));
+                }
             }
 
             checkData(request.newIdJadwalUjian, newJadwalUjian);
@@ -105,15 +122,18 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
 
 
             string oldKey = "counter_" + request.prevIdJadwalUjian.ToString();
+            bool checkOldKey = await counterRepository.KeyExistsAsync(key);
             int prevCounter = await counterRepository.GetCounterAsync(oldKey);
-            if (prevCounter > 0)
+            if (checkOldKey && prevCounter > 0)
             {
                 await counterRepository.DecrementCounterAsync(oldKey, null);
             }
 
-            var timeToExpire = GetTimeToExpire(newJadwalUjian.Tanggal, newJadwalUjian.JamMulai);
-            string newKey = $"counter_{request.newIdJadwalUjian}";
-            await counterRepository.ResetCounterAsync(newKey, 0, timeToExpire);
+            if (checkNewKey) {
+                var timeToExpire = GetTimeToExpire(newJadwalUjian.Tanggal, newJadwalUjian.JamMulai);
+                string newKey = $"counter_{request.newIdJadwalUjian}";
+                await counterRepository.ResetCounterAsync(newKey, 0, timeToExpire);
+            }
 
             return Result.Success(newUjian.Value.Uuid);
         }

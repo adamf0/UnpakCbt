@@ -25,8 +25,8 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error ScheduleExamNoStartExam() =>
             Error.Problem("UjianErrors.ScheduleExamNoStartExam", "User has not started entering the exam");
 
-        //public static Error IncorrectReferenceJadwal(Guid input, Guid target) =>
-        //    Error.Problem("UjianErrors.IncorrectReferenceJadwal", $"The reference {input} on the exam schedule does not match the actual data ({target})");
+        public static Error FailDecrement(string key) =>
+            Error.Problem("UjianErrors.FailDecrement", $"The reference key {key} fail do decrement");
 
         public static Error IncorrectReferenceNoReg(string input, string target) =>
             Error.Problem("UjianErrors.IncorrectReferenceNoReg", $"The reference {input} on the exam schedule does not match the actual data ({target})");
@@ -57,6 +57,9 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
 
         public static Error QuotaExhausted(string current, string max) =>
             Error.Problem("UjianErrors.QuotaExhausted", $"Exam schedule bookings have exceeded the available quota ({current}/{max})");
+
+        public static Error QuotaExhausted2(string current, string max) =>
+            Error.Problem("UjianErrors.QuotaExhausted[2]", $"Exam schedule bookings have exceeded the available quota ({current}/{max})");
 
         public static Error NotFoundReference() =>
             Error.Problem("UjianErrors.NotFoundReference", "identifier ujian was not found");

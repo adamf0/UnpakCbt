@@ -57,15 +57,25 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
 
             //add counter
             string key = "counter_" + request.IdJadwalUjian.ToString();
+            bool checkKey = await counterRepository.KeyExistsAsync(key);
+            int kuotaNewJadwal = (jadwalUjian?.Kuota ?? 0);
+            int totalData = await ujianRepository.GetCountJadwalByJadwalUjianAsync(int.Parse(jadwalUjian?.Id ?? "0"));
+
             if (jadwalUjian.Kuota > 0)
             {
                 int postCounter = await counterRepository.GetCounterAsync(key) + 1;
-                if (postCounter > jadwalUjian.Kuota)
-                {
+                if (totalData > kuotaNewJadwal)
+                { //check total tabel
+                    return Result.Failure<Guid>(UjianErrors.QuotaExhausted2(postCounter.ToString(), kuotaNewJadwal.ToString()));
+                }
+                if (checkKey && postCounter > jadwalUjian.Kuota)
+                { //check total data redis
                     return Result.Failure<Guid>(UjianErrors.QuotaExhausted(postCounter.ToString(), jadwalUjian.Kuota.ToString()));
                 }
             }
-            await counterRepository.IncrementCounterAsync(key, null);
+            if (checkKey) {
+                await counterRepository.IncrementCounterAsync(key, null);
+            }
 
             //tahap 2: insert ujian_cbt background job
 

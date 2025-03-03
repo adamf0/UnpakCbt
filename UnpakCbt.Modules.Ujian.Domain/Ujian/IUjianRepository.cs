@@ -7,6 +7,7 @@
         Task<Ujian> GetByNoRegWithJadwalAsync(string NoReg, int IdJadwalUjian, CancellationToken cancellationToken = default);
         
         Task<int> GetCountJadwalActiveAsync(string NoReg, CancellationToken cancellationToken = default);
+        Task<int> GetCountJadwalByJadwalUjianAsync(int IdJadwalUjian, CancellationToken cancellationToken = default);
         Task DeleteAsync(Ujian Ujian);
     }
 }

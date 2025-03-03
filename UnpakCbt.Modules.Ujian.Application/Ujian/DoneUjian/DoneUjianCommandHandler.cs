@@ -22,6 +22,18 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                 return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.NoReg, existingUjian?.NoReg??"-"));
             }
 
+            if (existingUjian?.Status == "cancel")
+            {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
+            }
+            if (existingUjian?.Status == "done")
+            {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
+            }
+            if (existingUjian?.Status == "start")
+            {
+                return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
+            }
             if (existingUjian?.Status == "start")
             {
                 Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian!)
