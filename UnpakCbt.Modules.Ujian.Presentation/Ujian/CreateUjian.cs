@@ -12,7 +12,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 {
     internal static class CreateUjian
     {
-        [Authorize]
+        //[Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPost("Ujian", async (CreateUjianRequest request, ISender sender) =>
@@ -30,7 +30,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
                 return result.Match(Results.Ok, ApiResults.Problem);
 
-            }).WithTags(Tags.Ujian).RequireAuthorization();
+            }).WithTags(Tags.Ujian);
         }
 
         internal sealed class CreateUjianRequest

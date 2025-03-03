@@ -12,7 +12,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 {
     internal static class RescheduleUjian
     {
-        [Authorize]
+        //[Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPost("Ujian/Reschedule", async (RescheduleUjianRequest request, ISender sender) =>
@@ -44,7 +44,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
                 return result.Match(Results.Ok, ApiResults.Problem);
 
-            }).WithTags(Tags.Ujian).RequireAuthorization();
+            }).WithTags(Tags.Ujian);
         }
 
         internal sealed class RescheduleUjianRequest
