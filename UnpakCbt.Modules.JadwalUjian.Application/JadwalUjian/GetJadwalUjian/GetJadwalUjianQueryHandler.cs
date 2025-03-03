@@ -27,7 +27,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian
                      bs.uuid AS UuidBankSoal
                  FROM jadwal_ujian ju 
                  LEFT JOIN bank_soal bs ON ju.id_bank_soal = bs.id
-                 WHERE uuid = @Uuid
+                 WHERE ju.uuid = @Uuid
                  """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
