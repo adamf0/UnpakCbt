@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -30,6 +31,8 @@
 		<ProjectReference Include="..\UnpakCbt.BankSoal.Infrastructure\UnpakCbt.Modules.BankSoal.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Common.Infrastructure\UnpakCbt.Common.Infrastructure.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Account.Application\UnpakCbt.Modules.Account.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Account.Infrastructure\UnpakCbt.Modules.Account.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Application\UnpakCbt.Modules.JadwalUjian.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Infrastructure\UnpakCbt.Modules.JadwalUjian.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Application\UnpakCbt.Modules.TemplateJawaban.Application.csproj" />

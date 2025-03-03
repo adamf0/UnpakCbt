@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
 {
     internal class GetAllBankSoal
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapGet("BankSoal", async (ISender sender) =>
@@ -18,7 +20,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                 Result<List<BankSoalResponse>> result = await sender.Send(new GetAllBankSoalQuery());
 
                 return result.Match(Results.Ok, ApiResults.Problem);
-            }).WithTags(Tags.BankSoal);
+            }).WithTags(Tags.BankSoal).RequireAuthorization();
         }
     }
 }

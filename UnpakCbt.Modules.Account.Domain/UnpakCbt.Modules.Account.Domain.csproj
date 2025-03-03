@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
+	</ItemGroup>
+
+	<Target Name="DisableNullableForVisualStudioBuild"
+			BeforeTargets="CoreCompile"
+			Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+		<PropertyGroup>
+			<Nullable>disable</Nullable>
+		</PropertyGroup>
+
+	</Target>
+
+</Project>

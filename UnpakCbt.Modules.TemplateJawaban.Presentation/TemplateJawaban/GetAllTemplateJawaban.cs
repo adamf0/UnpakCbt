@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 {
     internal class GetAllTemplateJawaban
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapGet("TemplateJawaban", async (ISender sender) =>
@@ -18,7 +20,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 Result<List<TemplateJawabanResponse>> result = await sender.Send(new GetAllTemplateJawabanQuery());
 
                 return result.Match(Results.Ok, ApiResults.Problem);
-            }).WithTags(Tags.TemplateJawaban);
+            }).WithTags(Tags.TemplateJawaban).RequireAuthorization();
         }
     }
 }

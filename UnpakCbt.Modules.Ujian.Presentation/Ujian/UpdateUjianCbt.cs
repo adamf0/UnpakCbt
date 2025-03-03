@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 {
     internal static class UpdateUjianCbt
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPut("Ujian/Cbt", async (UpdateUjianCbtRequest request, ISender sender) =>
@@ -50,7 +52,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);
-            }).WithTags(Tags.Ujian);
+            }).WithTags(Tags.Ujian).RequireAuthorization();
         }
 
         internal sealed class UpdateUjianCbtRequest

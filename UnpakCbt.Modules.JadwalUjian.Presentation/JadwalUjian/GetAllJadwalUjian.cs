@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
 {
     internal class GetAllJadwalUjian
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapGet("JadwalUjian", async (ISender sender) =>
@@ -18,7 +20,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                 Result<List<JadwalUjianResponse>> result = await sender.Send(new GetAllJadwalUjianQuery());
 
                 return result.Match(Results.Ok, ApiResults.Problem);
-            }).WithTags(Tags.JadwalUjian);
+            }).WithTags(Tags.JadwalUjian).RequireAuthorization();
         }
     }
 }

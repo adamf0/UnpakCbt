@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 {
     internal class DeleteTemplatePertanyaan
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapDelete("TemplatePertanyaan/{id}", async (string id, ISender sender) =>
@@ -29,7 +31,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);
-            }).WithTags(Tags.TemplatePertanyaan);
+            }).WithTags(Tags.TemplatePertanyaan).RequireAuthorization();
         }
     }
 }

@@ -7,6 +7,7 @@ using UnpakCbt.Modules.TemplatePertanyaan.Infrastructure;
 using UnpakCbt.Modules.TemplateJawaban.Infrastructure;
 using UnpakCbt.Modules.JadwalUjian.Infrastructure;
 using UnpakCbt.Modules.Ujian.Infrastructure;
+using UnpakCbt.Modules.Account.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
@@ -16,6 +17,9 @@ using Microsoft.Extensions.FileProviders;
 using UnpakCbt.Api.Extensions;
 using UnpakCbt.Api.Security;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 //[::]:5000/swagger/index.html
 
@@ -47,6 +51,7 @@ builder.Services.AddApplication([
     UnpakCbt.Modules.TemplateJawaban.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.JadwalUjian.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.Ujian.Application.AssemblyReference.Assembly,
+    UnpakCbt.Modules.Account.Application.AssemblyReference.Assembly,
 ]);
 builder.Services.AddAntiforgery(options =>
 {
@@ -62,6 +67,7 @@ builder.Services.AddTemplatePertanyaanModule(builder.Configuration);
 builder.Services.AddTemplateJawabanModule(builder.Configuration);
 builder.Services.AddJadwalUjianModule(builder.Configuration);
 builder.Services.AddUjianModule(builder.Configuration);
+builder.Services.AddAccountModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -72,8 +78,17 @@ builder.Services.AddSwaggerGen(c =>
         Title = "UnpakCbt API",
         Version = "v1"
     });
-    c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Masukkan token JWT dengan format 'Bearer {token}'",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
 
+    c.OperationFilter<AuthorizeCheckOperationFilter>();
+    c.DocumentFilter<SwaggerAddApiPrefixDocumentFilter>();
     c.OperationFilter<SwaggerFileOperationFilter>();
 });
 /*builder.Services.AddCors(options =>
@@ -86,6 +101,24 @@ builder.Services.AddSwaggerGen(c =>
                 .AllowAnyMethod();
         });
 });*/
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        //[PR] masih belum bisa validasi isi token & custom response 401
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = Environment.GetEnvironmentVariable("Issuer") ?? "localhost",
+            ValidAudience = Environment.GetEnvironmentVariable("Audience") ?? "localhost",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                Environment.GetEnvironmentVariable("Key_Signed") ?? "UnpakCBTSecureKey1234567890!@$%#*&^"
+            ))
+        };
+    });
+
 builder.Services.AddAuthorization();
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -103,10 +136,11 @@ TemplatePertanyaanModule.MapEndpoints(app);
 TemplateJawabanModule.MapEndpoints(app);
 JadwalUjianModule.MapEndpoints(app);
 UjianModule.MapEndpoints(app);
+AccountModule.MapEndpoints(app);
 
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 //}
 

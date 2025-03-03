@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 {
     internal static class CreateTemplateJawaban
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPost("TemplateJawaban", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplateJawabanRequest request, ISender sender, IFileProvider fileProvider) =>
@@ -72,7 +74,8 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.TemplateJawaban)
               .Accepts<UpdateTemplateJawabanRequest>("multipart/form-data")
-              .DisableAntiforgery();
+              .DisableAntiforgery()
+              .RequireAuthorization();
         }
 
         internal sealed class CreateTemplateJawabanRequest

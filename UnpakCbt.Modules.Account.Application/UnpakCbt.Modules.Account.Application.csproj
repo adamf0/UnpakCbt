@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="MediatR" Version="12.4.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Text.Json" Version="9.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Account.Domain\UnpakCbt.Modules.Account.Domain.csproj" />
+	</ItemGroup>
+
+	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+		<PropertyGroup>
+			<Nullable>disable</Nullable>
+		</PropertyGroup>
+	</Target>
+
+</Project>

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 {
     internal static class CreateTemplatePertanyaan
     {
+        [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPost("TemplatePertanyaan", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplatePertanyaanRequest request, ISender sender, IFileProvider fileProvider) =>
@@ -41,7 +43,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 
             }).WithTags(Tags.TemplatePertanyaan)
               .Accepts<CreateTemplatePertanyaanRequest>("multipart/form-data")
-              .DisableAntiforgery();
+              .DisableAntiforgery()
+              .RequireAuthorization();
         }
 
         internal sealed class CreateTemplatePertanyaanRequest
