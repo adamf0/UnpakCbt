@@ -18,8 +18,14 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
         [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("TemplateJawaban", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplateJawabanRequest request, ISender sender, IFileProvider fileProvider) =>
+            app.MapPost("TemplateJawaban", [IgnoreAntiforgeryToken(Order = 1001)] async ([FromForm] CreateTemplateJawabanRequest request, ISender sender, IFileProvider fileProvider, HttpContext context, TokenValidator tokenValidator) =>
             {
+                var (isValid, error) = tokenValidator.ValidateToken(context);
+                if (!isValid)
+                {
+                    return error;
+                }
+
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdTemplateSoal))
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal mengandung karakter berbahaya"))));

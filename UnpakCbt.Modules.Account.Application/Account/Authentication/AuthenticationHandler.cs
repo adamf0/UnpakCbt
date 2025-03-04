@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Data.Common;
@@ -15,7 +16,7 @@ using UnpakCbt.Modules.Account.Domain.Account;
 
 namespace UnpakCbt.Modules.Account.Application.Authentication.Authentication
 {
-    internal sealed class AuthenticationHandler(IDbConnectionFactory _dbConnectionFactory)
+    internal sealed class AuthenticationHandler(IDbConnectionFactory _dbConnectionFactory, IConfiguration _configuration)
         : IQueryHandler<AuthenticationQuery, string>
     {
         private string GenerateJwtToken(string uuid, string level)
@@ -27,16 +28,16 @@ namespace UnpakCbt.Modules.Account.Application.Authentication.Authentication
             };
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, "localhost"),
+                new Claim(JwtRegisteredClaimNames.Sub, Environment.GetEnvironmentVariable("Sub") ?? _configuration["Jwt:Sub"]),
                 new Claim(JwtRegisteredClaimNames.Jti, $"{uuid}-{levelCode}")
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("Key_Signed") ?? "UnpakCBTSecureKey1234567890!@$%#*&^"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("Key_Signed") ?? _configuration["Jwt:Secret"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: Environment.GetEnvironmentVariable("Issuer") ?? "localhost",
-                audience: Environment.GetEnvironmentVariable("Audience") ?? "localhost",
+                issuer: Environment.GetEnvironmentVariable("Issuer") ?? _configuration["Jwt:Issuer"],
+                audience: Environment.GetEnvironmentVariable("Audience") ?? _configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddHours(5),
                 signingCredentials: creds

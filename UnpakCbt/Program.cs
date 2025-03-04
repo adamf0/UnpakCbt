@@ -20,6 +20,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using UnpakCbt.Common.Presentation.Security;
 
 //[::]:5000/swagger/index.html
 
@@ -35,6 +36,8 @@ builder.Host.UseSerilog((context, loggerConfig) =>
     loggerConfig.ReadFrom.Configuration(context.Configuration);
     //loggerConfig.WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_SERVER_URL") ?? "https://host.docker.internal:5341");
 });
+builder.Services.AddSingleton<TokenValidator>();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers(options =>
@@ -104,18 +107,20 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        //[PR] masih belum bisa validasi isi token & custom response 401
+        var configuration = builder.Configuration;
+        var issuer = Environment.GetEnvironmentVariable("Issuer") ?? configuration["Jwt:Issuer"];
+        var audience = Environment.GetEnvironmentVariable("Audience") ?? configuration["Jwt:Audience"];
+        var secretKey = Environment.GetEnvironmentVariable("Key_Signed") ?? configuration["Jwt:Secret"];
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = Environment.GetEnvironmentVariable("Issuer") ?? "localhost",
-            ValidAudience = Environment.GetEnvironmentVariable("Audience") ?? "localhost",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                Environment.GetEnvironmentVariable("Key_Signed") ?? "UnpakCBTSecureKey1234567890!@$%#*&^"
-            ))
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
         };
     });
 

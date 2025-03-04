@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.Security;
@@ -15,8 +16,14 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
         [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("Account/{id}", async (string id, ISender sender) =>
+            app.MapGet("Account/{id}", async (string id, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
             {
+                var (isValid, error) = tokenValidator.ValidateToken(context);
+                if (!isValid)
+                {
+                    return error;
+                }
+
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));

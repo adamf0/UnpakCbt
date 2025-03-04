@@ -11,12 +11,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" />
 		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
 	</ItemGroup>
 
-	<Target Name="DisableNullableForVisualStudioBuild"
-        BeforeTargets="CoreCompile"
-        Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
 		<PropertyGroup>
 			<Nullable>disable</Nullable>
 		</PropertyGroup>

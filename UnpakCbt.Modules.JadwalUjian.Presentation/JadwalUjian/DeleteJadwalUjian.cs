@@ -15,8 +15,14 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
         [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapDelete("JadwalUjian/{id}", async (string id, ISender sender) =>
+            app.MapDelete("JadwalUjian/{id}", async (string id, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
             {
+                var (isValid, error) = tokenValidator.ValidateToken(context);
+                if (!isValid)
+                {
+                    return error;
+                }
+
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
                     return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
