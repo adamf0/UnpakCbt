@@ -13,6 +13,10 @@ services:
     environment:
       - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;
       - Mode=prod
+      - Issuer=seb.unpak.ac.id
+      - Audience=seb.unpak.ac.id
+      - Sub=seb.unpak.ac.id
+      - Key_Signed=UnpakCBTSecureKey1234567890!@$%#*&^
       # - SEQ_SERVER_URL=http://host.docker.internal:5341
     ports:
       - "5000:8080"
