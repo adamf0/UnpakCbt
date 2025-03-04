@@ -7,16 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.1.35" />
-		<PackageReference Include="MediatR" Version="12.4.1" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\UnpakCbt.BankSoal.Domain\UnpakCbt.Modules.BankSoal.Domain.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Modules.BankSoal.PublicApi\UnpakCbt.Modules.BankSoal.PublicApi.csproj" />
-		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Domain\UnpakCbt.Modules.JadwalUjian.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Common.Presentation\UnpakCbt.Common.Presentation.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Laporan.Application\UnpakCbt.Modules.Laporan.Application.csproj" />
 	</ItemGroup>
 
 	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
@@ -24,5 +21,5 @@
 			<Nullable>disable</Nullable>
 		</PropertyGroup>
 	</Target>
-	
+
 </Project>

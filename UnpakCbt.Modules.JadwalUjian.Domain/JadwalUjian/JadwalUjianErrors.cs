@@ -10,6 +10,9 @@ namespace UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian
         public static Error NotFound(Guid Id) =>
             Error.Problem("JadwalUjianErrors.NotFound", $"Exam schedule with identifier {Id} not found");
 
+        public static Error NotFoundActive() =>
+            Error.Problem("JadwalUjianErrors.NotFoundActive", "No active exam schedule found");
+
         public static Error IdNotFound(int Id) =>
             Error.Problem("JadwalUjianErrors.IdNotFound", $"Exam schedule with refference id {Id} not found");
 

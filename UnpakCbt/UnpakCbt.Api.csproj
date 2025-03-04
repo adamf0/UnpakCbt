@@ -35,6 +35,8 @@
 		<ProjectReference Include="..\UnpakCbt.Modules.Account.Infrastructure\UnpakCbt.Modules.Account.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Application\UnpakCbt.Modules.JadwalUjian.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.Infrastructure\UnpakCbt.Modules.JadwalUjian.Infrastructure.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Laporan.Application\UnpakCbt.Modules.Laporan.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Laporan.Infrastructure\UnpakCbt.Modules.Laporan.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Application\UnpakCbt.Modules.TemplateJawaban.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplateJawaban.Infrastructure\UnpakCbt.Modules.TemplateJawaban.Infrastructure.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.Application\UnpakCbt.Modules.TemplatePertanyaan.Application.csproj" />

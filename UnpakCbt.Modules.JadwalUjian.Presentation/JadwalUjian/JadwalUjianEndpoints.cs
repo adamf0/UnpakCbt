@@ -11,6 +11,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
             DeleteJadwalUjian.MapEndpoint(app);
             GetJadwalUjian.MapEndpoint(app);
             GetAllJadwalUjian.MapEndpoint(app);
+            GetActiveJadwalUjian.MapEndpoint(app);
         }
     }
 }

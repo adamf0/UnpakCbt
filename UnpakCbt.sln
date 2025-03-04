@@ -67,13 +67,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Ujian.Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Ujian.Presentation", "UnpakCbt.Modules.Ujian.Presentation\UnpakCbt.Modules.Ujian.Presentation.csproj", "{DF7E5B33-8901-4080-BF3B-E1E497BBB6E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Account.Domain", "UnpakCbt.Modules.Account.Domain\UnpakCbt.Modules.Account.Domain.csproj", "{0FCBF304-5C02-4509-B7C3-89018D6B8E46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Account.Domain", "UnpakCbt.Modules.Account.Domain\UnpakCbt.Modules.Account.Domain.csproj", "{0FCBF304-5C02-4509-B7C3-89018D6B8E46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Account.Application", "UnpakCbt.Modules.Account.Application\UnpakCbt.Modules.Account.Application.csproj", "{BA8E01F9-39B4-4A05-8160-16B41BBDB19C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Account.Application", "UnpakCbt.Modules.Account.Application\UnpakCbt.Modules.Account.Application.csproj", "{BA8E01F9-39B4-4A05-8160-16B41BBDB19C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Account.Infrastructure", "UnpakCbt.Modules.Account.Infrastructure\UnpakCbt.Modules.Account.Infrastructure.csproj", "{F8AC1DF9-2CC1-4075-8FFD-0581102F5832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Account.Infrastructure", "UnpakCbt.Modules.Account.Infrastructure\UnpakCbt.Modules.Account.Infrastructure.csproj", "{F8AC1DF9-2CC1-4075-8FFD-0581102F5832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Account.Presentation", "UnpakCbt.Modules.Account.Presentation\UnpakCbt.Modules.Account.Presentation.csproj", "{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Account.Presentation", "UnpakCbt.Modules.Account.Presentation\UnpakCbt.Modules.Account.Presentation.csproj", "{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Application", "UnpakCbt.Modules.Laporan.Application\UnpakCbt.Modules.Laporan.Application.csproj", "{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Domain", "UnpakCbt.Modules.Laporan.Domain\UnpakCbt.Modules.Laporan.Domain.csproj", "{1BABF954-E673-41D9-A3A6-31CCAA95DC86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Infrastructure", "UnpakCbt.Modules.Laporan.Infrastructure\UnpakCbt.Modules.Laporan.Infrastructure.csproj", "{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Presentation", "UnpakCbt.Modules.Laporan.Presentation\UnpakCbt.Modules.Laporan.Presentation.csproj", "{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -213,6 +221,22 @@ Global
 		{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BABF954-E673-41D9-A3A6-31CCAA95DC86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BABF954-E673-41D9-A3A6-31CCAA95DC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BABF954-E673-41D9-A3A6-31CCAA95DC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BABF954-E673-41D9-A3A6-31CCAA95DC86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +275,10 @@ Global
 		{BA8E01F9-39B4-4A05-8160-16B41BBDB19C} = {1BF1605F-F156-4411-80BD-F35F8C548894}
 		{F8AC1DF9-2CC1-4075-8FFD-0581102F5832} = {1BF1605F-F156-4411-80BD-F35F8C548894}
 		{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{BB871C1E-A2BF-4A88-ACC5-5036D44FE985} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{1BABF954-E673-41D9-A3A6-31CCAA95DC86} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{1ACC8077-4CAA-4E63-B9CB-CA952683D57A} = {1BF1605F-F156-4411-80BD-F35F8C548894}
+		{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718} = {1BF1605F-F156-4411-80BD-F35F8C548894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE6A47FE-8285-48E9-9641-BF63A6853CB4}

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Common.Infrastructure\UnpakCbt.Common.Infrastructure.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Laporan.Application\UnpakCbt.Modules.Laporan.Application.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Laporan.Domain\UnpakCbt.Modules.Laporan.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.Laporan.Presentation\UnpakCbt.Modules.Laporan.Presentation.csproj" />
+	</ItemGroup>
+
+	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+		<PropertyGroup>
+			<Nullable>disable</Nullable>
+		</PropertyGroup>
+	</Target>
+
+</Project>

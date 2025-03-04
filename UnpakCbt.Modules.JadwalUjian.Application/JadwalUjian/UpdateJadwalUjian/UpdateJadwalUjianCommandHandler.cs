@@ -62,7 +62,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                 logger.LogInformation($"key {key} berhasil di reset ke 0");
             }
 
-            //[PR]            
+            //[PR] [Skipped]            
             //tahap 1: reset data ujian_cbt, insert ujian_cbt 
 
             //tahap 2: reset data ujian_cbt, insert ujian_cbt background job

@@ -8,6 +8,7 @@ using UnpakCbt.Modules.TemplateJawaban.Infrastructure;
 using UnpakCbt.Modules.JadwalUjian.Infrastructure;
 using UnpakCbt.Modules.Ujian.Infrastructure;
 using UnpakCbt.Modules.Account.Infrastructure;
+using UnpakCbt.Modules.Laporan.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
@@ -55,6 +56,7 @@ builder.Services.AddApplication([
     UnpakCbt.Modules.JadwalUjian.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.Ujian.Application.AssemblyReference.Assembly,
     UnpakCbt.Modules.Account.Application.AssemblyReference.Assembly,
+    UnpakCbt.Modules.Laporan.Application.AssemblyReference.Assembly,
 ]);
 builder.Services.AddAntiforgery(options =>
 {
@@ -71,6 +73,7 @@ builder.Services.AddTemplateJawabanModule(builder.Configuration);
 builder.Services.AddJadwalUjianModule(builder.Configuration);
 builder.Services.AddUjianModule(builder.Configuration);
 builder.Services.AddAccountModule(builder.Configuration);
+builder.Services.AddLaporanModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -142,6 +145,7 @@ TemplateJawabanModule.MapEndpoints(app);
 JadwalUjianModule.MapEndpoints(app);
 UjianModule.MapEndpoints(app);
 AccountModule.MapEndpoints(app);
+LaporanModule.MapEndpoints(app);
 
 //if (app.Environment.IsDevelopment())
 //{

@@ -53,8 +53,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
                 return Result.Failure<Guid>(UjianErrors.InvalidRangeDateTime());
             }
 
-            //[PR]
-            /*if (sekarang < mulai && sekarang > akhir)
+            if (sekarang < mulai && sekarang > akhir)
             {
                 return Result.Failure<Guid>(UjianErrors.OutRangeExam(mulai.ToString("yyyy-MM-dd HH:mm"), akhir.ToString("yyyy-MM-dd HH:mm")));
             }
@@ -74,7 +73,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
             if (existingUjian?.Status == "cancel")
             {
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
-            }*/
+            }
 
             int? JawabanBenar = null;
             if (request?.IdJawabanBenar != null)
