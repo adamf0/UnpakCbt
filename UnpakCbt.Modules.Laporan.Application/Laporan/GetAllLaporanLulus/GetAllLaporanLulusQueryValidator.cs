@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus
 {
+    //[PR]
     public sealed class GetAllLaporanLulusQueryValidator : AbstractValidator<GetAllLaporanLulusQuery>
     {
         private readonly Regex GuidV4Regex = new(
