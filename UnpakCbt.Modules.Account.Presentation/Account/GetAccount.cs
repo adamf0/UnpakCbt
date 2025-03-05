@@ -26,11 +26,11 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
 
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.isValidGuid(id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
 
                 Result<AccountResponse> result = await sender.Send(new GetAccountQuery(Guid.Parse(id)));

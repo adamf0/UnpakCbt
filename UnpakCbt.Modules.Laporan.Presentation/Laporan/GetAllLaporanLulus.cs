@@ -7,6 +7,7 @@ using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus;
+using UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulusTotal;
 using UnpakCbt.Modules.Laporan.Application.Laporan.GetLaporanLulus;
 
 namespace UnpakCbt.Modules.Laporan.Presentation.Laporan
@@ -26,16 +27,32 @@ namespace UnpakCbt.Modules.Laporan.Presentation.Laporan
 
                 if (!SecurityCheck.NotContainInvalidCharacters(request?.UuidJadwalUjian ?? ""))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "                    request?.UuidJadwalUjian,\r\n mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "request UuidJadwalUjian mengandung karakter berbahaya")));
                 }
 
-                Result<List<LaporanLulusResponse>> result = await sender.Send(new GetAllLaporanLulusQuery(
-                    request?.UuidJadwalUjian,
-                    request?.TanggalMulai,
-                    request?.TanggalAkhir
-                ));
+                if (string.IsNullOrEmpty(request?.Type) || request?.Type.ToLower() != "total" || request?.Type.ToLower() != "list") {
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "request type hanya menerima 'total' dan 'list'")));
+                }
 
-                return result.Match(Results.Ok, ApiResults.Problem);
+                if (request?.Type.ToLower() == "total")
+                {
+                    Result<LaporanLulusTotalResponse> result = await sender.Send(new GetAllLaporanLulusTotalQuery(
+                        request?.UuidJadwalUjian,
+                        request?.TanggalMulai,
+                        request?.TanggalAkhir
+                    ));
+
+                    return result.Match(Results.Ok, ApiResults.Problem);
+                }
+                else {
+                    Result<List<LaporanLulusResponse>> result = await sender.Send(new GetAllLaporanLulusQuery(
+                        request?.UuidJadwalUjian,
+                        request?.TanggalMulai,
+                        request?.TanggalAkhir
+                    ));
+
+                    return result.Match(Results.Ok, ApiResults.Problem);
+                }
             }).WithTags(Tags.Laporan).RequireAuthorization();
         }
         internal sealed class GetAllLaporanLulusRequest
@@ -44,6 +61,7 @@ namespace UnpakCbt.Modules.Laporan.Presentation.Laporan
 
             public string? TanggalMulai { get; set; }
             public string? TanggalAkhir { get; set; }
+            public string Type { get; set; } = "total";
         }
     }
 }

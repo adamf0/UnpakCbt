@@ -19,7 +19,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
             {
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya")));
                 }
 
                 Result<Guid> result = await sender.Send(new CreateUjianCommand(

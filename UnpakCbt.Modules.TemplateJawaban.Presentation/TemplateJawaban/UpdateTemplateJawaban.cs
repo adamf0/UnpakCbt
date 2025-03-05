@@ -27,20 +27,20 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 
                 if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdTemplateSoal))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal mengandung karakter berbahaya")));
                 }
 
                 if (!SecurityCheck.isValidGuid(request.Id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
                 if (!SecurityCheck.isValidGuid(request.IdTemplateSoal))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdTemplateSoal harus Guid format")));
                 }
 
                 string? jawabanImgPath = null;
@@ -61,13 +61,13 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                     // Optional file size and extension validation
                     if (request.JawabanImg.Length > 5 * 1024 * 1024) // 5 MB limit
                     {
-                        return Results.BadRequest("File size is too large.");
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "File size is too large")));
                     }
 
                     var allowedExtensions = new[] { "png", "jpg", "jpeg" };
                     if (!allowedExtensions.Contains(extension.ToLower()))
                     {
-                        return Results.BadRequest("Invalid file type.");
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid file type")));
                     }
 
                     using (var stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))

@@ -25,11 +25,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
 
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdBankSoal))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.isValidGuid(request.IdBankSoal))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format")));
                 }
 
                 int kouta;

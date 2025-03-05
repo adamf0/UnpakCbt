@@ -30,28 +30,28 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 
                 if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdBankSoal))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.NotContainInvalidCharacters(request.Jawaban))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban mengandung karakter berbahaya")));
                 }
 
                 if (!SecurityCheck.isValidGuid(request.Id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
                 if (!SecurityCheck.isValidGuid(request.IdBankSoal))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format")));
                 }
                 if (!SecurityCheck.isValidGuid(request.Jawaban))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Jawaban harus Guid format")));
                 }
 
                 string? jawabanImgPath = null;
@@ -72,13 +72,13 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     // Optional file size and extension validation
                     if (request.Gambar.Length > 5 * 1024 * 1024) // 5 MB limit
                     {
-                        return Results.BadRequest("File size is too large.");
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "File size is too large")));
                     }
 
                     var allowedExtensions = new[] { "png", "jpg", "jpeg" };
                     if (!allowedExtensions.Contains(extension.ToLower()))
                     {
-                        return Results.BadRequest("Invalid file type.");
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid file type")));
                     }
                     /*if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                     {

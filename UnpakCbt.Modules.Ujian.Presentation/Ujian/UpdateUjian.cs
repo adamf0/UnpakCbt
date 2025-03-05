@@ -19,20 +19,20 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
             {
                 if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya")));
                 }
 
                 if (!SecurityCheck.isValidGuid(request.Id))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
                 if (!SecurityCheck.isValidGuid(request.IdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian harus Guid format")));
                 }
 
                 Result result = await sender.Send(new UpdateUjianCommand(

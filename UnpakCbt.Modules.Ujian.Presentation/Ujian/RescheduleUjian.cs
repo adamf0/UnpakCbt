@@ -19,20 +19,20 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
             {
                 if (!SecurityCheck.NotContainInvalidCharacters(request.PrevIdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "PrevIdJadwalUjian mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "PrevIdJadwalUjian mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.NotContainInvalidCharacters(request.NewIdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian mengandung karakter berbahaya"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian mengandung karakter berbahaya")));
                 }
 
                 if (!SecurityCheck.isValidGuid(request.PrevIdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "PrevIdJadwalUjian harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "PrevIdJadwalUjian harus Guid format")));
                 }
                 if (!SecurityCheck.isValidGuid(request.NewIdJadwalUjian))
                 {
-                    return Results.BadRequest(ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian harus Guid format"))));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian harus Guid format")));
                 }
 
                 Result<Guid> result = await sender.Send(new RescheduleUjianCommand(
