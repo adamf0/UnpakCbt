@@ -21,5 +21,10 @@ namespace UnpakCbt.Modules.Account.Infrastructure.Account
         {
             context.Account.Add(Account);
         }
+
+        public async Task<int> CountByUsernameAsync(string Username, CancellationToken cancellationToken = default)
+        {
+            return await context.Account.CountAsync(e => e.Username == Username, cancellationToken);
+        }
     }
 }

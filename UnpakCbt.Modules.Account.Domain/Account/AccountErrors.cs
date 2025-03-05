@@ -10,6 +10,9 @@ namespace UnpakCbt.Modules.Account.Domain.Account
         public static Error NotFound(Guid Id) =>
             Error.Problem("Account.NotFound", $"Account with identifier {Id} not found");
 
+        public static Error NotUnique(string Username) =>
+           Error.Problem("Account.NotUnique", $"Account username {Username} is not unique");
+
         public static Error InvalidAuth() =>
             Error.Problem("Account.InvalidAuth", "Failed in Authentication due to incorrect username or password");
 

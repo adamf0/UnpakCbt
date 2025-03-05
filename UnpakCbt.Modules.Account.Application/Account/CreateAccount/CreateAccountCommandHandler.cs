@@ -14,7 +14,13 @@ namespace UnpakCbt.Modules.Account.Application.Account.CreateAccount
     {
         public async Task<Result<Guid>> Handle(authenticationCommand request, CancellationToken cancellationToken)
         {
-            //[PR] unique username
+            int check = await AccountRepository.CountByUsernameAsync(request.Username);
+            if (check>0)
+            {
+                logger.LogError($"username {request.Username} sudah ada");
+                return Result.Failure<Guid>(AccountErrors.NotUnique(request.Username));
+            }
+
             Result<Domain.Account.Account> result = Domain.Account.Account.Create(
                 request.Username,
                 request.Password,
