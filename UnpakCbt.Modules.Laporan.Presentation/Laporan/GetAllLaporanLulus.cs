@@ -30,8 +30,12 @@ namespace UnpakCbt.Modules.Laporan.Presentation.Laporan
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "request UuidJadwalUjian mengandung karakter berbahaya")));
                 }
 
-                if (string.IsNullOrEmpty(request?.Type) || request?.Type.ToLower() != "total" || request?.Type.ToLower() != "list") {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "request type hanya menerima 'total' dan 'list'")));
+                if (string.IsNullOrEmpty(request?.Type)) {
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", $"request type wajib ada {request?.Type}")));
+                }
+                if (request?.Type.ToLower() != "total" && request?.Type.ToLower() != "list")
+                {
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", $"request type hanya menerima 'total' dan 'list' {request?.Type}")));
                 }
 
                 if (request?.Type.ToLower() == "total")

@@ -39,9 +39,12 @@ namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus
             var sqlBuilder = new StringBuilder();
             sqlBuilder.AppendLine("""
                 SELECT 
-                    ju.uuid AS Uuid,
+                    u.uuid AS Uuid,
+                    ju.uuid AS UuidJadwalUjian,
                     u.no_reg AS NoReg,
                     ju.tanggal AS Tanggal,
+                    ju.jam_mulai_ujian AS JamMulai,
+                    ju.jam_akhir_ujian AS JamAkhir,
                     ju.deskripsi AS Deskripsi,
                     u.keputusan AS Keputusan,
                     u.tanggal_respon AS TanggalRespon
