@@ -31,11 +31,11 @@ namespace UnpakCbt.Modules.Laporan.Presentation.Laporan
                 }
 
                 if (string.IsNullOrEmpty(request?.Type)) {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", $"request type wajib ada")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "request type wajib ada")));
                 }
                 if (request?.Type.ToLower() != "total" && request?.Type.ToLower() != "list")
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", $"request type hanya menerima 'total' dan 'list'")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "request type hanya menerima 'total' dan 'list'")));
                 }
 
                 if (request?.Type.ToLower() == "total")
