@@ -12,15 +12,14 @@
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
 		<PackageReference Include="Serilog" Version="4.2.0-dev-02328" />
+		<PackageReference Include="Dapper" Version="2.1.35" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
 	</ItemGroup>
 	
-	<Target Name="DisableNullableForVisualStudioBuild"
-			BeforeTargets="CoreCompile"
-			Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
 		<PropertyGroup>
 			<Nullable>disable</Nullable>
 		</PropertyGroup>

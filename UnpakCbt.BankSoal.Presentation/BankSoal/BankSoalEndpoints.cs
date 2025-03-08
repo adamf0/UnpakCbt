@@ -12,6 +12,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
             DeleteBankSoal.MapEndpoint(app);
             GetBankSoal.MapEndpoint(app);
             GetAllBankSoal.MapEndpoint(app);
+            GetAllBankSoalWithPaging.MapEndpoint(app);
         }
     }
 }
