@@ -28,7 +28,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
             FROM template_soal ts 
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id 
-            where bs.uuid = @BankSoalUuid
+            WHERE bs.uuid = @BankSoalUuid 
+            ORDER BY RAND()
             """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;

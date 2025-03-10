@@ -6,18 +6,17 @@ using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.Security;
-using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
-using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetAllTemplatePertanyaan;
-using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetTemplatePertanyaan;
+using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTemplateJawaban;
+using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetTemplateJawaban;
 
-namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
+namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 {
-    internal class GetAllTemplatePertanyaanByBankSoal
+    internal class GetAllTemplateJawabanByBankSoal
     {
         [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("TemplatePertanyaan/BankSoal/{uuidBankSoal}", async (string IdBankSoal, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
+            app.MapGet("TemplateJawaban/BankSoal/{IdBankSoal}", async (string IdBankSoal, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
             {
                 var (isValid, error) = tokenValidator.ValidateToken(context);
                 if (!isValid)
@@ -34,10 +33,10 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format")));
                 }
 
-                Result<List<TemplatePertanyaanResponse>> result = await sender.Send(new GetAllTemplatePertanyaanByBankSoalQuery(Guid.Parse(IdBankSoal)));
+                Result<List<TemplateJawabanResponse>> result = await sender.Send(new GetAllTemplateJawabanByBankSoalQuery(Guid.Parse(IdBankSoal)));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
-            }).WithTags(Tags.TemplatePertanyaan).RequireAuthorization();
+            }).WithTags(Tags.TemplateJawaban).RequireAuthorization();
         }
     }
 }
