@@ -4,6 +4,7 @@ using System.Text;
 using Dapper;
 using UnpakCbt.Common.Application.SortAndFilter;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace UnpakCbt.Common.Application.Pagingnation
 {
@@ -28,45 +29,46 @@ namespace UnpakCbt.Common.Application.Pagingnation
             {
                 foreach (var column in request.SearchColumn)
                 {
-                    switch (column.Type.ToLower())
-                    {
-                        case "text":
-                            if (column.Val is JsonElement je0 && je0.ValueKind == JsonValueKind.String)
-                            {
-                                var value = JsonSerializer.Deserialize<string>(je0.GetRawText());
-                                SearchColumn? search = allowSearch.FirstOrDefault(sc => sc.Key == column.Key);
-                                if (search != null && search.Key!="string")
-                                {
-                                    AddCondition(search.Key, "LIKE", value, true);
-                                }
-                            }
-                            break;
-                        case "range":
-                            if (column.Val is JsonElement je1 && je1.ValueKind == JsonValueKind.Array && column.Key != "string")
-                            {
-                                var list = JsonSerializer.Deserialize<List<string>>(je1.GetRawText());
-                                AddInCondition(column.Key, list);
-                            }
-                            else if (column.Val is List<string> valuesList && valuesList.Count > 0 && column.Key != "string")
-                            {
-                                AddInCondition(column.Key, valuesList);
-                            }
-                            break;
-                        case "between":
-                            if (column.Val is JsonElement je2 && je2.ValueKind == JsonValueKind.Array)
-                            {
-                                var list = JsonSerializer.Deserialize<List<string>>(je2.GetRawText());
-                                if (list != null && list.Count == 2 && column.Key != "string")
-                                {
-                                    AddBetweenCondition(column.Key, list[0], list[1]);
-                                }
-                            }
-                            else if (column.Val is List<string> valuesList && valuesList.Count == 2 && column.Key != "string")
-                            {
-                                AddBetweenCondition(column.Key, valuesList[0], valuesList[1]);
-                            }
-                            break;
+                    SearchColumn? search = allowSearch.FirstOrDefault(sc => sc.Key == column.Key);
 
+                    if (search == null || search.Key == "string")
+                        continue; // Skip jika tidak ditemukan di allowSearch atau key-nya "string"
+
+                    if (column.Val is JsonElement je)
+                    {
+                        switch (column.Type.ToLower())
+                        {
+                            case "text" when je.ValueKind == JsonValueKind.String:
+                                var value = JsonSerializer.Deserialize<string>(je.GetRawText());
+                                AddCondition(search.Val.ToString(), "LIKE", value, true);
+                                break;
+
+                            case "range" when je.ValueKind == JsonValueKind.Array && column.Key != "string":
+                                var list = JsonSerializer.Deserialize<List<string>>(je.GetRawText());
+                                AddInCondition(search.Val.ToString(), list);
+                                break;
+
+                            case "between" when je.ValueKind == JsonValueKind.Array:
+                                var listBetween = JsonSerializer.Deserialize<List<string>>(je.GetRawText());
+                                if (listBetween.Count == 2 && column.Key != "string")
+                                {
+                                    AddBetweenCondition(search.Val.ToString(), listBetween[0], listBetween[1]);
+                                }
+                                break;
+                        }
+                    }
+                    else if (column.Val is List<string> valuesList)
+                    {
+                        switch (column.Type.ToLower())
+                        {
+                            case "range" when valuesList.Count > 0 && column.Key != "string":
+                                AddInCondition(search.Val.ToString(), valuesList);
+                                break;
+
+                            case "between" when valuesList.Count == 2 && column.Key != "string":
+                                AddBetweenCondition(search.Val.ToString(), valuesList[0], valuesList[1]);
+                                break;
+                        }
                     }
                 }
             }
