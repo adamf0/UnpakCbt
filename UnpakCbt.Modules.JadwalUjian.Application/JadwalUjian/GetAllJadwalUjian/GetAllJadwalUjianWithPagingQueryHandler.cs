@@ -42,8 +42,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetAllJadwalUjian
             {
                 List<SearchColumn> allowSearch = new()
                 {
-                    new("tanggal", "jadwal_ujian.judul", ""),
-                    new("rule", "jadwal_ujian.rule", ""),
+                    new("tanggal", "jadwal_ujian.tanggal", ""),
                     new("deskripsi", "jadwal_ujian.deskripsi", "")
                 };
                 string[]? allowSearchKeys = allowSearch.Select(a => a.Key).ToArray();
