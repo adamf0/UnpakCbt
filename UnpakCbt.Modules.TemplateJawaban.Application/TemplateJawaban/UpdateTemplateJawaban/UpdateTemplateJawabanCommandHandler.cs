@@ -47,7 +47,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.UpdateTem
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil update TemplateJawaban dengan referensi uuid {request.Uuid}");
+            logger.LogInformation("berhasil update TemplateJawaban dengan referensi uuid {uuid}",request.Uuid);
 
             return Result.Success();
         }

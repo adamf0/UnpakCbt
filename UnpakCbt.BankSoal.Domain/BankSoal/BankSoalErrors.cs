@@ -4,6 +4,15 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
 {
     public static class BankSoalErrors
     {
+        public static Error InvalidPage() =>
+            Error.Problem("BankSoal.InvalidPage", "Page minimum is 1");
+        public static Error InvalidPageSize() =>
+            Error.Problem("BankSoal.InvalidPageSize", "Page size minimun is 1");
+        public static Error InvalidSearchRegistry(string value) =>
+            Error.Problem("BankSoal.InvalidSearchRegistry", $"Search column {value} not registered in system");
+        public static Error InvalidSortRegistry(string value) =>
+            Error.Problem("BankSoal.InvalidSortRegistry", $"Sort column {value} not registered in system");
+
         public static Error EmptyData() =>
             Error.NotFound("BankSoal.EmptyData", "Data is not found");
 

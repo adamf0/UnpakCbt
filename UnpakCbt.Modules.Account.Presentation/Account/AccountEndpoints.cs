@@ -13,6 +13,7 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
             Authentication.MapEndpoint(app);
             GetAccount.MapEndpoint(app);
             GetAllAccount.MapEndpoint(app);
+            GetAllAccountWithPaging.MapEndpoint(app);
         }
     }
 }

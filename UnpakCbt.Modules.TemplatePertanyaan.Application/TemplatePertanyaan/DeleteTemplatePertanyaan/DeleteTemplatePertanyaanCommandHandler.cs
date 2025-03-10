@@ -27,7 +27,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Del
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/pertanyaan_img");
                 filePath = Path.Combine(uploadsFolder, existingTemplatePertanyaan.PertanyaanImg);
-                logger.LogInformation($"setup path {filePath}");
+                logger.LogInformation("setup path {filePath}",filePath);
             }
             
             await templatePertanyaanRepository.DeleteAsync(existingTemplatePertanyaan);
@@ -35,11 +35,11 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Del
             if (filePath != null && File.Exists(filePath))
             {
                 File.Delete(filePath);
-                logger.LogInformation($"berhasil hapus file {filePath}");
+                logger.LogInformation("berhasil hapus file {filePath}",filePath);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil hapus TemplatePertanyaan dengan referensi uuid {request.uuid}");
+            logger.LogInformation("berhasil hapus TemplatePertanyaan dengan referensi uuid {uuid}",request.uuid);
 
             return Result.Success();
         }

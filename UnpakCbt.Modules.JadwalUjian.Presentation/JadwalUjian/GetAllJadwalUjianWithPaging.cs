@@ -9,17 +9,17 @@ using UnpakCbt.Common.Application.SortAndFilter;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.Security;
-using UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal;
-using UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal;
+using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetAllJadwalUjian;
+using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian;
 
-namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
+namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
 {
-    internal class GetAllBankSoalWithPaging
+    internal class GetAllJadwalUjianWithPaging
     {
         [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("BankSoals", async (GetAllBankSoalWithPagingRequest request, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
+            app.MapPost("JadwalUjians", async (GetAllJadwalUjianWithPagingRequest request, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
             {
                 var (isValid, error) = tokenValidator.ValidateToken(context);
                 if (!isValid)
@@ -27,7 +27,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                     return error;
                 }
 
-                Result<PagedList<BankSoalResponse>> result = await sender.Send(new GetAllBankSoalWithPagingQuery(
+                Result<PagedList<JadwalUjianResponse>> result = await sender.Send(new GetAllJadwalUjianWithPagingQuery(
                     request.SearchTerm,
                     request.SearchColumns,
                     request.SortColumn,
@@ -36,10 +36,10 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                 ));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
-            }).WithTags(Tags.BankSoal).RequireAuthorization();
+            }).WithTags(Tags.JadwalUjian).RequireAuthorization();
         }
 
-        internal sealed class GetAllBankSoalWithPagingRequest
+        internal sealed class GetAllJadwalUjianWithPagingRequest
         {
             [JsonPropertyName("SearchTerm")]
             public string? SearchTerm { get; set; } = null;

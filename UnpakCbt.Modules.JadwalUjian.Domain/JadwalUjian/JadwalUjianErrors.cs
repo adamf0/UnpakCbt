@@ -4,6 +4,17 @@ namespace UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian
 {
     public static class JadwalUjianErrors
     {
+        public static Error InvalidPage() =>
+            Error.Problem("JadwalUjian.InvalidPage", "Page minimum is 1");
+        public static Error InvalidPageSize() =>
+            Error.Problem("JadwalUjian.InvalidPageSize", "Page size minimun is 1");
+        public static Error InvalidSearchRegistry(string value) =>
+            Error.Problem("JadwalUjian.InvalidSearchRegistry", $"Search column {value} not registered in system");
+        public static Error InvalidSortRegistry(string value) =>
+            Error.Problem("JadwalUjian.InvalidSortRegistry", $"Sort column {value} not registered in system");
+        public static Error InvalidArgs(string value) =>
+            Error.Problem("JadwalUjian.InvalidArgs", value);
+
         public static Error EmptyData() =>
             Error.NotFound("JadwalUjianErrors.EmptyData", "Data is not found");
 

@@ -53,11 +53,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CreateJadwalUjian
 
             bankSoalRepository.Insert(result.Value);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil simpan JadwalUjian dengan hasil Uuid {result.Value.Uuid}");
+            logger.LogInformation("berhasil simpan JadwalUjian dengan hasil Uuid {uuid}",result.Value.Uuid);
 
             string key = "counter_" + result.Value.Uuid.ToString();
             await counterRepository.ResetCounterAsync(key, 0, timeToExpire);
-            logger.LogInformation($"berhasil setup {key}");
+            logger.LogInformation("berhasil setup {key}", key);
 
             return result.Value.Uuid;
         }

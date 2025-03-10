@@ -31,11 +31,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
 
             await jadwalUjianRepository.DeleteAsync(existingJadwalUjian!);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil hapus JadwalUjian dengan referensi Uuid {request.uuid}");
+            logger.LogInformation("berhasil hapus JadwalUjian dengan referensi Uuid {uuid}", request.uuid);
 
             string key = "counter_" + request.uuid.ToString();
             await counterRepository.DeleteKeyAsync(key);
-            logger.LogInformation($"berhasil hapus {key}");
+            logger.LogInformation("berhasil hapus {key}", key);
 
             return Result.Success();
         }

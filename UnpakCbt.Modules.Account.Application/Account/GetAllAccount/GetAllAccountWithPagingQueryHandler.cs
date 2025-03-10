@@ -7,29 +7,28 @@ using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Application.Pagingnation;
 using UnpakCbt.Common.Application.SortAndFilter;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal;
-using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
+using UnpakCbt.Modules.Account.Application.Account.GetAccount;
+using UnpakCbt.Modules.Account.Domain.Account;
 
-namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal
+namespace UnpakCbt.Modules.Account.Application.Account.GetAllAccount
 {
-    internal sealed class GetAllBankSoalWithPagingQueryHandler(IDbConnectionFactory _dbConnectionFactory, ILogger<GetAllBankSoalWithPagingQueryHandler> logger)
-        : IQueryHandler<GetAllBankSoalWithPagingQuery, PagedList<BankSoalResponse>>
+    internal sealed class GetAllAccountWithPagingQueryHandler(IDbConnectionFactory _dbConnectionFactory, ILogger<GetAllAccountWithPagingQueryHandler> logger)
+        : IQueryHandler<GetAllAccountWithPagingQuery, PagedList<AccountResponse>>
     {
-        public async Task<Result<PagedList<BankSoalResponse>>> Handle(GetAllBankSoalWithPagingQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagedList<AccountResponse>>> Handle(GetAllAccountWithPagingQuery request, CancellationToken cancellationToken)
         {
             logger.LogInformation("Received command with parameters: {@Request}", request);
 
             await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
 
-            StringBuilder sql = new StringBuilder(
+            StringBuilder sql = new(
             """
             SELECT 
-                uuid AS Uuid,
-                judul AS Judul,
-                rule AS Rule,
-                status AS Status,
-                (SELECT COUNT(*) FROM jadwal_ujian WHERE jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung
-            FROM bank_soal
+                CAST(NULLIF(uuid, '') AS VARCHAR(36)) AS Uuid,
+                username as Username,
+                level AS Level,
+                status AS Status
+            FROM user
             """);
 
             var queryBuilder = new DynamicQueryBuilder();
@@ -39,32 +38,33 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal
             {
                 List<SearchColumn> allowSearch = new()
                 {
-                    new("judul", "bank_soal.judul", ""),
-                    new("rule", "bank_soal.rule", ""),
-                    new("status", "bank_soal.status", "") 
+                    new("username", "user.username", ""),
+                    new("level", "user.level", ""),
+                    new("status", "user.status", "")
                 };
                 string[]? allowSearchKeys = allowSearch.Select(a => a.Key).ToArray();
 
                 string[] searchKeys = request.SearchColumn?.Select(sc => sc.Key).ToArray() ?? Array.Empty<string>();
                 string[] sortKeys = request.SortColumn?.Select(sc => sc.Key).ToArray() ?? Array.Empty<string>();
-                
-                if (request.Page <1) {
-                    return Result.Failure<PagedList<BankSoalResponse>>(BankSoalErrors.InvalidPage());
-                }
-                if (request.PageSize <1)
+
+                if (request.Page < 1)
                 {
-                    return Result.Failure<PagedList<BankSoalResponse>>(BankSoalErrors.InvalidPageSize());
+                    return Result.Failure<PagedList<AccountResponse>>(AccountErrors.InvalidPage());
+                }
+                if (request.PageSize < 1)
+                {
+                    return Result.Failure<PagedList<AccountResponse>>(AccountErrors.InvalidPageSize());
                 }
 
                 List<string> invalidKeys = searchKeys.Except(allowSearchKeys).ToList();
                 if (invalidKeys.Any())
                 {
-                    return Result.Failure<PagedList<BankSoalResponse>>(BankSoalErrors.InvalidSearchRegistry(string.Join(",", invalidKeys)));
+                    return Result.Failure<PagedList<AccountResponse>>(AccountErrors.InvalidSearchRegistry(string.Join(",", invalidKeys)));
                 }
                 invalidKeys = sortKeys.Except(allowSearchKeys).ToList();
                 if (invalidKeys.Any())
                 {
-                    return Result.Failure<PagedList<BankSoalResponse>>(BankSoalErrors.InvalidSortRegistry(string.Join(",", invalidKeys)));
+                    return Result.Failure<PagedList<AccountResponse>>(AccountErrors.InvalidSortRegistry(string.Join(",", invalidKeys)));
                 }
 
                 queryBuilder.ApplySearchFilters(request, allowSearch);
@@ -75,18 +75,18 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal
 
                 logger.LogInformation("Executing query: {@Query}; \nparameters: {@parameters}; \nPage: {@Page}; \nPageSize: {@PageSize}", sql.ToString(), parameters.ParameterNames.ToDictionary(p => p, p => parameters.Get<object>(p)), request.Page, request.PageSize);
 
-                var pagedResult = await PagedList<BankSoalResponse>.CreateAsync(sql.ToString(), parameters, request.Page, request.PageSize, connection, logger);
+                var pagedResult = await PagedList<AccountResponse>.CreateAsync(sql.ToString(), parameters, request.Page, request.PageSize, connection, logger);
 
                 if (!pagedResult.Items.Any())
                 {
-                    return Result.Failure<PagedList<BankSoalResponse>>(BankSoalErrors.EmptyData());
+                    return Result.Failure<PagedList<AccountResponse>>(AccountErrors.EmptyData());
                 }
 
                 return Result.Success(pagedResult);
             }
             catch (ArgumentException ex)
             {
-                return Result.Failure<PagedList<BankSoalResponse>>(BankSoalErrors.InvalidArgs(ex.Message));
+                return Result.Failure<PagedList<AccountResponse>>(AccountErrors.InvalidArgs(ex.Message));
             }
         }
     }

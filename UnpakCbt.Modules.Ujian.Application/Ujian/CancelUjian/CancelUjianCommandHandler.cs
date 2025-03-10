@@ -55,7 +55,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil cancel Ujian dengan referensi Uuid {request.uuid}");
+            logger.LogInformation("berhasil cancel Ujian dengan referensi Uuid {uuid}",request.uuid);
 
             string oldKey = "counter_" + jadwalUjian.Uuid;
             int prevCounter = await counterRepository.GetCounterAsync(oldKey);
@@ -63,7 +63,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
             if (checkKey && prevCounter > 0)
             {
                 await counterRepository.DecrementCounterAsync(oldKey, null);
-                logger.LogInformation($"berhasil decrement key {oldKey}");
+                logger.LogInformation("berhasil decrement key {oldKey}",oldKey);
             }
 
             return Result.Success();

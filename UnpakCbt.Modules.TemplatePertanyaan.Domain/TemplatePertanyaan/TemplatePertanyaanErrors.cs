@@ -4,6 +4,17 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Domain.TemplatePertanyaan
 {
     public static class TemplatePertanyaanErrors
     {
+        public static Error InvalidPage() =>
+            Error.Problem("TemplatePertanyaan.InvalidPage", "Page minimum is 1");
+        public static Error InvalidPageSize() =>
+            Error.Problem("TemplatePertanyaan.InvalidPageSize", "Page size minimun is 1");
+        public static Error InvalidSearchRegistry(string value) =>
+            Error.Problem("TemplatePertanyaan.InvalidSearchRegistry", $"Search column {value} not registered in system");
+        public static Error InvalidSortRegistry(string value) =>
+            Error.Problem("TemplatePertanyaan.InvalidSortRegistry", $"Sort column {value} not registered in system");
+        public static Error InvalidArgs(string value) =>
+            Error.Problem("TemplatePertanyaan.InvalidArgs", value);
+
         public static Error EmptyData() =>
             Error.NotFound("TemplatePertanyaan.EmptyData", "Data is not found");
 

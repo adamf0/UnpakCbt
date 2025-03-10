@@ -61,7 +61,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
             templatePertanyaanRepository.Insert(result.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil simpan TemplatePertanyaan dengan hasil Uuid {result.Value.Uuid}");
+            logger.LogInformation("berhasil simpan TemplatePertanyaan dengan hasil Uuid {uuid}",result.Value.Uuid);
 
 
             return result.Value.Uuid;

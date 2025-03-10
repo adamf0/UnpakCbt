@@ -23,7 +23,7 @@ namespace UnpakCbt.Modules.Account.Application.Account.DeleteAccount
             }
 
             await AccountRepository.DeleteAsync(existingAccount!);
-            logger.LogInformation($"berhasil hapus Account dengan referensi uuid {request.uuid}");
+            logger.LogInformation("berhasil hapus Account dengan referensi uuid {uuid}", request.uuid);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

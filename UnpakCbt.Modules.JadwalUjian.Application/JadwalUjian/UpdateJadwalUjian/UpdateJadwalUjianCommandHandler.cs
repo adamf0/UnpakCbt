@@ -45,7 +45,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil update JadwalUjian dengan referensi uuid {request.Uuid}");
+            logger.LogInformation("berhasil update JadwalUjian dengan referensi uuid {uuid}", request.Uuid);
 
             result = checkFormat(logger, existingJadwalUjian.Tanggal, existingJadwalUjian.JamMulai, existingJadwalUjian.JamAkhir, true);
             if (result != null)
@@ -59,7 +59,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                 string key = $"counter_{request.Uuid}";
 
                 await counterRepository.ResetCounterAsync(key, 0, timeToExpire);
-                logger.LogInformation($"key {key} berhasil di reset ke 0");
+                logger.LogInformation("key {key} berhasil di reset ke 0",key);
             }
 
             //[PR] [Skipped]            

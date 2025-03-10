@@ -33,7 +33,7 @@ namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulusTotal
             }
 
             // Gunakan StringBuilder untuk membangun query dengan lebih aman
-            var sqlBuilder = new StringBuilder();
+            StringBuilder sqlBuilder = new();
             sqlBuilder.AppendLine("""
                 SELECT
                     COUNT(CASE WHEN u.keputusan = 'tidak lulus' THEN 1 END) AS TotalTidakLulus,

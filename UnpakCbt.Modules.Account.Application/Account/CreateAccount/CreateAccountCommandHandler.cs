@@ -37,7 +37,7 @@ namespace UnpakCbt.Modules.Account.Application.Account.CreateAccount
             AccountRepository.Insert(result.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil simpan Account dengan hasil uuid {result.Value.Uuid}");
+            logger.LogInformation("berhasil simpan Account dengan hasil uuid {uuid}", result.Value.Uuid);
 
             return result.Value.Uuid;
         }

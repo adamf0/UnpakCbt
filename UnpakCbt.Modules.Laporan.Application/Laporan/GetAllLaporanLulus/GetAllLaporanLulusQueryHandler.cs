@@ -36,7 +36,7 @@ namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus
             }
 
             // Gunakan StringBuilder untuk membangun query dengan lebih aman
-            var sqlBuilder = new StringBuilder();
+            StringBuilder sqlBuilder = new();
             sqlBuilder.AppendLine("""
                 SELECT 
                     u.uuid AS Uuid,

@@ -29,7 +29,7 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.CreateBankSoal
             bankSoalRepository.Insert(result.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil simpan BankSoal dengan hasil uuid {result.Value.Uuid}");
+            logger.LogInformation("berhasil simpan BankSoal dengan hasil uuid {uuid}", result.Value.Uuid);
 
             return result.Value.Uuid;
         }

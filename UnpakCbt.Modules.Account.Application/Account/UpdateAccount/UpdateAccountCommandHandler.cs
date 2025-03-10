@@ -35,7 +35,7 @@ namespace UnpakCbt.Modules.Account.Application.Account.UpdateAccount
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil update Account dengan referensi uuid {request.Uuid}");
+            logger.LogInformation("berhasil update Account dengan referensi uuid {uuid}", request.Uuid);
 
             return Result.Success();
         }

@@ -24,12 +24,12 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.DeleteBankSoal
 
             if (existingBankSoal is null)
             {
-                logger.LogError($"BankSoal dengan referensi uuid {request.uuid} tidak ditemukan");
+                logger.LogError("BankSoal dengan referensi uuid {uuid} tidak ditemukan", request.uuid);
                 return Result.Failure(BankSoalErrors.NotFound(request.uuid));
             }
 
             await bankSoalRepository.DeleteAsync(existingBankSoal!);
-            logger.LogInformation($"berhasil hapus BankSoal dengan referensi uuid {request.uuid}");
+            logger.LogInformation("berhasil hapus BankSoal dengan referensi uuid {uuid}", request.uuid);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text;
 using Dapper;
 using UnpakCbt.Common.Application.SortAndFilter;
+using System.Linq;
 
 namespace UnpakCbt.Common.Application.Pagingnation
 {
@@ -10,56 +11,63 @@ namespace UnpakCbt.Common.Application.Pagingnation
     {
         private readonly List<string> _conditions = new();
         private readonly DynamicParameters _parameters = new();
+        private bool isGlobalSearch = false;
 
-        public void ApplySearchFilters<TQuery>(TQuery request, List<string> allowSearch)
+        public void ApplySearchFilters<TQuery>(TQuery request, List<SearchColumn> allowSearch)
         where TQuery : ISearchable
         {
-            if (request.SearchColumn?.Any() == true)
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                isGlobalSearch = true;
+                foreach (SearchColumn field in allowSearch)
+                {
+                    AddCondition(field.Val.ToString(), "LIKE", request.SearchTerm, true);
+                }
+            } 
+            else if (request.SearchColumn?.Any() == true)
             {
                 foreach (var column in request.SearchColumn)
                 {
                     switch (column.Type.ToLower())
                     {
                         case "text":
-                            AddCondition(column.Key, "LIKE", $"%{column.Val}%");
+                            if (column.Val is JsonElement je0 && je0.ValueKind == JsonValueKind.String)
+                            {
+                                var value = JsonSerializer.Deserialize<string>(je0.GetRawText());
+                                SearchColumn? search = allowSearch.FirstOrDefault(sc => sc.Key == column.Key);
+                                if (search != null && search.Key!="string")
+                                {
+                                    AddCondition(search.Key, "LIKE", value, true);
+                                }
+                            }
                             break;
                         case "range":
-                            if (column.Val is JsonElement jsonElement && jsonElement.ValueKind == JsonValueKind.Array)
+                            if (column.Val is JsonElement je1 && je1.ValueKind == JsonValueKind.Array && column.Key != "string")
                             {
-                                var list = JsonSerializer.Deserialize<List<string>>(jsonElement.GetRawText());
+                                var list = JsonSerializer.Deserialize<List<string>>(je1.GetRawText());
                                 AddInCondition(column.Key, list);
                             }
-                            else if (column.Val is List<string> valuesList && valuesList.Count > 0)
+                            else if (column.Val is List<string> valuesList && valuesList.Count > 0 && column.Key != "string")
                             {
                                 AddInCondition(column.Key, valuesList);
                             }
                             break;
                         case "between":
-                            if (column.Val is JsonElement jsonElement1 && jsonElement1.ValueKind == JsonValueKind.Array)
+                            if (column.Val is JsonElement je2 && je2.ValueKind == JsonValueKind.Array)
                             {
-                                var list = JsonSerializer.Deserialize<List<string>>(jsonElement1.GetRawText());
-                                if (list != null && list.Count == 2)
+                                var list = JsonSerializer.Deserialize<List<string>>(je2.GetRawText());
+                                if (list != null && list.Count == 2 && column.Key != "string")
                                 {
                                     AddBetweenCondition(column.Key, list[0], list[1]);
                                 }
                             }
-                            else if (column.Val is List<string> valuesList && valuesList.Count == 2)
+                            else if (column.Val is List<string> valuesList && valuesList.Count == 2 && column.Key != "string")
                             {
                                 AddBetweenCondition(column.Key, valuesList[0], valuesList[1]);
                             }
-                            else
-                            {
-                                throw new ArgumentException($"Invalid value for 'between' filter on column {column.Key}");
-                            }
                             break;
+
                     }
-                }
-            }
-            else if (!string.IsNullOrWhiteSpace(request.SearchTerm))
-            {
-                foreach (var field in allowSearch)
-                {
-                    AddCondition(field, "LIKE", $"%{request.SearchTerm}%");
                 }
             }
         }
@@ -70,7 +78,10 @@ namespace UnpakCbt.Common.Application.Pagingnation
         {
             if (request.SortColumn?.Any() == true)
             {
-                var orderBy = string.Join(", ", request.SortColumn.Select(s => $"{s.Key} {s.Val.ToUpper()}"));
+                var orderBy = string.Join(", ", request.SortColumn
+                                .Where(s => s.Key != "string")
+                                .Select(s => $"{s.Key} {(s.Val.ToUpper() == "DESC" ? "ASC" : "DESC")}"));
+
                 sql.Append($" ORDER BY {orderBy}");
             }
             else
@@ -79,11 +90,20 @@ namespace UnpakCbt.Common.Application.Pagingnation
             }
         }
 
-        private void AddCondition(string column, string operation, object value)
+        public void AddCondition(string column, string operation, object value, bool isLike = false)
         {
             var paramName = $"@{column.Replace(".", "_")}";
+
+            if (isLike && value is string strValue)
+            {
+                _parameters.Add(paramName, $"%{strValue}%");
+            }
+            else
+            {
+                _parameters.Add(paramName, value);
+            }
+
             _conditions.Add($"{column} {operation} {paramName}");
-            _parameters.Add(paramName, value);
         }
 
         private void AddInCondition(string column, List<string>? values)
@@ -101,7 +121,7 @@ namespace UnpakCbt.Common.Application.Pagingnation
             _conditions.Add($"{column} IN ({string.Join(", ", paramNames)})");
         }
 
-        private void AddBetweenCondition(string column, object value1, object value2)
+        public void AddBetweenCondition(string column, object value1, object value2)
         {
             var param1 = $"@{column.Replace(".", "_")}_1";
             var param2 = $"@{column.Replace(".", "_")}_2";
@@ -112,7 +132,7 @@ namespace UnpakCbt.Common.Application.Pagingnation
 
         public string BuildWhereClause()
         {
-            return _conditions.Any() ? " WHERE " + string.Join(" AND ", _conditions) : "";
+            return _conditions.Any() ? " WHERE " + string.Join(isGlobalSearch? " OR " : " AND ", _conditions) : "";
         }
 
         public DynamicParameters GetParameters() => _parameters;

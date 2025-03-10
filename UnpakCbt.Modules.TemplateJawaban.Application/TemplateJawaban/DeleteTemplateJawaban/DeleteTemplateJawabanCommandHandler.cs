@@ -28,16 +28,16 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.DeleteTem
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads/jawaban_img");
                 filePath = Path.Combine(uploadsFolder, existingTemplateJawaban.JawabanImg);
-                logger.LogInformation($"setup path file {filePath}");
+                logger.LogInformation("setup path file {filePath}",filePath);
             }
             
             await templateJawabanRepository.DeleteAsync(existingTemplateJawaban);
-            logger.LogInformation($"berhasil hapus TemplateJawaban dengan referensi Uuid {request.uuid}");
+            logger.LogInformation("berhasil hapus TemplateJawaban dengan referensi Uuid {uuid}",request.uuid);
 
             if (filePath != null && File.Exists(filePath))
             {
                 File.Delete(filePath);
-                logger.LogInformation($"berhasil hapus file {filePath}");
+                logger.LogInformation("berhasil hapus file {filePath}",filePath);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);

@@ -35,7 +35,7 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.UpdateBankSoal
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil update BankSoal dengan referensi uuid {request.Uuid}");
+            logger.LogInformation("berhasil update BankSoal dengan referensi uuid {uuid}", request.Uuid);
 
             return Result.Success();
         }

@@ -67,7 +67,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil update TemplatePertanyaan dengan referensi Uuid {request.Uuid}");
+            logger.LogInformation("berhasil update TemplatePertanyaan dengan referensi Uuid {uuid}",request.Uuid);
 
             return Result.Success();
         }

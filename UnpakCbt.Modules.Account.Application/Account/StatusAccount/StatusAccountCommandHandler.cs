@@ -33,7 +33,7 @@ namespace UnpakCbt.Modules.Account.Application.Account.StatusAccount
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil ubah status Account menjadi {request.Status} dengan referensi uuid {request.Uuid}");
+            logger.LogInformation("berhasil ubah status Account menjadi {status} dengan referensi uuid {uuid}", request.Status, request.Uuid);
 
             return Result.Success();
         }

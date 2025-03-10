@@ -34,7 +34,7 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.StatusBankSoal
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil ubah status BankSoal menjadi {request.Status} dengan referensi uuid {request.Uuid}");
+            logger.LogInformation("berhasil ubah status BankSoal menjadi {status} dengan referensi uuid {uuid}", request.Status, request.Uuid);
 
             return Result.Success();
         }

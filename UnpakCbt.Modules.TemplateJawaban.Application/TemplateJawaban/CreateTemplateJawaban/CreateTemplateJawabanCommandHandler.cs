@@ -40,7 +40,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.CreateTem
             templateJawabanRepository.Insert(result.Value);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            logger.LogInformation($"berhasil simpan TemplateJawaban dengan hasil uuid {result.Value.Uuid}");
+            logger.LogInformation("berhasil simpan TemplateJawaban dengan hasil uuid {uuid}", result.Value.Uuid);
 
             return result.Value.Uuid;
         }
