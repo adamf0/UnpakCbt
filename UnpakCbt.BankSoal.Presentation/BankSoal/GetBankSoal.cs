@@ -15,13 +15,13 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
         [Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("BankSoal/{id}", async (string id, ISender sender, HttpContext context, TokenValidator tokenValidator) =>
+            app.MapGet("BankSoal/{id}", async (string id, ISender sender) => //HttpContext context, TokenValidator tokenValidator
             {
-                var (isValid, error) = tokenValidator.ValidateToken(context);
+                /*var (isValid, error) = tokenValidator.ValidateToken(context);
                 if (!isValid)
                 {
                     return error;
-                }
+                }*/
 
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
@@ -35,7 +35,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                 Result<BankSoalResponse> result = await sender.Send(new GetBankSoalQuery(Guid.Parse(id)));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
-            }).WithTags(Tags.BankSoal).RequireAuthorization();
+            }).WithTags(Tags.BankSoal);
         }
     }
 }
