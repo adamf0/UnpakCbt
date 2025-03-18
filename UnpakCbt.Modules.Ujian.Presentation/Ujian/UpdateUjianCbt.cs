@@ -44,7 +44,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 }
 
                 Result result = await sender.Send(new UpdateCbtCommand(
-                    Guid.Parse(request.UuidJadwal),
+                    Guid.Parse(request.UuidUjian),
                     request.NoReg,
                     Guid.Parse(request.UuidTemplateSoal),
                     Guid.Parse(request.UuidJawabanBenar)
@@ -57,7 +57,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
         internal sealed class UpdateUjianCbtRequest
         {
-            public string UuidJadwal { get; set; }
+            public string UuidUjian { get; set; }
             public string NoReg { get; set; }
             public string UuidTemplateSoal { get; set; }
             public string UuidJawabanBenar { get; set; }
