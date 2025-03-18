@@ -20,11 +20,11 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
     {
         public async Task<Result<Guid>> Handle(RescheduleUjianCommand request, CancellationToken cancellationToken)
         {
-            int totalActiveUjian = await ujianRepository.GetCountJadwalActiveAsync(request.NoReg); //active, start, done
+            /*int totalActiveUjian = await ujianRepository.GetCountJadwalActiveAsync(request.NoReg); //active, start, done
             if (totalActiveUjian > 0)
             {
                 return Result.Failure<Guid>(UjianErrors.ActiveExam(request.NoReg));
-            }
+            }*/
 
             JadwalUjianResponse? existingPrevJadwalUjian = await jadwalUjianApi.GetAsync(request.prevIdJadwalUjian, cancellationToken);
             if (existingPrevJadwalUjian is null)

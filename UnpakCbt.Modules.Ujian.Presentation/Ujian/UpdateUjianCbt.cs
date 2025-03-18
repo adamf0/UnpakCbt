@@ -17,9 +17,9 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapPut("Ujian/Cbt", async (UpdateUjianCbtRequest request, ISender sender) =>
             {
-                if (!SecurityCheck.NotContainInvalidCharacters(request.UuidJadwal))
+                if (!SecurityCheck.NotContainInvalidCharacters(request.UuidUjian))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJadwal mengandung karakter berbahaya")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidUjian mengandung karakter berbahaya")));
                 }
                 if (!SecurityCheck.NotContainInvalidCharacters(request.UuidTemplateSoal))
                 {
@@ -30,9 +30,9 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJawabanBenar mengandung karakter berbahaya")));
                 }
 
-                if (!SecurityCheck.isValidGuid(request.UuidJadwal))
+                if (!SecurityCheck.isValidGuid(request.UuidUjian))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJadwal harus Guid format")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidUjian harus Guid format")));
                 }
                 if (!SecurityCheck.isValidGuid(request.UuidTemplateSoal))
                 {
