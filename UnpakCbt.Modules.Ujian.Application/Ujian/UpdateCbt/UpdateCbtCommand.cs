@@ -3,9 +3,9 @@
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
 {
     public sealed record UpdateCbtCommand(
-        Guid Uuid,
+        Guid UuidUjian,
         string NoReg,
-        Guid IdJadwalUjian,
-        Guid IdJawabanBenar
+        Guid uuidTemplateSoal,
+        Guid uuidJawabanBenar
     ) : ICommand;
 }

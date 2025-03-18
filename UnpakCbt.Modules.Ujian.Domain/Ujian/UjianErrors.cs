@@ -37,6 +37,9 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error ScheduleExamDoneExam() =>
             Error.Problem("UjianErrors.ScheduleExamDoneExam", "The status exam schedule has been done");
 
+        public static Error ScheduleExamNotStartedExam() =>
+            Error.Problem("UjianErrors.ScheduleExamNotStartedExam", "The status exam schedule has not started yet");
+
         public static Error ScheduleExamStartExam() =>
             Error.Problem("UjianErrors.ScheduleExamStartExam", "The status exam schedule has been started");
 

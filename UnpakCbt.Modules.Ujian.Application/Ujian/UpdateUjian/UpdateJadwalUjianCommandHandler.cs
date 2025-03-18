@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using UnpakCbt.Modules.TemplatePertanyaan.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
+using UnpakCbt.Modules.Ujian.Domain.Cbt;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
@@ -39,7 +39,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetAsync(request.IdJadwalUjian, cancellationToken);
             if (jadwalUjian is null)
             {
-                return Result.Failure<Guid>(JadwalUjianErrors.NotFound(request.IdJadwalUjian));
+                return Result.Failure<Guid>(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.IdJadwalUjian));
             }
 
             if (string.IsNullOrWhiteSpace(jadwalUjian.Tanggal) ||

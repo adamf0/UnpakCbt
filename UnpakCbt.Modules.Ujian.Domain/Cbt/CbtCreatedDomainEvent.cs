@@ -1,6 +1,6 @@
 ﻿using UnpakCbt.Common.Domain;
 
-namespace UnpakCbt.Modules.Ujian.Domain.Ujian
+namespace UnpakCbt.Modules.Ujian.Domain.Cbt
 {
     public sealed class CbtCreatedDomainEvent(Guid eventId) : DomainEvent
     {

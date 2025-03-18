@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using UnpakCbt.Modules.TemplatePertanyaan.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
+using UnpakCbt.Modules.Ujian.Domain.Cbt;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
@@ -29,13 +29,13 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             JadwalUjianResponse? existingPrevJadwalUjian = await jadwalUjianApi.GetAsync(request.prevIdJadwalUjian, cancellationToken);
             if (existingPrevJadwalUjian is null)
             {
-                Result.Failure(JadwalUjianErrors.NotFound(request.prevIdJadwalUjian));
+                Result.Failure(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.prevIdJadwalUjian));
             }
 
             JadwalUjianResponse? newJadwalUjian = await jadwalUjianApi.GetAsync(request.newIdJadwalUjian, cancellationToken);
             if (newJadwalUjian is null)
             {
-                Result.Failure(JadwalUjianErrors.NotFound(request.newIdJadwalUjian));
+                Result.Failure(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.newIdJadwalUjian));
             }
 
 
@@ -142,7 +142,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
         {
             if (jadwalUjian is null)
             {
-                return Result.Failure<Guid>(JadwalUjianErrors.NotFound(id));
+                return Result.Failure<Guid>(Domain.JadwalUjian.JadwalUjianErrors.NotFound(id));
             }
 
             return null;
@@ -153,7 +153,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
                     string.IsNullOrWhiteSpace(jadwalUjian.JamMulai) ||
                     string.IsNullOrWhiteSpace(jadwalUjian.JamAkhir))
             {
-                return Result.Failure<Guid>(JadwalUjianErrors.EmptyDataScheduleFormat());
+                return Result.Failure<Guid>(Domain.JadwalUjian.JadwalUjianErrors.EmptyDataScheduleFormat());
             }
 
             return null;

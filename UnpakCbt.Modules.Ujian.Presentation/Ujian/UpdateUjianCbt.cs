@@ -17,37 +17,37 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapPut("Ujian/Cbt", async (UpdateUjianCbtRequest request, ISender sender) =>
             {
-                if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
+                if (!SecurityCheck.NotContainInvalidCharacters(request.UuidJadwal))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJadwal mengandung karakter berbahaya")));
                 }
-                if (!SecurityCheck.NotContainInvalidCharacters(request.IdJadwalUjian))
+                if (!SecurityCheck.NotContainInvalidCharacters(request.UuidTemplateSoal))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidTemplateSoal mengandung karakter berbahaya")));
                 }
-                if (!SecurityCheck.NotContainInvalidCharacters(request.IdJawabanBenar))
+                if (!SecurityCheck.NotContainInvalidCharacters(request.UuidJawabanBenar))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJawabanBenar mengandung karakter berbahaya")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJawabanBenar mengandung karakter berbahaya")));
                 }
 
-                if (!SecurityCheck.isValidGuid(request.Id))
+                if (!SecurityCheck.isValidGuid(request.UuidJadwal))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJadwal harus Guid format")));
                 }
-                if (!SecurityCheck.isValidGuid(request.IdJadwalUjian))
+                if (!SecurityCheck.isValidGuid(request.UuidTemplateSoal))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian harus Guid format")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidTemplateSoal harus Guid format")));
                 }
-                if (!SecurityCheck.isValidGuid(request.IdJawabanBenar))
+                if (!SecurityCheck.isValidGuid(request.UuidJawabanBenar))
                 {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJawabanBenar harus Guid format")));
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "UuidJawabanBenar harus Guid format")));
                 }
 
                 Result result = await sender.Send(new UpdateCbtCommand(
-                    Guid.Parse(request.Id),
+                    Guid.Parse(request.UuidJadwal),
                     request.NoReg,
-                    Guid.Parse(request.IdJadwalUjian),
-                    Guid.Parse(request.IdJawabanBenar)
+                    Guid.Parse(request.UuidTemplateSoal),
+                    Guid.Parse(request.UuidJawabanBenar)
                     )
                 );
 
@@ -57,10 +57,10 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
         internal sealed class UpdateUjianCbtRequest
         {
-            public string Id { get; set; }
+            public string UuidJadwal { get; set; }
             public string NoReg { get; set; }
-            public string IdJadwalUjian { get; set; }
-            public string IdJawabanBenar { get; set; }
+            public string UuidTemplateSoal { get; set; }
+            public string UuidJawabanBenar { get; set; }
         }
     }
 }

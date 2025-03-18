@@ -27,12 +27,12 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian
                      jam_akhir_ujian AS JamAkhir,
                      id_bank_soal AS IdBankSoal
                  FROM jadwal_ujian  
-                 WHERE id = @id
+                 WHERE Id = @Id
                  """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-            var result = await connection.QuerySingleOrDefaultAsync<JadwalUjianDefaultResponse?>(sql, new { id = request.id });
+            var result = await connection.QuerySingleOrDefaultAsync<JadwalUjianDefaultResponse?>(sql, new { Id = request.id });
             if (result == null)
             {
                 return Result.Failure<JadwalUjianDefaultResponse>(JadwalUjianErrors.IdNotFound(request.id??0));

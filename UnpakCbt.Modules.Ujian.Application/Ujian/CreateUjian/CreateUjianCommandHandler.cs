@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using UnpakCbt.Modules.TemplatePertanyaan.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
+using UnpakCbt.Modules.Ujian.Domain.Cbt;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
@@ -85,7 +85,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
         private Result? checkData(JadwalUjianResponse? jadwalUjian, Guid IdJadwalUjian) {
             if (jadwalUjian is null)
             {
-                return Result.Failure<Guid>(JadwalUjianErrors.NotFound(IdJadwalUjian));
+                return Result.Failure<Guid>(Domain.JadwalUjian.JadwalUjianErrors.NotFound(IdJadwalUjian));
             }
 
             return null;

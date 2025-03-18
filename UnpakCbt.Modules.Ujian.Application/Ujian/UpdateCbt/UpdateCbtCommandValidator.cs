@@ -15,20 +15,20 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
         }
         public UpdateCbtCommandValidator() 
         {
-            RuleFor(c => c.Uuid)
-                .NotEmpty().WithMessage("'Uuid' tidak boleh kosong.")
-                .Must(BeValidGuidV4).WithMessage("'Uuid' harus dalam format UUID v4 yang valid.");
+            RuleFor(c => c.uuidTemplateSoal)
+                .NotEmpty().WithMessage("'uuidTemplateSoal' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'uuidTemplateSoal' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.NoReg)
                 .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.");
 
-            RuleFor(c => c.IdJadwalUjian)
-                .NotEmpty().WithMessage("'IdJadwalUjian' tidak boleh kosong.")
-                .Must(BeValidGuidV4).WithMessage("'IdJadwalUjian' harus dalam format UUID v4 yang valid.");
+            RuleFor(c => c.UuidUjian)
+                .NotEmpty().WithMessage("'UuidUjian' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'UuidUjian' harus dalam format UUID v4 yang valid.");
 
-            RuleFor(c => c.IdJawabanBenar)
-                .NotEmpty().WithMessage("'IdJawabanBenar' tidak boleh kosong.")
-                .Must(BeValidGuidV4).WithMessage("'IdJawabanBenar' harus dalam format UUID v4 yang valid.");
+            RuleFor(c => c.uuidJawabanBenar)
+                .NotEmpty().WithMessage("'uuidJawabanBenar' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'uuidJawabanBenar' harus dalam format UUID v4 yang valid.");
 
         }
     }

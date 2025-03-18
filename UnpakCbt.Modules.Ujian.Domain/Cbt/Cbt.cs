@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using UnpakCbt.Common.Domain;
 
-namespace UnpakCbt.Modules.Ujian.Domain.Ujian
+namespace UnpakCbt.Modules.Ujian.Domain.Cbt
 {
     public sealed partial class Cbt : Entity
     {

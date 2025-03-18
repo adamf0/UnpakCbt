@@ -8,13 +8,103 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
     public sealed class UjianDbContext(DbContextOptions<UjianDbContext> options) : DbContext(options), IUnitOfWork
     {
         internal DbSet<Domain.Ujian.Ujian> Ujian { get; set; }
-        internal DbSet<Domain.Ujian.Cbt> Cbt { get; set; }
+        internal DbSet<Domain.Cbt.Cbt> Cbt { get; set; }
+        internal DbSet<Domain.TemplatePertanyaan.TemplatePertanyaan> TemplatePertanyaan { get; set; }
+        internal DbSet<Domain.JadwalUjian.JadwalUjian> JadwalUjian { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Domain.JadwalUjian.JadwalUjian>().ToTable(Schemas.JadwalUjian);
+            modelBuilder.Entity<Domain.JadwalUjian.JadwalUjian>(entity =>
+            {
+                var guidConverter = new ValueConverter<Guid, string>(
+                    v => v.ToString("D"), // Mengonversi Guid ke string dengan format "N" (tidak ada tanda hubung)
+                    v => Guid.ParseExact(v, "D") // Mengonversi string kembali menjadi Guid
+                );
+                entity.ToTable(Schemas.JadwalUjian);
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                      .HasColumnName("id");
+
+                entity.Property(e => e.Uuid)
+                      .HasColumnName("uuid")
+                      .HasColumnType("VARCHAR(36)");
+                //.HasConversion(guidConverter);
+
+                entity.Property(e => e.Deskripsi)
+                      .HasColumnName("deskripsi");
+
+                entity.Property(e => e.Kuota)
+                      .HasColumnName("kuota");
+
+                entity.Property(e => e.Tanggal)
+                      .HasColumnName("tanggal");
+
+                entity.Property(e => e.Kuota)
+                      .HasColumnName("kuota");
+
+                entity.Property(e => e.JamMulai)
+                      .HasColumnName("jam_mulai_ujian");
+
+                entity.Property(e => e.JamAkhir)
+                      .HasColumnName("jam_akhir_ujian");
+
+                entity.Property(e => e.IdBankSoal)
+                      .HasColumnName("id_bank_soal");
+            });
+
+
+            ////
+
+
+            modelBuilder.Entity<Domain.TemplatePertanyaan.TemplatePertanyaan>().ToTable(Schemas.TemplatePertanyaan);
+            modelBuilder.Entity<Domain.TemplatePertanyaan.TemplatePertanyaan>(entity =>
+            {
+                var guidConverter = new ValueConverter<Guid, string>(
+                    v => v.ToString("D"), // Mengonversi Guid ke string dengan format "N" (tidak ada tanda hubung)
+                    v => Guid.ParseExact(v, "D") // Mengonversi string kembali menjadi Guid
+                );
+                entity.ToTable(Schemas.TemplatePertanyaan);
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                      .HasColumnName("id");
+
+                entity.Property(e => e.Uuid)
+                      .HasColumnName("uuid")
+                      .HasColumnType("VARCHAR(36)");
+                //.HasConversion(guidConverter);
+
+                entity.Property(e => e.IdBankSoal)
+                      .HasColumnName("id_bank_soal");
+
+                entity.Property(e => e.Tipe)
+                      .HasColumnName("tipe");
+
+                entity.Property(e => e.PertanyaanText)
+                      .HasColumnName("pertanyaan_text");
+
+                entity.Property(e => e.PertanyaanImg)
+                      .HasColumnName("pertanyaan_img");
+
+                entity.Property(e => e.JawabanBenar)
+                      .HasColumnName("jawaban_benar");
+
+                entity.Property(e => e.Bobot)
+                      .HasColumnName("bobot");
+
+                entity.Property(e => e.State)
+                      .HasColumnName("state");
+            });
+
+
+            ////
+
             modelBuilder.Entity<Domain.Ujian.Ujian>().ToTable(Schemas.Ujian);
             modelBuilder.ApplyConfiguration(new UjianConfiguration());
-
             modelBuilder.Entity<Domain.Ujian.Ujian>(entity =>
             {
                 var guidConverter = new ValueConverter<Guid, string>(
@@ -46,10 +136,9 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
 
             ////
             
-            modelBuilder.Entity<Domain.Ujian.Cbt>().ToTable(Schemas.Cbt);
+            modelBuilder.Entity<Domain.Cbt.Cbt>().ToTable(Schemas.Cbt);
             modelBuilder.ApplyConfiguration(new UjianConfiguration());
-
-            modelBuilder.Entity<Domain.Ujian.Cbt>(entity =>
+            modelBuilder.Entity<Domain.Cbt.Cbt>(entity =>
             {
                 var guidConverter = new ValueConverter<Guid, string>(
                     v => v.ToString("D"), // Mengonversi Guid ke string dengan format "N" (tidak ada tanda hubung)
