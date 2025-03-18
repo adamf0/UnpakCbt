@@ -15,6 +15,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
             CancelUjian.MapEndpoint(app);
             GetUjian.MapEndpoint(app);
             GetAllUjian.MapEndpoint(app);
+            GetAllUjianByJadwalUjian.MapEndpoint(app);
 
             UpdateUjianCbt.MapEndpoint(app);
         }
