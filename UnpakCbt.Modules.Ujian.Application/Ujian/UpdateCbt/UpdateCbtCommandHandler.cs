@@ -102,7 +102,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
             }
             logger.LogInformation("JawabanBenar: {@JawabanBenar}", JawabanBenar);
 
-            Cbt? existingCbt = await cbtRepository.GetAsync(request.UuidUjian, request.uuidTemplateSoal, request.NoReg);
+            Domain.Cbt.Cbt? existingCbt = await cbtRepository.GetAsync(request.UuidUjian, request.uuidTemplateSoal, request.NoReg);
             logger.LogInformation("existingCbt: {@existingCbt}", existingCbt);
 
             if (existingCbt == null) {
@@ -110,7 +110,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
             }
             //[PR] validasi jawaban yg terdaftar
 
-            Result<Cbt> currentCbt = Cbt.Update(existingCbt)
+            Result<Domain.Cbt.Cbt> currentCbt = Domain.Cbt.Cbt.Update(existingCbt)
                          .ChangeJawabanBenar(JawabanBenar)
                          .Build();
 

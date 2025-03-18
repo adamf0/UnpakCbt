@@ -105,8 +105,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }
 
             List<TemplatePertanyaanResponse> listMasterPertanyaan = await templatePertanyaanApi.GetAllTemplatePertanyaanByBankSoal(newJadwalUjian.IdBankSoal);
-            IEnumerable<Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
-                Cbt.Create(
+            IEnumerable<Domain.Cbt.Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
+                Domain.Cbt.Cbt.Create(
                     currentUjian?.Id ?? 0,
                     int.Parse(item.Id)
                 ).Value

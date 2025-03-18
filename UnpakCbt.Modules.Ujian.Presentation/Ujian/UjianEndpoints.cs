@@ -18,6 +18,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
             GetAllUjianByJadwalUjian.MapEndpoint(app);
 
             UpdateUjianCbt.MapEndpoint(app);
+            GetAllCbt.MapEndpoint(app);
         }
     }
 }

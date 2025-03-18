@@ -3,6 +3,7 @@ using System.Data.Common;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
+using UnpakCbt.Modules.Ujian.Application.Cbt.GetCbt;
 using UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace UnpakCbt.Common.Presentation.Security
         public static bool NotContainInvalidCharacters(string guid)
         {
             string guidStr = guid.ToString();
-            return !InvalidCharactersRegex.IsMatch(guidStr) && !HomoglyphRegex.IsMatch(guidStr);
+            return (!InvalidCharactersRegex.IsMatch(guidStr) && !HomoglyphRegex.IsMatch(guidStr)) || guid.IsNullOrEmpty();
         }
 
         public static bool isValidGuid(string guid) {

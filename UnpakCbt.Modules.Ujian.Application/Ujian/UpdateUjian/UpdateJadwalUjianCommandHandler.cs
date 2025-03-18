@@ -96,8 +96,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
             }
 
             List<TemplatePertanyaanResponse> listMasterPertanyaan = await templatePertanyaanApi.GetAllTemplatePertanyaanByBankSoal(jadwalUjian.IdBankSoal);
-            IEnumerable<Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
-                Cbt.Create(
+            IEnumerable<Domain.Cbt.Cbt> listPertanyaan = listMasterPertanyaan.Select(item =>
+                Domain.Cbt.Cbt.Create(
                     existingUjian.Id ?? 0,
                     int.Parse(item.Id)
                 ).Value
