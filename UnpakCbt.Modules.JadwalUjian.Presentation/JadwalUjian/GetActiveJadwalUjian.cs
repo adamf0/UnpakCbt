@@ -24,7 +24,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                     return error;
                 }
 
-                Result<JadwalUjianActiveResponse> result = await sender.Send(new GetActiveJadwalUjianQuery());
+                Result<List<JadwalUjianActiveResponse>> result = await sender.Send(new GetActiveJadwalUjianQuery());
 
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.JadwalUjian).RequireAuthorization();

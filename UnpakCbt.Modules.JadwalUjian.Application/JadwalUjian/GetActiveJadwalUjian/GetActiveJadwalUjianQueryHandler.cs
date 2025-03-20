@@ -9,9 +9,9 @@ using UnpakCbt.Modules.JadwalUjian.Domain.JadwalUjian;
 namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetActiveJadwalUjian
 {
     internal sealed class GetActiveJadwalUjianQueryHandler(IDbConnectionFactory dbConnectionFactory)
-    : IQueryHandler<GetActiveJadwalUjianQuery, JadwalUjianActiveResponse>
+    : IQueryHandler<GetActiveJadwalUjianQuery, List<JadwalUjianActiveResponse>>
     {
-        public async Task<Result<JadwalUjianActiveResponse>> Handle(GetActiveJadwalUjianQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<JadwalUjianActiveResponse>>> Handle(GetActiveJadwalUjianQuery request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
 
@@ -40,13 +40,13 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetActiveJadwalUj
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-            var result = await connection.QuerySingleOrDefaultAsync<JadwalUjianActiveResponse?>(sql);
-            if (result == null)
+            var queryResult = await connection.QueryAsync<JadwalUjianActiveResponse>(sql);
+            if (!queryResult.Any())
             {
-                return Result.Failure<JadwalUjianActiveResponse>(JadwalUjianErrors.NotFoundActive());
+                return Result.Failure<List<JadwalUjianActiveResponse>>(JadwalUjianErrors.NotFoundActive());
             }
 
-            return result;
+            return Result.Success(queryResult.ToList());
         }
     }
 }
