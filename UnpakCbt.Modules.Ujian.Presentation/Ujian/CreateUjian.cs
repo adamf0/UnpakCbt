@@ -23,7 +23,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 }
 
                 Result<Guid> result = await sender.Send(new CreateUjianCommand(
-                    request.NoReg,
+                    Sanitizer.Sanitize(request.NoReg),
                     Guid.Parse(request.IdJadwalUjian)
                     )
                 );

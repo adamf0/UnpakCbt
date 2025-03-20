@@ -36,7 +36,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 
                 Result<Guid> result = await sender.Send(new CreateTemplatePertanyaanCommand(
                     Guid.Parse(request.IdBankSoal),
-                    request.Tipe,
+                    Sanitizer.Sanitize(request.Tipe),
                     null, //request.Pertanyaan,
                     null, //jawabanImgPath,
                     null,

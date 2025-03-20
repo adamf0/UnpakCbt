@@ -72,7 +72,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
 
                 Result<Guid> result = await sender.Send(new CreateTemplateJawabanCommand(
                     Guid.Parse(request.IdTemplateSoal),
-                    request.JawabanText,
+                    request.JawabanText, //[PR][Skipped] review kena xss tidak
                     jawabanImgPath
                     )
                 );

@@ -9,12 +9,11 @@ using System.Text;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.Account.Application.Account.Authentication;
 using UnpakCbt.Modules.Account.Application.Account.GetAccount;
 using UnpakCbt.Modules.Account.Domain.Account;
 
 
-namespace UnpakCbt.Modules.Account.Application.Authentication.Authentication
+namespace UnpakCbt.Modules.Account.Application.Account.Authentication
 {
     internal sealed class AuthenticationHandler(IDbConnectionFactory _dbConnectionFactory, IConfiguration _configuration)
         : IQueryHandler<AuthenticationQuery, string>

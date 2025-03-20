@@ -27,7 +27,10 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 }
 
                 Result result = await sender.Send(
-                    new DoneUjianCommand(Guid.Parse(request.Id), request.NoReg)
+                    new DoneUjianCommand(
+                        Guid.Parse(request.Id),
+                        Sanitizer.Sanitize(request.NoReg)
+                    )
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);

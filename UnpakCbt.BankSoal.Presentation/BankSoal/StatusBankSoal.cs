@@ -35,7 +35,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
 
                 Result result = await sender.Send(new StatusBankSoalCommand(
                     Guid.Parse(request.Id),
-                    request.Status
+                    Sanitizer.Sanitize(request.Status)
                     )
                 );
 

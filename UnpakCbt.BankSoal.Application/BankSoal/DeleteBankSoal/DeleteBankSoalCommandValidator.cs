@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.DeleteBankSoal
 {
@@ -13,7 +14,10 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.DeleteBankSoal
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
         public DeleteBankSoalCommandValidator() 
         {
             RuleFor(c => c.uuid)

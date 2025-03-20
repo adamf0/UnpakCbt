@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
 {
@@ -13,6 +14,10 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
         public UpdateUjianCommandValidator() 
         {
             RuleFor(c => c.Uuid)
@@ -20,14 +25,16 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateUjian
                 .Must(BeValidGuidV4).WithMessage("'Uuid' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.NoReg)
-                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'NoReg' terserang xss");
 
             RuleFor(c => c.IdJadwalUjian)
                 .NotEmpty().WithMessage("'IdJadwalUjian' tidak boleh kosong.")
                 .Must(BeValidGuidV4).WithMessage("'IdJadwalUjian' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.Status)
-                .NotEmpty().WithMessage("'Status' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'Status' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'Status' terserang xss");
 
         }
     }

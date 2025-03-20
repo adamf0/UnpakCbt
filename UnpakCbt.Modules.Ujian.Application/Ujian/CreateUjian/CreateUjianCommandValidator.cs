@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
 using UnpakCbt.Common.Application.Security;
+using UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian;
 
-namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
+namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
 {
-    public sealed class StartUjianCommandValidator : AbstractValidator<StartUjianCommand>
+    public sealed class CreateUjianCommandValidator : AbstractValidator<CreateUjianCommand>
     {
         private static readonly Regex GuidV4Regex = new(
             @"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
@@ -18,16 +19,15 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
         {
             return Xss.Check(value) != Xss.SanitizerType.CLEAR;
         }
-        public StartUjianCommandValidator() 
+        public CreateUjianCommandValidator() 
         {
+            RuleFor(c => c.IdJadwalUjian)
+                .NotEmpty().WithMessage("'IdJadwalUjian' tidak boleh kosong.")
+                .Must(BeValidGuidV4).WithMessage("'IdJadwalUjian' harus dalam format UUID v4 yang valid.");
+
             RuleFor(c => c.NoReg)
                 .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.")
                 .Must(detectXss).WithMessage("'NoReg' terserang xss");
-
-            RuleFor(c => c.uuid)
-                .NotEmpty().WithMessage("'Uuid' tidak boleh kosong.")
-                .Must(BeValidGuidV4).WithMessage("'Uuid' harus dalam format UUID v4 yang valid.");
-
         }
     }
 }

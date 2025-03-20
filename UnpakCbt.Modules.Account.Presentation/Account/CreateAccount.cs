@@ -22,10 +22,10 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
                     return error;
                 }
 
-                Result<Guid> result = await sender.Send(new authenticationCommand(
-                    request.Username,
-                    request.Password,
-                    request.Level
+                Result<Guid> result = await sender.Send(new CreateAccountCommand(
+                    Sanitizer.Sanitize(request.Username),
+                    Sanitizer.Sanitize(request.Password),
+                    Sanitizer.Sanitize(request.Level)
                     )
                 );
 

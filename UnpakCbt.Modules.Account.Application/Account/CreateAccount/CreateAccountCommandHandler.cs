@@ -6,13 +6,13 @@ using UnpakCbt.Modules.Account.Domain.Account;
 
 namespace UnpakCbt.Modules.Account.Application.Account.CreateAccount
 {
-    internal sealed class AuthenticationCommandHandler(
+    internal sealed class CreateAccountCommandHandler(
     IAccountRepository AccountRepository,
     IUnitOfWork unitOfWork,
-    ILogger<authenticationCommand> logger)
-    : ICommandHandler<authenticationCommand, Guid>
+    ILogger<CreateAccountCommand> logger)
+    : ICommandHandler<CreateAccountCommand, Guid>
     {
-        public async Task<Result<Guid>> Handle(authenticationCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
             int check = await AccountRepository.CountByUsernameAsync(request.Username);
             if (check>0)

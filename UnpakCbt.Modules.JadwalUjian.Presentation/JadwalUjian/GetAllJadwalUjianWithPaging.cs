@@ -28,7 +28,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                 }
 
                 Result<PagedList<JadwalUjianResponse>> result = await sender.Send(new GetAllJadwalUjianWithPagingQuery(
-                    request.SearchTerm,
+                    Sanitizer.Sanitize(request.SearchTerm),
                     request.SearchColumns,
                     request.SortColumn,
                     request.Page,

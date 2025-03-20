@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus
 {
-    //[PR]
+    //[No Implementation]
     public sealed class GetAllLaporanLulusQueryValidator : AbstractValidator<GetAllLaporanLulusQuery>
     {
         private readonly Regex GuidV4Regex = new(
@@ -16,6 +16,10 @@ namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus
 
         private bool BeValidGuidV4(string? guid) =>
             !string.IsNullOrEmpty(guid) && GuidV4Regex.IsMatch(guid);
+        private static bool BeValidDateRange(GetAllLaporanLulusQuery query) =>
+           DateTime.TryParseExact(query.TanggalMulai, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate) &&
+           DateTime.TryParseExact(query.TanggalAkhir, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate) &&
+           startDate <= endDate;
 
         public GetAllLaporanLulusQueryValidator()
         {
@@ -30,6 +34,10 @@ namespace UnpakCbt.Modules.Laporan.Application.Laporan.GetAllLaporanLulus
             RuleFor(c => c.TanggalAkhir)
                 .Must(BeValidDate).WithMessage("'TanggalAkhir' harus dalam format yyyy-MM-dd.")
                 .When(c => !string.IsNullOrEmpty(c.TanggalAkhir)); // Hanya validasi jika TanggalAkhir diisi
+
+            RuleFor(c => c)
+                .Must(BeValidDateRange).WithMessage("'TanggalMulai' tidak boleh lebih besar dari 'TanggalAkhir'.")
+                .When(c => !string.IsNullOrWhiteSpace(c.TanggalMulai) && !string.IsNullOrWhiteSpace(c.TanggalAkhir));
 
             RuleFor(c => c)
                 .Must(c => !string.IsNullOrWhiteSpace(c.UuidJadwalUjian) || (!string.IsNullOrWhiteSpace(c.TanggalMulai) || !string.IsNullOrWhiteSpace(c.TanggalAkhir)))

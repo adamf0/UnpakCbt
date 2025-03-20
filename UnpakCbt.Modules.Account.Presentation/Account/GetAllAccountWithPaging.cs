@@ -28,7 +28,7 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
                 }
 
                 Result<PagedList<AccountResponse>> result = await sender.Send(new GetAllAccountWithPagingQuery(
-                    request.SearchTerm,
+                    Sanitizer.Sanitize(request.SearchTerm),
                     request.SearchColumns,
                     request.SortColumn,
                     request.Page,

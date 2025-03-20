@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.StatusBankSoal
 {
@@ -15,6 +16,11 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.StatusBankSoal
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
+
         public StatusBankSoalCommandValidator() 
         {
             RuleFor(c => c.Uuid)
@@ -23,6 +29,7 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.StatusBankSoal
 
             RuleFor(c => c.Status)
                 .NotEmpty().WithMessage("'Status' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'Status' terserang xss")
                 .Must(c => c=="non-active" || c=="active").WithMessage("'Status' hanya boleh non-active dan active.");
         }
     }

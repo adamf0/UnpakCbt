@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.Security;
@@ -33,7 +32,7 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
 
-                Result<AccountResponse> result = await sender.Send(new GetAccountQuery(Guid.Parse(id)));
+                Result <AccountResponse> result = await sender.Send(new GetAccountQuery(Guid.Parse(id)));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.Account).RequireAuthorization();

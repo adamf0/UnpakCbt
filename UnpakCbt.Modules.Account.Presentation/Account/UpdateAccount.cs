@@ -33,9 +33,9 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
 
                 Result result = await sender.Send(new UpdateAccountCommand(
                     Guid.Parse(request.Id),
-                    request.Username,
-                    request.Password,
-                    request.Level
+                    Sanitizer.Sanitize(request.Username),
+                    Sanitizer.Sanitize(request.Password),
+                    Sanitizer.Sanitize(request.Level)
                     )
                 );
 

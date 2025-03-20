@@ -28,7 +28,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                 }
 
                 Result<PagedList<BankSoalResponse>> result = await sender.Send(new GetAllBankSoalWithPagingQuery(
-                    request.SearchTerm,
+                    Sanitizer.Sanitize(request.SearchTerm),
                     request.SearchColumns,
                     request.SortColumn,
                     request.Page,

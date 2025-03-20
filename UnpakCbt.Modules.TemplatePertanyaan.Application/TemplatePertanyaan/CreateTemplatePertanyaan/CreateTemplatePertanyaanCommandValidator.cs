@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.CreateTemplatePertanyaan
 {
@@ -15,6 +14,10 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
 
         public CreateTemplatePertanyaanCommandValidator() 
         {
@@ -23,14 +26,16 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Cre
                 .Must(BeValidGuidV4).WithMessage("'IdBankSoal' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.Tipe)
-                .NotEmpty().WithMessage("'Tipe' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'Tipe' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'Tipe' terserang xss");
 
             //RuleFor(c => c)
             //    .Must(c => !string.IsNullOrWhiteSpace(c.Pertanyaan) || !string.IsNullOrWhiteSpace(c.Gambar))
             //    .WithMessage("Minimal satu dari 'Pertanyaan' atau 'Gambar' harus diisi.");
 
             RuleFor(c => c.State)
-                .NotEmpty().WithMessage("'State' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'State' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'State' terserang xss");
 
         }
     }

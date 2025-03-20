@@ -2,7 +2,7 @@
 
 namespace UnpakCbt.Modules.Account.Application.Account.CreateAccount
 {
-    public sealed record authenticationCommand(
+    public sealed record CreateAccountCommand(
         string Username,
         string Password,
         string Level

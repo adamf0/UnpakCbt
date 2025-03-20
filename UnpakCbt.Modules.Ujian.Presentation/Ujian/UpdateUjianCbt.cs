@@ -45,7 +45,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
                 Result result = await sender.Send(new UpdateCbtCommand(
                     Guid.Parse(request.UuidUjian),
-                    request.NoReg,
+                    Sanitizer.Sanitize(request.NoReg),
                     Guid.Parse(request.UuidTemplateSoal),
                     Guid.Parse(request.UuidJawabanBenar)
                     )

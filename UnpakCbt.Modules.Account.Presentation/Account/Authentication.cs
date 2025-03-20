@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
+using UnpakCbt.Common.Presentation.Security;
 using UnpakCbt.Modules.Account.Application.Account.Authentication;
 
 namespace UnpakCbt.Modules.Account.Presentation.Account
@@ -14,8 +15,10 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
         {
             app.MapPost("Authentication", async (AuthenticationRequest request, ISender sender) =>
             {
-                //[PR] anti xss
-                Result<string> result = await sender.Send(new AuthenticationQuery(request.Username, request.Password));
+                Result<string> result = await sender.Send(new AuthenticationQuery(
+                    Sanitizer.Sanitize(request.Username),
+                    Sanitizer.Sanitize(request.Password)
+                ));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.Authentication);

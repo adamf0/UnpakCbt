@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
 {
@@ -13,6 +14,10 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
         public DoneUjianCommandValidator() 
         {
             RuleFor(c => c.uuid)
@@ -20,7 +25,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                 .Must(BeValidGuidV4).WithMessage("'Uuid' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.NoReg)
-                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'NoReg' terserang xss");
         }
     }
 }

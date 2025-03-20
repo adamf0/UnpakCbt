@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.Account.Application.Account.StatusAccount
 {
@@ -15,6 +16,10 @@ namespace UnpakCbt.Modules.Account.Application.Account.StatusAccount
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
         public StatusAccountCommandValidator()
         {
             RuleFor(c => c.Uuid)
@@ -23,6 +28,7 @@ namespace UnpakCbt.Modules.Account.Application.Account.StatusAccount
 
             RuleFor(c => c.Status)
                 .NotEmpty().WithMessage("'Status' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'Status' terserang xss")
                 .Must(c => c == "non-active" || c == "active").WithMessage("'Status' hanya boleh non-active dan active.");
         }
     }

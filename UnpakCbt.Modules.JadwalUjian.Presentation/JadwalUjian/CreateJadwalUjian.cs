@@ -39,11 +39,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                 }
 
                 Result<Guid> result = await sender.Send(new CreateJadwalUjianCommand(
-                    request.Deskripsi,
+                    Sanitizer.Sanitize(request?.Deskripsi ?? ""),
                     kouta,
-                    request.Tanggal, 
-                    request.JamMulai,
-                    request.JamAkhir,
+                    Sanitizer.Sanitize(request.Tanggal),
+                    Sanitizer.Sanitize(request.JamMulai),
+                    Sanitizer.Sanitize(request.JamAkhir),
                     Guid.Parse(request.IdBankSoal)
                     )
                 );

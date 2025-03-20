@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.Account.Application.Account.DeleteAccount
 {
@@ -12,6 +13,10 @@ namespace UnpakCbt.Modules.Account.Application.Account.DeleteAccount
         private static bool BeValidGuidV4(Guid guid)
         {
             return GuidV4Regex.IsMatch(guid.ToString());
+        }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
         }
 
         public DeleteAccountCommandValidator()

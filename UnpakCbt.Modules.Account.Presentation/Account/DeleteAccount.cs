@@ -30,7 +30,7 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
                 {
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
-
+                
                 Result result = await sender.Send(
                     new DeleteAccountCommand(Guid.Parse(id))
                 );

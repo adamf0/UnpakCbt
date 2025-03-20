@@ -33,7 +33,7 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
 
                 Result result = await sender.Send(new StatusAccountCommand(
                     Guid.Parse(request.Id),
-                    request.Status
+                    Sanitizer.Sanitize(request.Status)
                     )
                 );
 

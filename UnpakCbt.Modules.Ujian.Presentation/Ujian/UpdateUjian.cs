@@ -37,9 +37,9 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
                 Result result = await sender.Send(new UpdateUjianCommand(
                     Guid.Parse(request.Id),
-                    request.NoReg,
+                    Sanitizer.Sanitize(request.NoReg),
                     Guid.Parse(request.IdJadwalUjian),
-                    request.Status
+                    Sanitizer.Sanitize(request.Status)
                     )
                 );
 

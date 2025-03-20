@@ -4,12 +4,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using System.Runtime.InteropServices;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.FileManager;
 using UnpakCbt.Common.Presentation.Security;
-using UnpakCbt.Modules.BankSoal.Domain.BankSoal;
 using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.UpdateTemplatePertanyaan;
 using static UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan.CreateTemplatePertanyaan;
 
@@ -99,12 +97,12 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                 Result result = await sender.Send(new UpdateTemplatePertanyaanCommand(
                     Guid.Parse(request.Id),
                     Guid.Parse(request.IdBankSoal),
-                    request.Tipe,
-                    request.Pertanyaan,
+                    Sanitizer.Sanitize(request.Tipe),
+                    request.Pertanyaan, //[PR][Skipped] review kena xss tidak
                     jawabanImgPath,
                     Guid.Parse(request.Jawaban),
                     int.Parse(request.Bobot),
-                    request.State
+                    Sanitizer.Sanitize(request?.State ?? "")
                     )
                 );
 

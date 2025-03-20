@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
+using UnpakCbt.Common.Application.Security;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.UpdateTemplatePertanyaan
 {
@@ -13,6 +14,10 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
+        private bool detectXss(string value)
+        {
+            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
+        }
         public UpdateTemplatePertanyaanCommandValidator() 
         {
             RuleFor(c => c.Uuid)
@@ -24,7 +29,8 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
                 .Must(BeValidGuidV4).WithMessage("'IdBankSoal' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.Tipe)
-                .NotEmpty().WithMessage("'Tipe' tidak boleh kosong.");
+                .NotEmpty().WithMessage("'Tipe' tidak boleh kosong.")
+                .Must(detectXss).WithMessage("'Tipe' terserang xss");
 
             RuleFor(c => c)
                 .Must(c => !string.IsNullOrWhiteSpace(c.Pertanyaan) || !string.IsNullOrWhiteSpace(c.Gambar))

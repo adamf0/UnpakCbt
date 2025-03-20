@@ -49,11 +49,11 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
 
                 Result result = await sender.Send(new UpdateJadwalUjianCommand(
                     Guid.Parse(request.Id),
-                    request.Deskripsi,
+                    Sanitizer.Sanitize(request?.Deskripsi ?? ""),
                     kouta,
-                    request.Tanggal,
-                    request.JamMulai,
-                    request.JamAkhir,
+                    Sanitizer.Sanitize(request.Tanggal),
+                    Sanitizer.Sanitize(request.JamMulai),
+                    Sanitizer.Sanitize(request.JamAkhir),
                     Guid.Parse(request.IdBankSoal)
                     )
                 );

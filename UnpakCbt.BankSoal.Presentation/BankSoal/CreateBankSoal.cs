@@ -24,7 +24,7 @@ namespace UnpakCbt.Modules.BankSoal.Presentation.BankSoal
                 }
 
                 Result<Guid> result = await sender.Send(new CreateBankSoalCommand(
-                    request.Judul,
+                    Sanitizer.Sanitize(request.Judul),
                     request.Rule
                     )
                 );

@@ -36,7 +36,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 }
 
                 Result<Guid> result = await sender.Send(new RescheduleUjianCommand(
-                    request.NoReg,
+                    Sanitizer.Sanitize(request.NoReg),
                     Guid.Parse(request.PrevIdJadwalUjian),
                     Guid.Parse(request.NewIdJadwalUjian)
                     )
