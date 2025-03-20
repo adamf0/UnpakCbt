@@ -139,7 +139,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReact",
         policy =>
         {
-            policy.WithOrigins(Environment.GetEnvironmentVariable("UrlReact") ?? "http://localhost:5175") // Sesuaikan dengan React
+            policy.WithOrigins(
+                        Environment.GetEnvironmentVariable("UrlReact") ?? "https://host.docker.internal:5175",
+                        "https://localhost:5175",
+                        "http://localhost:5175"
+                   ) // Sesuaikan dengan React
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials()
