@@ -14,10 +14,6 @@ namespace UnpakCbt.Modules.Account.Application.Account.DeleteAccount
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
 
         public DeleteAccountCommandValidator()
         {

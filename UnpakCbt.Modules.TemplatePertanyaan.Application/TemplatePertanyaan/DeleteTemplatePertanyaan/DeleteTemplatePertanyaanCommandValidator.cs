@@ -14,10 +14,6 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Del
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
         public DeleteTemplatePertanyaanCommandValidator() 
         {
             RuleFor(c => c.uuid)

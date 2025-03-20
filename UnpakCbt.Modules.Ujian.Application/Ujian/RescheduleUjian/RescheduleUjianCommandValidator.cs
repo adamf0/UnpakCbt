@@ -14,15 +14,10 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
         public RescheduleUjianCommandValidator() 
         {
             RuleFor(c => c.NoReg)
-                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'NoReg' terserang xss");
+                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.");
 
             RuleFor(c => c.prevIdJadwalUjian)
                 .NotEmpty().WithMessage("'prevIdJadwalUjian' tidak boleh kosong.")

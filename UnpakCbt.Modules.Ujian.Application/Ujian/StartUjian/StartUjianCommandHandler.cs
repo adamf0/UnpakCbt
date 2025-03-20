@@ -1,12 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
+using UnpakCbt.Modules.Ujian.Application.StreamHub;
+using UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
 {
     internal sealed class StartUjianCommandHandler(
+    IHubContext<JadwalUjianHub> _hubContext,
     IUjianRepository ujianRepository,
     IUnitOfWork unitOfWork,
     ILogger<StartUjianCommand> logger)
@@ -55,6 +59,28 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
                     return Result.Failure<Guid>(prevUjian.Error);
                 }
                 await unitOfWork.SaveChangesAsync(cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
+                try
+                {
+                    await _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse
+                    {
+                        Uuid = request.uuid.ToString(),
+                        NoReg = request.NoReg,
+                        Status = "start"
+                    });
+                }
+                catch (HubException hubEx)
+                {
+                    logger.LogError($"SignalR error: {hubEx.Message}");
+                }
+                catch (TaskCanceledException taskEx)
+                {
+                    logger.LogError($"SignalR request dibatalkan: {taskEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"Unexpected error: {ex.Message}");
+                }
             }
 
             return Result.Success();

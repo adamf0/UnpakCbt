@@ -17,10 +17,6 @@ namespace UnpakCbt.Modules.Account.Application.Account.UpdateAccount
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
 
         public UpdateAccountCommandValidator()
         {
@@ -29,8 +25,7 @@ namespace UnpakCbt.Modules.Account.Application.Account.UpdateAccount
                 .Must(BeValidGuidV4).WithMessage("'Uuid' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.Username)
-                .NotEmpty().WithMessage("'Username' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'Username' terserang xss");
+                .NotEmpty().WithMessage("'Username' tidak boleh kosong.");
 
             /*RuleFor(c => c.Password)
                 .NotEmpty().WithMessage("'Password' tidak boleh kosong.")
@@ -40,7 +35,6 @@ namespace UnpakCbt.Modules.Account.Application.Account.UpdateAccount
 
             RuleFor(c => c.Level)
                 .NotEmpty().WithMessage("'Level' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'Level' terserang xss")
                 .Equal("admin").WithMessage(c => $"'Level' dengan nilai {c.Level} tidak dikenali sistem");
         }
     }

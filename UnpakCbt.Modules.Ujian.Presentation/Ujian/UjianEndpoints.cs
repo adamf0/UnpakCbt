@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using UnpakCbt.Modules.Ujian.Application.StreamHub;
 
 namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 {
@@ -19,6 +21,8 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
 
             UpdateUjianCbt.MapEndpoint(app);
             GetAllCbt.MapEndpoint(app);
+
+            app.MapHub<JadwalUjianHub>("/JadwalUjianHub");
         }
     }
 }

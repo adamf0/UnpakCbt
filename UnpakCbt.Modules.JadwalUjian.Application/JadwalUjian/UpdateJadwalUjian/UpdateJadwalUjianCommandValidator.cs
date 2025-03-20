@@ -15,10 +15,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
 
         public UpdateJadwalUjianCommandValidator() 
         {
@@ -33,17 +29,14 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
 
             RuleFor(c => c.Tanggal)
                 .NotEmpty().WithMessage("'Tanggal' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'Tanggal' terserang xss")
                 .Must(BeValidDate).WithMessage("'Tanggal' harus dalam format yyyy-MM-dd.");
 
             RuleFor(c => c.JamMulai)
                 .NotEmpty().WithMessage("'JamMulai' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'JamMulai' terserang xss")
                 .Must(BeValidTime).WithMessage("'JamMulai' harus dalam format HH:mm.");
 
             RuleFor(c => c.JamAkhir)
                 .NotEmpty().WithMessage("'JamAkhir' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'JamAkhir' terserang xss")
                 .Must(BeValidTime).WithMessage("'JamAkhir' harus dalam format HH:mm.")
                 .GreaterThan(c => c.JamMulai).WithMessage("'JamAkhir' harus lebih besar dari 'JamMulai'.");
 

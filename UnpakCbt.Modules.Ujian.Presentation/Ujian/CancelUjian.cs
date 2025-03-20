@@ -27,7 +27,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 }
 
                 Result result = await sender.Send(
-                    new CancelUjianCommand(Guid.Parse(id),noReg)
+                    new CancelUjianCommand(Guid.Parse(id), Sanitizer.Sanitize(noReg))
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);

@@ -15,10 +15,6 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
         public CreateUjianCommandValidator() 
         {
             RuleFor(c => c.IdJadwalUjian)
@@ -26,8 +22,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                 .Must(BeValidGuidV4).WithMessage("'IdJadwalUjian' harus dalam format UUID v4 yang valid.");
 
             RuleFor(c => c.NoReg)
-                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.")
-                .Must(detectXss).WithMessage("'NoReg' terserang xss");
+                .NotEmpty().WithMessage("'NoReg' tidak boleh kosong.");
         }
     }
 }

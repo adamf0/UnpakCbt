@@ -17,6 +17,7 @@ services:
       - Audience=seb.unpak.ac.id
       - Sub=seb.unpak.ac.id
       - Key_Signed=UnpakCBTSecureKey1234567890!@$%#*&^
+      - UrlReact=https://seb.unpak.ac.id
       # - SEQ_SERVER_URL=http://host.docker.internal:5341
     ports:
       - "5000:8080"

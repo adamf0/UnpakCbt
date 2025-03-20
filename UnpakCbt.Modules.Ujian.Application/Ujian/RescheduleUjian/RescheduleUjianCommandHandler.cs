@@ -1,16 +1,20 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System.Globalization;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
 using UnpakCbt.Modules.TemplatePertanyaan.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
+using UnpakCbt.Modules.Ujian.Application.StreamHub;
+using UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian;
 using UnpakCbt.Modules.Ujian.Domain.Cbt;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
 {
-    internal sealed class RescheduleUjianCommandHandler( 
+    internal sealed class RescheduleUjianCommandHandler(
+    IHubContext<JadwalUjianHub> _hubContext,
     Domain.Ujian.ICounterRepository counterRepository,
     IUjianRepository ujianRepository,
     ICbtRepository cbtRepository,
@@ -126,7 +130,36 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             await cbtRepository.InsertAsync(listPertanyaan);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
+            var task1 = _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse
+            {
+                Uuid = request.prevIdJadwalUjian.ToString(),
+                NoReg = request.NoReg,
+                Status = "cancel"
+            });
 
+            var task2 = _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse
+            {
+                Uuid = request.newIdJadwalUjian.ToString(),
+                NoReg = request.NoReg,
+                Status = "active"
+            });
+
+            var tasks = new[] { task1, task2 };
+
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch
+            {
+                foreach (var task in tasks)
+                {
+                    if (task.IsFaulted)
+                    {
+                        logger.LogError($"Task gagal dengan error: {task.Exception?.GetBaseException().Message}");
+                    }
+                }
+            }
 
 
 

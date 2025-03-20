@@ -14,10 +14,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.DeleteJadwalUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        private bool detectXss(string value)
-        {
-            return Xss.Check(value) != Xss.SanitizerType.CLEAR;
-        }
         public DeleteJadwalUjianCommandValidator() 
         {
             RuleFor(c => c.uuid)

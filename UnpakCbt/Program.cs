@@ -134,8 +134,22 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 SecurityConfig.PreventDynamicCodeExecution();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact",
+        policy =>
+        {
+            policy.WithOrigins(Environment.GetEnvironmentVariable("UrlReact") ?? "http://localhost:5175") // Sesuaikan dengan React
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials()
+                  .SetIsOriginAllowed(_ => true);
+        });
+});
+builder.Services.AddSignalR();
 
 var app = builder.Build();
+app.UseCors("AllowReact");
 app.UseUserAgentMiddleware();
 app.UseSecurityHeadersMiddleware();
 
