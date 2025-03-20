@@ -17,14 +17,24 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
     {
         public async Task<Result> Handle(CancelUjianCommand request, CancellationToken cancellationToken)
         {
+            logger.LogInformation("Received command with parameters: {@Request}", request);
+
             Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetAsync(request.uuid, cancellationToken);
+            logger.LogInformation("existingUjian: {@existingUjian}", existingUjian);
             if (existingUjian is null)
             {
                 logger.LogError($"Ujian dengan referensi Uuid {request.uuid} tidak ditemukan");
                 return Result.Failure(UjianErrors.NotFound(request.uuid));
             }
+            if (existingUjian?.NoReg != request.noReg)
+            {
+                logger.LogError($"Ujian dengan referensi Uuid {request.uuid} tidak untuk NoReg {request.noReg}");
+                return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.uuid, request.noReg));
+            }
 
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetByIdAsync(existingUjian?.IdJadwalUjian, cancellationToken);
+            logger.LogInformation("jadwalUjian: {@jadwalUjian}", jadwalUjian);
+
             if (jadwalUjian is null)
             {
                 logger.LogError($"JadwalUjian dengan referensi id {existingUjian?.IdJadwalUjian} tidak ditemukan");

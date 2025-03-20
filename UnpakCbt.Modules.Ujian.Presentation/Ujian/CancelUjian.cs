@@ -15,7 +15,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         //[Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapDelete("Ujian/Cancel/{id}", async (string id, ISender sender) =>
+            app.MapDelete("Ujian/Cancel/{id}/{noReg}", async (string id, string noReg, ISender sender) =>
             {
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
@@ -27,7 +27,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                 }
 
                 Result result = await sender.Send(
-                    new CancelUjianCommand(Guid.Parse(id))
+                    new CancelUjianCommand(Guid.Parse(id),noReg)
                 );
 
                 return result.Match(() => Results.Ok(), ApiResults.Problem);

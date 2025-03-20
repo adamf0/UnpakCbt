@@ -1,4 +1,5 @@
-﻿using UnpakCbt.Common.Application.Messaging;
+﻿using Microsoft.Extensions.Logging;
+using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Domain.Cbt;
@@ -10,20 +11,25 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DeleteUjian
     Domain.Ujian.ICounterRepository counterRepository,
     IUjianRepository ujianRepository,
     ICbtRepository cbtRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    ILogger<DeleteUjianCommand> logger)
     : ICommandHandler<DeleteUjianCommand>
     {
         public async Task<Result> Handle(DeleteUjianCommand request, CancellationToken cancellationToken)
         {
-            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetAsync(request.uuid, cancellationToken);
+            logger.LogInformation("Received command with parameters: {@Request}", request);
 
+            Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetAsync(request.uuid, cancellationToken);
+            logger.LogInformation("existingUjian: {@existingUjian}", existingUjian);
             if (existingUjian is null)
             {
+                logger.LogError($"Ujian dengan referensi Uuid {request.uuid} tidak ditemukan");
                 return Result.Failure(UjianErrors.NotFound(request.uuid));
             }
             if (existingUjian?.NoReg != request.NoReg)
             {
-                return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.NoReg, existingUjian?.NoReg??"-"));
+                logger.LogError($"Ujian dengan referensi Uuid {request.uuid} tidak untuk NoReg {request.NoReg}");
+                return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.uuid, request.NoReg));
             }
 
             string key = "counter_" + existingUjian.Uuid.ToString();

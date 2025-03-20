@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.IdentityModel.Tokens;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Common.Presentation.ApiResults;
 using UnpakCbt.Common.Presentation.Security;
@@ -15,6 +16,11 @@ namespace UnpakCbt.Modules.Account.Presentation.Account
         {
             app.MapPost("Authentication", async (AuthenticationRequest request, ISender sender) =>
             {
+                if (request.Username.IsNullOrEmpty() || request.Password.IsNullOrEmpty())
+                {
+                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Username atau password tidak boleh kosong")));
+                }
+
                 Result<string> result = await sender.Send(new AuthenticationQuery(
                     Sanitizer.Sanitize(request.Username),
                     Sanitizer.Sanitize(request.Password)

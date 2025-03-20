@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Logging;
+using System.Globalization;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
@@ -15,11 +16,14 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
     ICbtRepository cbtRepository,
     IUnitOfWork unitOfWork,
     IJadwalUjianApi jadwalUjianApi,
-    ITemplatePertanyaanApi templatePertanyaanApi)
-    : ICommandHandler<RescheduleUjianCommand,Guid>
+    ITemplatePertanyaanApi templatePertanyaanApi,
+    ILogger<RescheduleUjianCommand> logger)
+    : ICommandHandler<RescheduleUjianCommand>
     {
-        public async Task<Result<Guid>> Handle(RescheduleUjianCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RescheduleUjianCommand request, CancellationToken cancellationToken)
         {
+            logger.LogInformation("Received command with parameters: {@Request}", request);
+
             /*int totalActiveUjian = await ujianRepository.GetCountJadwalActiveAsync(request.NoReg); //active, start, done
             if (totalActiveUjian > 0)
             {
@@ -27,32 +31,40 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
             }*/
 
             JadwalUjianResponse? existingPrevJadwalUjian = await jadwalUjianApi.GetAsync(request.prevIdJadwalUjian, cancellationToken);
+            logger.LogInformation("existingPrevJadwalUjian: {@existingPrevJadwalUjian}", existingPrevJadwalUjian);
             if (existingPrevJadwalUjian is null)
             {
-                Result.Failure(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.prevIdJadwalUjian));
+                logger.LogError($"Jadwal lama {request.prevIdJadwalUjian} tidak ditemukan");
+                return Result.Failure(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.prevIdJadwalUjian));
             }
 
             JadwalUjianResponse? newJadwalUjian = await jadwalUjianApi.GetAsync(request.newIdJadwalUjian, cancellationToken);
+            logger.LogInformation("newJadwalUjian: {@newJadwalUjian}", newJadwalUjian);
             if (newJadwalUjian is null)
             {
-                Result.Failure(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.newIdJadwalUjian));
+                logger.LogError($"Jadwal baru {request.newIdJadwalUjian} tidak ditemukan");
+                return Result.Failure(Domain.JadwalUjian.JadwalUjianErrors.NotFound(request.newIdJadwalUjian));
             }
 
 
             Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetByNoRegWithJadwalAsync(request.NoReg, int.Parse(existingPrevJadwalUjian.Id), cancellationToken);
-
+            logger.LogInformation("existingUjian: {@existingUjian}", existingUjian);
             if (existingUjian is null)
             {
-                Result.Failure(UjianErrors.NoRegNotEmpty());
+                logger.LogError($"Data ujian {request.NoReg} tidak ditemukan");
+                return Result.Failure(UjianErrors.NoRegNotEmpty());
             }
             if (existingUjian?.Status == "cancel")
             {
+                logger.LogError($"Data ujian {request.NoReg} sudah cancel");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
             }
             if (existingUjian?.Status == "done") {
+                logger.LogError($"Data ujian {request.NoReg} sudah done");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
             }
             if (existingUjian?.Status == "start") {
+                logger.LogError($"Data ujian {request.NoReg} sudah start");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamStartExam());
             }
 

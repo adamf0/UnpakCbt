@@ -15,7 +15,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         //[Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("Ujian/Done/{id}", async (DoneUjianRequest request, ISender sender) =>
+            app.MapPut("Ujian/Done", async (DoneUjianRequest request, ISender sender) =>
             {
                 if (!SecurityCheck.NotContainInvalidCharacters(request.Id))
                 {

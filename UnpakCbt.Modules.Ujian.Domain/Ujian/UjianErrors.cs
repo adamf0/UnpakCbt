@@ -28,8 +28,8 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error FailDecrement(string key) =>
             Error.Problem("UjianErrors.FailDecrement", $"The reference key {key} fail do decrement");
 
-        public static Error IncorrectReferenceNoReg(string input, string target) =>
-            Error.Problem("UjianErrors.IncorrectReferenceNoReg", $"The reference {input} on the exam schedule does not match the actual data ({target})");
+        public static Error IncorrectReferenceNoReg(Guid Id, string NoReg) =>
+            Error.Problem("UjianErrors.IncorrectReferenceNoReg", $"The {Id} reference to the registration number {NoReg} on the exam schedule does not match the actual data");
 
         public static Error ScheduleExamCancelExam() =>
             Error.Problem("UjianErrors.ScheduleExamCancelExam", "The status exam schedule has been cancelled");

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Logging;
+using System.Globalization;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
@@ -15,23 +16,28 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
         ICbtRepository cbtRepository,
         IUnitOfWork unitOfWork,
         IJadwalUjianApi jadwalUjianApi,
-        ITemplatePertanyaanApi templatePertanyaanApi)
+        ITemplatePertanyaanApi templatePertanyaanApi,
+        ILogger<CreateUjianCommand> logger)
         : ICommandHandler<CreateUjianCommand, Guid>
     {
         public async Task<Result<Guid>> Handle(CreateUjianCommand request, CancellationToken cancellationToken)
         {
+            logger.LogInformation("Received command with parameters: {@Request}", request);
+
             int totalActiveUjian = await ujianRepository.GetCountJadwalActiveAsync(request.NoReg); //active, start, done
             if (totalActiveUjian > 0) {
                 return Result.Failure<Guid>(UjianErrors.ActiveExam(request.NoReg));
             }
 
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetAsync(request.IdJadwalUjian, cancellationToken);
+            logger.LogInformation("jadwalUjian: {@jadwalUjian}", jadwalUjian);
             checkData(jadwalUjian, request.IdJadwalUjian);
             checkDataDate(jadwalUjian);
             checkFormatAndRangeDate(jadwalUjian);
             
             //insert ujian
             var result = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(jadwalUjian?.Id??"0"));
+            logger.LogInformation("result: {@result}", result);
             if (result.IsFailure)
             {
                 return Result.Failure<Guid>(result.Error);
@@ -41,6 +47,8 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
 
             //insert list pertanyaan
             Domain.Ujian.Ujian? currentUjian = await ujianRepository.GetAsync(result.Value.Uuid, cancellationToken);
+            logger.LogInformation("currentUjian: {@currentUjian}", currentUjian);
+
             if (currentUjian.Id == null) {
                 return Result.Failure<Guid>(UjianErrors.NotFoundReference());
             }

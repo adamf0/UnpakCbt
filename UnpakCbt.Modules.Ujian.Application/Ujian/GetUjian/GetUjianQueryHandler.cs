@@ -24,12 +24,12 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian
                      ujian.status AS Status
                  FROM ujian 
                  JOIN jadwal_ujian ON ujian.id_jadwal_ujian = jadwal_ujian.id
-                 WHERE ujian.uuid = @Uuid
+                 WHERE ujian.uuid = @Uuid AND ujian.no_reg = @NoReg
                  """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-            var result = await connection.QuerySingleOrDefaultAsync<UjianResponse?>(sql, new { Uuid = request.UjianUuid });
+            var result = await connection.QuerySingleOrDefaultAsync<UjianResponse?>(sql, new { Uuid = request.UjianUuid, NoReg = request.NoReg });
             if (result == null)
             {
                 return Result.Failure<UjianResponse>(UjianErrors.NotFound(request.UjianUuid));

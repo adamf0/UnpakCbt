@@ -2,5 +2,5 @@
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian
 {
-    public sealed record GetUjianQuery(Guid UjianUuid) : IQuery<UjianResponse>;
+    public sealed record GetUjianQuery(Guid UjianUuid, string NoReg) : IQuery<UjianResponse>;
 }

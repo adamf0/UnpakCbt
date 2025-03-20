@@ -35,14 +35,14 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "NewIdJadwalUjian harus Guid format")));
                 }
 
-                Result<Guid> result = await sender.Send(new RescheduleUjianCommand(
+                Result result = await sender.Send(new RescheduleUjianCommand(
                     Sanitizer.Sanitize(request.NoReg),
                     Guid.Parse(request.PrevIdJadwalUjian),
                     Guid.Parse(request.NewIdJadwalUjian)
                     )
                 );
 
-                return result.Match(Results.Ok, ApiResults.Problem);
+                return result.Match(() => Results.Ok(), ApiResults.Problem);
 
             }).WithTags(Tags.Ujian);
         }

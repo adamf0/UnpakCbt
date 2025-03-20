@@ -6,5 +6,5 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.RescheduleUjian
         string NoReg,
         Guid prevIdJadwalUjian,
         Guid newIdJadwalUjian
-    ) : ICommand<Guid>;
+    ) : ICommand;
 }

@@ -15,7 +15,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         //[Authorize]
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("Ujian/{id}", async (string id, ISender sender) =>
+            app.MapGet("Ujian/{id}/{noReg}", async (string id, string noReg, ISender sender) =>
             {
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
@@ -26,7 +26,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
                 }
 
-                Result<UjianResponse> result = await sender.Send(new GetUjianQuery(Guid.Parse(id)));
+                Result<UjianResponse> result = await sender.Send(new GetUjianQuery(Guid.Parse(id),noReg));
 
                 return result.Match(Results.Ok, ApiResults.Problem);
             }).WithTags(Tags.Ujian);

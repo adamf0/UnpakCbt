@@ -3,6 +3,7 @@
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.CancelUjian
 {
     public sealed record CancelUjianCommand(
-        Guid uuid
+        Guid uuid,
+        string noReg
     ) : ICommand;
 }

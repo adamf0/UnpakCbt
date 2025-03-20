@@ -23,24 +23,28 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
         public async Task<Result> Handle(UpdateCbtCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation("Received command with parameters: {@Request}", request);
+            
             Domain.Ujian.Ujian? existingUjian = await ujianRepository.GetAsync(request.UuidUjian, cancellationToken);
             logger.LogInformation("existingUjian: {@existingUjian}", existingUjian);
-
             if (existingUjian.NoReg != request.NoReg)
             {
-                return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.NoReg, existingUjian?.NoReg ?? "-"));
+                logger.LogError($"Ujian dengan referensi Uuid {request.UuidUjian} tidak untuk NoReg {request.NoReg}");
+                return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.UuidUjian, existingUjian?.NoReg));
             }
 
             if (existingUjian?.Status == "active")
             {
+                logger.LogError($"Data ujian {request.NoReg} sudah active");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamNoStartExam());
             }
             if (existingUjian?.Status == "done")
             {
+                logger.LogError($"Data ujian {request.NoReg} sudah done");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
             }
             if (existingUjian?.Status == "cancel")
             {
+                logger.LogError($"Data ujian {request.NoReg} sudah cancel");
                 return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
             }
 
