@@ -28,7 +28,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Upd
                 .NotEmpty().WithMessage("'Tipe' tidak boleh kosong.");
 
             RuleFor(c => c)
-                .Must(c => !string.IsNullOrWhiteSpace(c.Pertanyaan) || !string.IsNullOrWhiteSpace(c.Gambar))
+                .Must(c => !string.IsNullOrWhiteSpace(c.Pertanyaan) && !string.IsNullOrWhiteSpace(c.Gambar))
                 .WithMessage("Minimal satu dari 'Pertanyaan' atau 'Gambar' harus diisi.");
 
             RuleFor(c => c.Bobot)
