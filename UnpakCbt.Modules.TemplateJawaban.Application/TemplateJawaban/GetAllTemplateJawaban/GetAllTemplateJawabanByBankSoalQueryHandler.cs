@@ -25,7 +25,6 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTem
             LEFT JOIN template_soal ts ON tp.id_template_soal = ts.id 
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             WHERE bs.uuid = @BankSoalUuid 
-            ORDER BY RAND()
             """;
 
             /*AND 
@@ -33,7 +32,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTem
             (
                 (ts.pertanyaan_text is not null OR trim(IFNULL(ts.pertanyaan_text, '')) <> '') OR
                 (ts.pertanyaan_img is not null OR trim(IFNULL(ts.pertanyaan_img, '')) <> '')
-            )*/
+            ) ORDER BY RAND()*/
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
 
