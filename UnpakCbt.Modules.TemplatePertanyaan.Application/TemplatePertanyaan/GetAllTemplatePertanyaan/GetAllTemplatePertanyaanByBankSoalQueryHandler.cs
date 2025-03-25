@@ -28,14 +28,16 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
             FROM template_soal ts 
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id 
-            WHERE bs.uuid = @BankSoalUuid AND 
+            WHERE bs.uuid = @BankSoalUuid 
+            ORDER BY RAND()
+            """;
+
+            /*AND 
             ts.state != "init" AND 
             (
                 (ts.pertanyaan_text is not null OR trim(IFNULL(ts.pertanyaan_text,'')) <> '') OR 
                 (ts.pertanyaan_img is not null OR trim(IFNULL(ts.pertanyaan_img,'')) <> '')
-            )
-            ORDER BY RAND()
-            """;
+            )*/
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
 
