@@ -5,6 +5,7 @@ using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban;
 using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetTemplateJawaban;
+using System.Data.SqlTypes;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTemplateJawaban
 {
@@ -14,7 +15,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTem
         {
             await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
 
-            const string sql =
+            const string sqlBase =
             """
             SELECT 
                 ts.uuid as UuidTemplateSoal,
@@ -26,6 +27,39 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTem
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             WHERE bs.uuid = @BankSoalUuid 
             """;
+
+            string options = string.Empty;
+
+            switch (request.type)
+            {
+                case "valid":
+                    options = @"
+                            AND ts.state != 'init' 
+                            AND (
+                                (ts.pertanyaan_text IS NOT NULL OR TRIM(IFNULL(ts.pertanyaan_text, '')) <> '') OR 
+                                (ts.pertanyaan_img IS NOT NULL OR TRIM(IFNULL(ts.pertanyaan_img, '')) <> '')
+                            )";
+                    break;
+
+                case "random":
+                    options = "ORDER BY RAND()";
+                    break;
+
+                case "valid_random":
+                    options = @"
+                            AND ts.state != 'init' 
+                            AND (
+                                (ts.pertanyaan_text IS NOT NULL OR TRIM(IFNULL(ts.pertanyaan_text, '')) <> '') OR 
+                                (ts.pertanyaan_img IS NOT NULL OR TRIM(IFNULL(ts.pertanyaan_img, '')) <> '')
+                            ) 
+                            ORDER BY RAND()";
+                    break;
+
+                default:
+                    break;
+            }
+
+            string sql = sqlBase + options;
 
             /*AND 
             ts.state != "init" AND

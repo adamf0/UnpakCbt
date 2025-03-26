@@ -45,7 +45,7 @@ namespace UnpakCbt.Common.Application.Security
 
             private static readonly string[] BlackListMySqlQueries =
             {
-            "SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "CREATE", "ALTER", "TRUNCATE"
+            "SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "CREATE", "ALTER", "TRUNCATE", "OR", "AND", "UNION", "DESC", "--", "#", "/*", "*/"
         };
 
             private static readonly string[] BlackListAspTags =
@@ -66,6 +66,82 @@ namespace UnpakCbt.Common.Application.Security
             BlackListAspTags,
             BlackListJavascriptTags,
             BlackListLink,
+        }
+
+        public static string Sanitize(string input)
+        {
+            // Remove blacklisted HTML tags
+            foreach (var tag in BlackListTags)
+            {
+                var tagRegex = new Regex($"<\\/?\\s*{tag}\\s*[^>]*>", RegexOptions.IgnoreCase);
+                input = tagRegex.Replace(input, string.Empty);
+            }
+
+            // Remove blacklisted attributes from tags
+            foreach (var attr in BlackListAttributes)
+            {
+                var attrRegex = new Regex($"{attr}\\s*=\\s*['\"].*?['\"]", RegexOptions.IgnoreCase);
+                input = attrRegex.Replace(input, string.Empty);
+            }
+
+            // Remove blacklisted CSS properties
+            var styleRegex = new Regex(@"<style.?>.?</style>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            input = styleRegex.Replace(input, match =>
+            {
+                var styleContent = match.Value;
+                foreach (var cssProp in BlackListCssProperties)
+                {
+                    var cssPropRegex = new Regex($@"\b{cssProp}\b\s*[:;]", RegexOptions.IgnoreCase);
+                    styleContent = cssPropRegex.Replace(styleContent, string.Empty);
+                }
+                return styleContent;
+            });
+
+            // Remove blacklisted protocols (e.g., javascript, data, etc.)
+            foreach (var protocol in BlackListProtocols)
+            {
+                var protocolRegex = new Regex($@"\b({protocol})\b:", RegexOptions.IgnoreCase);
+                input = protocolRegex.Replace(input, string.Empty);
+            }
+
+            // Remove PHP code
+            foreach (var phpTag in BlackListPhpTags)
+            {
+                var phpTagRegex = new Regex(phpTag, RegexOptions.IgnoreCase);
+                input = phpTagRegex.Replace(input, string.Empty);
+            }
+
+            // Remove SQL queries (SELECT, INSERT, etc.)
+            foreach (var query in BlackListMySqlQueries)
+            {
+                var sqlRegex = new Regex($@"\b{query}\b", RegexOptions.IgnoreCase);
+                input = sqlRegex.Replace(input, string.Empty);
+            }
+
+            // Remove shell/bash commands (echo, ls, rm, etc.)
+            foreach (var command in BlackListCommands)
+            {
+                var commandRegex = new Regex($@"\b{command}\b", RegexOptions.IgnoreCase);
+                input = commandRegex.Replace(input, string.Empty);
+            }
+
+            // Remove ASP code
+            foreach (var aspTag in BlackListAspTags)
+            {
+                var aspTagRegex = new Regex(aspTag, RegexOptions.IgnoreCase);
+                input = aspTagRegex.Replace(input, string.Empty);
+            }
+
+            // Remove dangerous links (javascript, data, etc.)
+            var jsLinkRegex = new Regex(@"href\s*=\s*['""]javascript:[^'""]*['""]", RegexOptions.IgnoreCase);
+            input = jsLinkRegex.Replace(input, string.Empty);
+
+            // Remove plain http and https links
+            var plainLinkRegex = new Regex(@"(http|https):\/\/[^\s<>]+", RegexOptions.IgnoreCase);
+            input = plainLinkRegex.Replace(input, string.Empty);
+
+            // Encode any remaining HTML
+            return HttpUtility.HtmlEncode(input);
         }
 
         public static SanitizerType Check(string input)
