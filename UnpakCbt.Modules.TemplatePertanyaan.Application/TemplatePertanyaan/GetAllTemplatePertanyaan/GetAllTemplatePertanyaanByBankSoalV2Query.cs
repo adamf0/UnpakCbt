@@ -3,5 +3,5 @@ using UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetTemp
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.GetAllTemplatePertanyaan
 {
-    public sealed record GetAllTemplatePertanyaanByBankSoalQuery(Guid BakSoalUuid) : IQuery<List<TemplatePertanyaanResponse>>;
+    public sealed record GetAllTemplatePertanyaanByBankSoalV2Query(Guid BakSoalUuid) : IQuery<List<TemplatePertanyaanResponseV2>>;
 }

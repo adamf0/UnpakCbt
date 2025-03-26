@@ -13,6 +13,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
             GetAllTemplatePertanyaan.MapEndpoint(app);
             GetAllTemplatePertanyaanWithPaging.MapEndpoint(app);
             GetAllTemplatePertanyaanByBankSoal.MapEndpoint(app);
+            GetAllTemplatePertanyaanByBankSoalV2.MapEndpoint(app);
         }
     }
 }

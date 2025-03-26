@@ -9,9 +9,9 @@ using System.Data.SqlTypes;
 
 namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTemplateJawaban
 {
-    internal sealed class GetAllTemplateJawabanByBankSoalQueryHandler(IDbConnectionFactory _dbConnectionFactory) : IQueryHandler<GetAllTemplateJawabanByBankSoalQuery, List<TemplateJawabanResponse>>
+    internal sealed class GetAllTemplateJawabanByBankSoalV2QueryHandler(IDbConnectionFactory _dbConnectionFactory) : IQueryHandler<GetAllTemplateJawabanByBankSoalV2Query, List<TemplateJawabanResponse>>
     {
-        public async Task<Result<List<TemplateJawabanResponse>>> Handle(GetAllTemplateJawabanByBankSoalQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<TemplateJawabanResponse>>> Handle(GetAllTemplateJawabanByBankSoalV2Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
 
@@ -26,6 +26,12 @@ namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTem
             LEFT JOIN template_soal ts ON tp.id_template_soal = ts.id 
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             WHERE bs.uuid = @BankSoalUuid 
+            AND ts.state != 'init' 
+            AND (
+                (ts.pertanyaan_text IS NOT NULL OR TRIM(IFNULL(ts.pertanyaan_text, '')) <> '') OR 
+                (ts.pertanyaan_img IS NOT NULL OR TRIM(IFNULL(ts.pertanyaan_img, '')) <> '')
+            ) 
+            ORDER BY RAND()
             """;
 
 

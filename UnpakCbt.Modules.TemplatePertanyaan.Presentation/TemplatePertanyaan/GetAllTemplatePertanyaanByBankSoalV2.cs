@@ -12,11 +12,11 @@ using static UnpakCbt.Common.Application.Security.Xss;
 
 namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
 {
-    internal class GetAllTemplatePertanyaanByBankSoal
+    internal class GetAllTemplatePertanyaanByBankSoalV2
     {
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("TemplatePertanyaan/BankSoal/{uuidBankSoal}", async (string uuidBankSoal, ISender sender) => //HttpContext context, TokenValidator tokenValidator
+            app.MapGet("TemplatePertanyaan/BankSoalV2/{uuidBankSoal}", async (string uuidBankSoal, ISender sender) => //HttpContext context, TokenValidator tokenValidator
             {
                 /*var (isValid, error) = tokenValidator.ValidateToken(context);
                 if (!isValid)
@@ -33,7 +33,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "uuidBankSoal harus Guid format")));
                 }
 
-                Result<List<TemplatePertanyaanResponse>> result = await sender.Send(new GetAllTemplatePertanyaanByBankSoalQuery(
+                Result<List<TemplatePertanyaanResponseV2>> result = await sender.Send(new GetAllTemplatePertanyaanByBankSoalV2Query(
                     Guid.Parse(uuidBankSoal)
                 ));
 

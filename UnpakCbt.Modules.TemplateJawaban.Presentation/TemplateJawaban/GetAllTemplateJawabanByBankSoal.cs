@@ -17,7 +17,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
     {
         public static void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("TemplateJawaban/BankSoal/{uuidBankSoal}", async (string uuidBankSoal, string? type, ISender sender) => //HttpContext context, TokenValidator tokenValidator
+            app.MapGet("TemplateJawaban/BankSoal/{uuidBankSoal}", async (string uuidBankSoal, ISender sender) => //HttpContext context, TokenValidator tokenValidator
             {
                 /*var (isValid, error) = tokenValidator.ValidateToken(context);
                 if (!isValid)
@@ -33,14 +33,9 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                 {
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "uuidBankSoal harus Guid format")));
                 }
-                if (Check(type ?? "") != SanitizerType.CLEAR)
-                {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Type mengandung xss")));
-                }
 
                 Result<List<TemplateJawabanResponse>> result = await sender.Send(new GetAllTemplateJawabanByBankSoalQuery(
-                    Guid.Parse(uuidBankSoal),
-                    Sanitize(type ?? "")
+                    Guid.Parse(uuidBankSoal)
                 ));
 
                 return result.Match(Results.Ok, ApiResults.Problem);

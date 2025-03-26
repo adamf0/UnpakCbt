@@ -3,5 +3,5 @@ using UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetTemplateJa
 
 namespace UnpakCbt.Modules.TemplateJawaban.Application.TemplateJawaban.GetAllTemplateJawaban
 {
-    public sealed record GetAllTemplateJawabanByBankSoalQuery(Guid BakSoalUuid) : IQuery<List<TemplateJawabanResponse>>;
+    public sealed record GetAllTemplateJawabanByBankSoalV2Query(Guid BakSoalUuid) : IQuery<List<TemplateJawabanResponse>>;
 }

@@ -12,6 +12,7 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
             GetTemplateJawaban.MapEndpoint(app);
             GetAllTemplateJawaban.MapEndpoint(app);
             GetAllTemplateJawabanByBankSoal.MapEndpoint(app);
+            GetAllTemplateJawabanByBankSoalV2.MapEndpoint(app);
             GetAllTemplateJawabanWithPaging.MapEndpoint(app);
         }
     }
