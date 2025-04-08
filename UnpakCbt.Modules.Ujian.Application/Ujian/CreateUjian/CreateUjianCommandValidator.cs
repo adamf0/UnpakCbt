@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
 using UnpakCbt.Common.Application.Security;
-using UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian;
 
-namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
+namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
 {
     public sealed class CreateUjianCommandValidator : AbstractValidator<CreateUjianCommand>
     {
@@ -15,7 +14,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
         {
             return GuidV4Regex.IsMatch(guid.ToString());
         }
-        public CreateUjianCommandValidator() 
+        public CreateUjianCommandValidator()
         {
             RuleFor(c => c.IdJadwalUjian)
                 .NotEmpty().WithMessage("'IdJadwalUjian' tidak boleh kosong.")

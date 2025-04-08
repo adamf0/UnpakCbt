@@ -10,6 +10,8 @@ using UnpakCbt.Modules.Ujian.Domain.Ujian;
 using UnpakCbt.Modules.Ujian.Infrastructure.Cbt;
 using UnpakCbt.Modules.Ujian.Infrastructure.Database;
 using UnpakCbt.Modules.Ujian.Infrastructure.Ujian;
+using UnpakCbt.Modules.Ujian.Presentation;
+
 //using UnpakCbt.Modules.Ujian.PublicApi;
 using UnpakCbt.Modules.Ujian.Presentation.Ujian;
 
@@ -45,6 +47,7 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure
             services.AddScoped<ICounterRepository, CounterRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UjianDbContext>());
+            services.AddHostedService<UpdateStatusUjianBackgroundJob>();
         }
     }
 }

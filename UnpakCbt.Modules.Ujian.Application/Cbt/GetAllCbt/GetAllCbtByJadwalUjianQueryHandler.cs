@@ -3,11 +3,10 @@ using System.Data.Common;
 using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
-using UnpakCbt.Modules.Ujian.Application.Cbt.GetAllCbt;
 using UnpakCbt.Modules.Ujian.Application.Cbt.GetCbt;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
-namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetAllUjian
+namespace UnpakCbt.Modules.Ujian.Application.Cbt.GetAllCbt
 {
     internal sealed class GetAllCbtByJadwalUjianQueryHandler(IDbConnectionFactory _dbConnectionFactory)
         : IQueryHandler<GetAllCbtByJadwalUjianQuery, List<CbtResponse>>
@@ -39,7 +38,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetAllUjian
             WHERE u.uuid = @UuidUjian
             """;
 
-            var queryResult = await connection.QueryAsync<CbtResponse>(sql, new { uuidUjian = request.uuidUjian });
+            var queryResult = await connection.QueryAsync<CbtResponse>(sql, new { request.uuidUjian });
 
             if (!queryResult.Any())
             {

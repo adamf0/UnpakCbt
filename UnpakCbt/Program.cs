@@ -26,6 +26,7 @@ using UnpakCbt.Common.Presentation.Security;
 //[::]:5000/swagger/index.html
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddConsole();
 RuntimeFeature.IsDynamicCodeSupported.Equals(false);
 RuntimeFeature.IsDynamicCodeCompiled.Equals(false);
 AppContext.SetSwitch("System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization", false);
