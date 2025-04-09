@@ -59,7 +59,15 @@ namespace UnpakCbt.Modules.TemplateJawaban.Presentation.TemplateJawaban
                     var allowedExtensions = new[] { "png", "jpg", "jpeg" };
                     if (!allowedExtensions.Contains(extension.ToLower()))
                     {
-                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid file type.")));
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid file type")));
+                    }
+                    if (!fileProvider.IsSafeMimeType(request.JawabanImg))
+                    {
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid mime type")));
+                    }
+                    if (!fileProvider.IsValidMimeTypeAllowedExtension(request.JawabanImg.ContentType, extension.ToLower()))
+                    {
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid allowed extension in mime type")));
                     }
 
                     using (var stream = new FileStream(filePath, FileMode.Create))

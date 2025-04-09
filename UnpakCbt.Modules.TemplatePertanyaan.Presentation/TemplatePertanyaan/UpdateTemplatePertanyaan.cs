@@ -78,6 +78,14 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
                     {
                         return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid file type")));
                     }
+                    if (!fileProvider.IsSafeMimeType(request.Gambar))
+                    {
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid mime type")));
+                    }
+                    if (!fileProvider.IsValidMimeTypeAllowedExtension(request.Gambar.ContentType, extension.ToLower()))
+                    {
+                        return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Invalid allowed extension in mime type")));
+                    }
                     /*if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                     {
                         File.SetUnixFileMode(filePath, UnixFileMode.UserRead | UnixFileMode.UserWrite);

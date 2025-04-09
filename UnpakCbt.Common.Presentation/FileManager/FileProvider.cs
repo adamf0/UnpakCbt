@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
@@ -16,6 +17,30 @@ namespace UnpakCbt.Common.Presentation.FileManager
             '\u000B', '\u000C', '\u000D', '\u000E', '\u000F', '\u0010', '\u0011', '\u0012', '\u0013', '\u0014',
             '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', '\u001A', '\u001B', '\u001C', '\u001D', '\u001E', '\u001F', '\u007F',
             '\u200B', '\u200C', '\u200D', '\u2060' // Zero-width dan whitespace tersembunyi
+        };
+
+        private static readonly string[] AllowedMimeTypes = {
+            "image/jpg", "image/jpeg", "image/png",
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        };
+
+        private static readonly Dictionary<string, string> MimeTypeAllowedExtension = new(StringComparer.OrdinalIgnoreCase){
+            { "image/jpg", "jpg" },
+            { "image/jpeg", "jpeg" },
+            { "image/png", "png" },
+            { "application/pdf", "pdf" },
+            { "application/msword", "doc" },
+            { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx" },
+            { "application/vnd.ms-powerpoint", "ppt" },
+            { "application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx" },
+            { "application/vnd.ms-excel", "xls" },
+            { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx" }
         };
 
         public FileProvider() { }
@@ -57,6 +82,21 @@ namespace UnpakCbt.Common.Presentation.FileManager
         {
             string[] allowedExtensions = { "jpg", "jpeg", "png", "pdf", "doc", "docx", "xlsx" };
             return Array.Exists(allowedExtensions, ext => ext.Equals(extension, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool IsSafeMimeType(IFormFile file)
+        {
+            return AllowedMimeTypes.Contains(file.ContentType, StringComparer.OrdinalIgnoreCase);
+        }
+
+        public bool IsValidMimeTypeAllowedExtension(string mimeType, string extension)
+        {
+            if (MimeTypeAllowedExtension.TryGetValue(mimeType, out var expectedExtension))
+            {
+                return string.Equals(expectedExtension, extension, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
         }
     }
 }
