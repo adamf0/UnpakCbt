@@ -27,18 +27,10 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                 {
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));
                 }
-                if (!SecurityCheck.NotContainInvalidCharacters(request.IdBankSoal))
-                {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal mengandung karakter berbahaya")));
-                }
 
                 if (!SecurityCheck.isValidGuid(request.Id))
                 {
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id harus Guid format")));
-                }
-                if (!SecurityCheck.isValidGuid(request.IdBankSoal))
-                {
-                    return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdBankSoal harus Guid format")));
                 }
 
                 int kouta;
@@ -53,8 +45,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
                     kouta,
                     Sanitizer.Sanitize(request.Tanggal),
                     Sanitizer.Sanitize(request.JamMulai),
-                    Sanitizer.Sanitize(request.JamAkhir),
-                    Guid.Parse(request.IdBankSoal)
+                    Sanitizer.Sanitize(request.JamAkhir)
                     )
                 );
 
@@ -71,7 +62,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Presentation.JadwalUjian
             public string Tanggal { get; set; }
             public string JamMulai { get; set; }
             public string JamAkhir { get; set; }
-            public string IdBankSoal { get; set; }
         }
     }
 }

@@ -40,9 +40,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                 .Must(BeValidTime).WithMessage("'JamAkhir' harus dalam format HH:mm.")
                 .GreaterThan(c => c.JamMulai).WithMessage("'JamAkhir' harus lebih besar dari 'JamMulai'.");
 
-            RuleFor(c => c.IdBankSoal)
-                .NotEmpty().WithMessage("'IdBankSoal' tidak boleh kosong.")
-                .Must(BeValidGuidV4).WithMessage("'IdBankSoal' harus dalam format UUID v4 yang valid.");
         }
 
         private bool BeValidDate(string tanggal)

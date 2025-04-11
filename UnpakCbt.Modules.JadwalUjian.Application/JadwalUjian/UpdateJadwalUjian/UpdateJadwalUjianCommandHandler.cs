@@ -22,12 +22,16 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
         public async Task<Result> Handle(UpdateJadwalUjianCommand request, CancellationToken cancellationToken)
         {
             Domain.JadwalUjian.JadwalUjian? existingJadwalUjian = await bankSoalRepository.GetAsync(request.Uuid, cancellationToken);
-            BankSoalResponse? bankSoal = await bankSoalApi.GetAsync(request.IdBankSoal, cancellationToken);
-            Result? result = checkData(logger, request.Uuid, existingJadwalUjian, request.IdBankSoal, bankSoal);
+            
+            Result? result = checkData(logger, request.Uuid, existingJadwalUjian);
             if (result!=null) { 
                 return result;
             }
-            //checkFormat(request.Tanggal, request.JamMulai, request.JamAkhir);
+            result = checkFormat(logger, request.Tanggal, request.JamMulai, request.JamAkhir);
+            if (result != null)
+            {
+                return result;
+            }
 
             Result<Domain.JadwalUjian.JadwalUjian> asset = Domain.JadwalUjian.JadwalUjian.Update(existingJadwalUjian!)
                          .ChangeDeskripsi(request.Deskripsi)
@@ -35,7 +39,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
                          .ChangeTanggal(request.Tanggal)
                          .ChangeJamMulai(request.JamMulai)
                          .ChangeJamAkhir(request.JamAkhir)
-                         .ChangeBankSoal(int.Parse(bankSoal.Id))
                          .Build();
 
             if (asset.IsFailure)
@@ -70,16 +73,12 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
             return Result.Success();
         }
 
-        private Result? checkData(ILogger logger, Guid id, Domain.JadwalUjian.JadwalUjian? existingJadwalUjian, Guid IdBankSoal, BankSoalResponse? bankSoal) {
+        private Result? checkData(ILogger logger, Guid id, Domain.JadwalUjian.JadwalUjian? existingJadwalUjian)
+        { 
             if (existingJadwalUjian is null)
             {
                 logger.LogError($"JadwalUjian dengan referensi Uuid {id} tidak ditemukan");
                 return Result.Failure(JadwalUjianErrors.NotFound(id));
-            }
-            if (bankSoal is null)
-            {
-                logger.LogError($"BankSoal dengan referensi Uuid {IdBankSoal} tidak ditemukan");
-                return Result.Failure<Guid>(BankSoalErrors.NotFound(IdBankSoal));
             }
 
             return null;

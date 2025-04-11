@@ -8,7 +8,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.UpdateJadwalUjian
         int Kuota,
         string Tanggal,
         string JamMulai,
-        string JamAkhir,
-        Guid IdBankSoal
+        string JamAkhir
     ) : ICommand;
 }
