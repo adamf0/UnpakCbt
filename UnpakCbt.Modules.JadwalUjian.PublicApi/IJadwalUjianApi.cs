@@ -4,5 +4,6 @@
     {
         Task<JadwalUjianResponse?> GetAsync(Guid JadwalUjianUuid, CancellationToken cancellationToken = default);
         Task<JadwalUjianResponse?> GetByIdAsync(int? id, CancellationToken cancellationToken = default);
+        Task<int> CountByBankSoalHasRegisteredMabaAsync(Guid BankSoalUuid, CancellationToken cancellationToken = default);
     }
 }

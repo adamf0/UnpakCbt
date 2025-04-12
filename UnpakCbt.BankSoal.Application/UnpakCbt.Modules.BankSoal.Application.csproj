@@ -17,11 +17,10 @@
 		<ProjectReference Include="..\UnpakCbt.BankSoal.Domain\UnpakCbt.Modules.BankSoal.Domain.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Common.Application\UnpakCbt.Common.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.Common.Domain\UnpakCbt.Common.Domain.csproj" />
+		<ProjectReference Include="..\UnpakCbt.Modules.JadwalUjian.PublicApi\UnpakCbt.Modules.JadwalUjian.PublicApi.csproj" />
 	</ItemGroup>
 
-	<Target Name="DisableNullableForVisualStudioBuild"
-        BeforeTargets="CoreCompile"
-        Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
 		<PropertyGroup>
 			<Nullable>disable</Nullable>
 		</PropertyGroup>

@@ -19,6 +19,9 @@ namespace UnpakCbt.Modules.BankSoal.Domain.BankSoal
         public static Error NotFound(Guid Id) =>
             Error.Problem("BankSoal.NotFound", $"Question bank with identifier {Id} not found");
 
+        public static Error CommandAbort(Guid Id, string Event) =>
+            Error.Problem("BankSoal.CommandAbort", $"Question bank with identifier {Id} has aborted event {Event}");
+
         public static Error InvalidArgs(string value) =>
             Error.Problem("BankSoal.InvalidArgs", value);
 

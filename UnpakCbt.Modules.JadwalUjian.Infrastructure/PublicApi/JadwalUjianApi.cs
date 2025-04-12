@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using UnpakCbt.Common.Domain;
+using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.CountJadwalUjian;
 using UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian;
 using IJadwalUjianApi = UnpakCbt.Modules.JadwalUjian.PublicApi.IJadwalUjianApi;
 using JadwalUjianResponseApi = UnpakCbt.Modules.JadwalUjian.PublicApi.JadwalUjianResponse;
@@ -27,6 +28,12 @@ namespace UnpakCbt.Modules.JadwalUjian.Infrastructure.PublicApi
                 result.Value.JamAkhir,
                 int.Parse(result.Value.IdBankSoal)
             );
+        }
+
+        public async Task<int> CountByBankSoalHasRegisteredMabaAsync(Guid BankSoalUuid, CancellationToken cancellationToken = default)
+        {
+            Result<int> result = await sender.Send(new CountJadwalUjianByBankSoalHasRegisteredMabaQuery(BankSoalUuid), cancellationToken);
+            return result.Value;
         }
 
         public async Task<JadwalUjianResponseApi?> GetByIdAsync(int? id, CancellationToken cancellationToken = default)
