@@ -32,7 +32,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian
                      ujian.no_reg as NoReg,
                      CAST(NULLIF(jadwal_ujian.uuid, '') AS VARCHAR(36)) AS UuidJadwalUjian,
                      ujian.status AS Status,
-                     (ujian.coba_ujian-1) AS FreeTrial
+                     ujian.coba_ujian AS FreeTrial
                  FROM ujian 
                  JOIN jadwal_ujian ON ujian.id_jadwal_ujian = jadwal_ujian.id
                  WHERE ujian.uuid = @Uuid AND ujian.no_reg = @NoReg
