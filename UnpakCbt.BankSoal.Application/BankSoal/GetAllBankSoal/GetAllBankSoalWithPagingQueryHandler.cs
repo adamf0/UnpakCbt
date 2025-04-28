@@ -28,7 +28,8 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal
                 judul AS Judul,
                 rule AS Rule,
                 status AS Status,
-                (SELECT COUNT(*) FROM jadwal_ujian WHERE jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung
+                (SELECT COUNT(*) FROM jadwal_ujian WHERE jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung,
+                disabled AS Disabled 
             FROM bank_soal
             """);
 

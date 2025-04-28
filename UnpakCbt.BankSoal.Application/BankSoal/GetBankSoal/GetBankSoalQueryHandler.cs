@@ -22,7 +22,8 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetBankSoal
                      judul as Judul,
                      rule AS Rule,
                      status AS Status,
-                     (select count(*) from jadwal_ujian where jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung 
+                     (select count(*) from jadwal_ujian where jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung,
+                     disabled AS Disabled 
                  FROM bank_soal 
                  WHERE uuid = @Uuid
                  """;
