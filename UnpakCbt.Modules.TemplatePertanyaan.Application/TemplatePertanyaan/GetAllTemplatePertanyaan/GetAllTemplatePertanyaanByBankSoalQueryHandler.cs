@@ -30,6 +30,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id 
             WHERE bs.uuid = @BankSoalUuid 
+            ORDER BY ts.id ASC
             """;
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
