@@ -4,6 +4,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
 {
     public sealed record DoneUjianCommand(
         Guid uuid,
-        string NoReg
+        string NoReg,
+        string Mode
     ) : ICommand;
 }

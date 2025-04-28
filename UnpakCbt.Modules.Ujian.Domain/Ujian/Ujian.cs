@@ -18,6 +18,8 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         [Column("id_jadwal_ujian")]
         public int IdJadwalUjian { get; private set; }
         public string Status { get; private set; }
+        [Column("coba_ujian")]
+        public int CobaUjian { get; private set; }
 
         public static UjianBuilder Update(Ujian prev) => new UjianBuilder(prev);
 

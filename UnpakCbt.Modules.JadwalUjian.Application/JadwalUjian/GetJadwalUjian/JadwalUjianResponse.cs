@@ -10,5 +10,6 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian
         public string JamMulai { get; set; }
         public string JamAkhir { get; set; }
         public string UuidBankSoal { get; set; }
+        public string? UuidBankSoalTrial { get; set; }
     }
 }

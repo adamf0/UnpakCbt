@@ -13,23 +13,48 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian
         public async Task<Result<UjianResponse>> Handle(GetUjianQuery request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-            //CAST(NULLIF(id_group, '') AS CHAR(36)) -> guid
-            const string sql =
+            int enableTrial = 0;
+            string enableTrialValue = Environment.GetEnvironmentVariable("EnableTrial");
+            if (int.TryParse(enableTrialValue, out enableTrial) == false)
+            {
+                enableTrial = 0; // Default value
+            }
+
+
+            string sql;
+            if (enableTrial==1) {
+                sql =
                 $"""
                  SELECT 
                      CAST(NULLIF(ujian.uuid, '') AS VARCHAR(36)) AS Uuid,
                      ujian.no_reg as NoReg,
                      CAST(NULLIF(jadwal_ujian.uuid, '') AS VARCHAR(36)) AS UuidJadwalUjian,
-                     ujian.status AS Status
+                     ujian.status AS Status,
+                     (ujian.coba_ujian-1) AS FreeTrial
                  FROM ujian 
                  JOIN jadwal_ujian ON ujian.id_jadwal_ujian = jadwal_ujian.id
                  WHERE ujian.uuid = @Uuid AND ujian.no_reg = @NoReg
                  """;
+            }
+            else {
+                sql =
+                $"""
+                 SELECT 
+                     CAST(NULLIF(ujian.uuid, '') AS VARCHAR(36)) AS Uuid,
+                     ujian.no_reg as NoReg,
+                     CAST(NULLIF(jadwal_ujian.uuid, '') AS VARCHAR(36)) AS UuidJadwalUjian,
+                     ujian.status AS Status,
+                     0 AS FreeTrial
+                 FROM ujian 
+                 JOIN jadwal_ujian ON ujian.id_jadwal_ujian = jadwal_ujian.id
+                 WHERE ujian.uuid = @Uuid AND ujian.no_reg = @NoReg
+                 """;
+            }
 
-            DefaultTypeMap.MatchNamesWithUnderscores = true;
+            UjianResponse? result = await connection.QuerySingleOrDefaultAsync<UjianResponse?>(sql, new { Uuid = request.UjianUuid, NoReg = request.NoReg });
 
-            var result = await connection.QuerySingleOrDefaultAsync<UjianResponse?>(sql, new { Uuid = request.UjianUuid, NoReg = request.NoReg });
             if (result == null)
             {
                 return Result.Failure<UjianResponse>(UjianErrors.NotFound(request.UjianUuid));

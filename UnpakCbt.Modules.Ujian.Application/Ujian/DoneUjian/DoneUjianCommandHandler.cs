@@ -33,27 +33,11 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                 return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.uuid, request.NoReg));
             }
 
-            if (existingUjian?.Status == "active")
-            {
-                logger.LogError($"Data ujian {request.NoReg} sudah active");
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamNotStartedExam());
-            }
-            if (existingUjian?.Status == "cancel")
-            {
-                logger.LogError($"Data ujian {request.NoReg} sudah cancel");
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
-            }
-            if (existingUjian?.Status == "done")
-            {
-                logger.LogError($"Data ujian {request.NoReg} sudah done");
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
-            }
-
-            if (existingUjian?.Status == "start")
+            if (request.Mode == "trial")
             {
                 Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian!)
-                         .ChangeStatus("done")
-                         .Build();
+                             .DoneTrial()
+                             .Build();
 
                 if (prevUjian.IsFailure)
                 {
@@ -61,28 +45,58 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                 }
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
-                try
+            }
+            else {
+                if (existingUjian?.Status == "active")
                 {
-                    await _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse
-                    {
-                        Uuid = request.uuid.ToString(),
-                        NoReg = request.NoReg,
-                        Status = "done"
-                    });
+                    logger.LogError($"Data ujian {request.NoReg} sudah active");
+                    return Result.Failure<Guid>(UjianErrors.ScheduleExamNotStartedExam());
                 }
-                catch (HubException hubEx)
+                if (existingUjian?.Status == "cancel")
                 {
-                    logger.LogError($"SignalR error: {hubEx.Message}");
+                    logger.LogError($"Data ujian {request.NoReg} sudah cancel");
+                    return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
                 }
-                catch (TaskCanceledException taskEx)
+                if (existingUjian?.Status == "done")
                 {
-                    logger.LogError($"SignalR request dibatalkan: {taskEx.Message}");
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError($"Unexpected error: {ex.Message}");
+                    logger.LogError($"Data ujian {request.NoReg} sudah done");
+                    return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
                 }
 
+                if (existingUjian?.Status == "start")
+                {
+                    Result<Domain.Ujian.Ujian> prevUjian = Domain.Ujian.Ujian.Update(existingUjian!)
+                             .ChangeStatus("done")
+                             .Build();
+
+                    if (prevUjian.IsFailure)
+                    {
+                        return Result.Failure<Guid>(prevUjian.Error);
+                    }
+
+                    await unitOfWork.SaveChangesAsync(cancellationToken);
+                    try
+                    {
+                        await _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse
+                        {
+                            Uuid = request.uuid.ToString(),
+                            NoReg = request.NoReg,
+                            Status = "done"
+                        });
+                    }
+                    catch (HubException hubEx)
+                    {
+                        logger.LogError($"SignalR error: {hubEx.Message}");
+                    }
+                    catch (TaskCanceledException taskEx)
+                    {
+                        logger.LogError($"SignalR request dibatalkan: {taskEx.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError($"Unexpected error: {ex.Message}");
+                    }
+                }
             }
 
             return Result.Success();

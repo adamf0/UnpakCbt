@@ -71,6 +71,20 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
                 _akurasiPenelitian.Status = Status;
                 return this;
             }
+
+            public UjianBuilder DoneTrial()
+            {
+                if (HasError) return this;
+
+                /*if (string.IsNullOrWhiteSpace(nama))
+                {
+                    _result = Result.Failure<Ujian>(UjianErrors.NamaNotFound);
+                    return this;
+                }*/
+
+                _akurasiPenelitian.CobaUjian = 1;
+                return this;
+            }
         }
     }
 }
