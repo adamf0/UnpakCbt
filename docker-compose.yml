@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.3.2b
+    image: cbt:0.3.2c
     security_opt:
       - "no-new-privileges:true"
       - apparmor=docker-default

@@ -6,6 +6,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
         Guid UuidUjian,
         string NoReg,
         Guid uuidTemplateSoal,
-        Guid uuidJawabanBenar
+        Guid uuidJawabanBenar,
+        string? Mode
     ) : ICommand;
 }

@@ -32,20 +32,22 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
                 return Result.Failure<Guid>(UjianErrors.IncorrectReferenceNoReg(request.UuidUjian, existingUjian?.NoReg));
             }
 
-            if (existingUjian?.Status == "active")
-            {
-                logger.LogError($"Data ujian {request.NoReg} sudah active");
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamNoStartExam());
-            }
-            if (existingUjian?.Status == "done")
-            {
-                logger.LogError($"Data ujian {request.NoReg} sudah done");
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
-            }
-            if (existingUjian?.Status == "cancel")
-            {
-                logger.LogError($"Data ujian {request.NoReg} sudah cancel");
-                return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
+            if (request.Mode != "trial") {
+                if (existingUjian?.Status == "active")
+                {
+                    logger.LogError($"Data ujian {request.NoReg} sudah active");
+                    return Result.Failure<Guid>(UjianErrors.ScheduleExamNoStartExam());
+                }
+                if (existingUjian?.Status == "done")
+                {
+                    logger.LogError($"Data ujian {request.NoReg} sudah done");
+                    return Result.Failure<Guid>(UjianErrors.ScheduleExamDoneExam());
+                }
+                if (existingUjian?.Status == "cancel")
+                {
+                    logger.LogError($"Data ujian {request.NoReg} sudah cancel");
+                    return Result.Failure<Guid>(UjianErrors.ScheduleExamCancelExam());
+                }
             }
 
             JadwalUjianResponse? jadwalUjian = await jadwalUjianApi.GetByIdAsync(existingUjian?.IdJadwalUjian ?? 0, cancellationToken);

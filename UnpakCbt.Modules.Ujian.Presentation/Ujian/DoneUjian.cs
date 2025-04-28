@@ -30,7 +30,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                     new DoneUjianCommand(
                         Guid.Parse(request.Id),
                         Sanitizer.Sanitize(request.NoReg),
-                        Sanitizer.Sanitize(request.Mode)
+                        request.Mode
                     )
                 );
 
@@ -41,7 +41,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             public string Id { get; set; }
             public string NoReg { get; set; }
-            public string Mode { get; set; }
+            public string? Mode { get; set; }
         }
     }
 }

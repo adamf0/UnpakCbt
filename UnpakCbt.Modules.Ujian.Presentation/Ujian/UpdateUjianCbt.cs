@@ -47,7 +47,8 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
                     Guid.Parse(request.UuidUjian),
                     Sanitizer.Sanitize(request.NoReg),
                     Guid.Parse(request.UuidTemplateSoal),
-                    Guid.Parse(request.UuidJawabanBenar)
+                    Guid.Parse(request.UuidJawabanBenar),
+                    request.Mode
                     )
                 );
 
@@ -61,6 +62,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
             public string NoReg { get; set; }
             public string UuidTemplateSoal { get; set; }
             public string UuidJawabanBenar { get; set; }
+            public string? Mode { get; set; }
         }
     }
 }
