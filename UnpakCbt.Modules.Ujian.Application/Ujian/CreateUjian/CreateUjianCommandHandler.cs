@@ -38,7 +38,35 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
             checkData(jadwalUjian, request.IdJadwalUjian);
             checkDataDate(jadwalUjian);
             checkFormatAndRangeDate(jadwalUjian);
+
+            List<TemplatePertanyaanResponse> listMasterPertanyaanTrial = [];
+
+            int enableTrial = 0;
+            string enableTrialValue = Environment.GetEnvironmentVariable("EnableTrial");
+            if (int.TryParse(enableTrialValue, out enableTrial) == false)
+            {
+                enableTrial = 0; // Default value
+            }
+
+            if (enableTrial==1) {
+                logger.LogInformation("pengaturan trial ditemukan");
+                string idBankSoalTrialValue = Environment.GetEnvironmentVariable("IdBankSoalTrial");
+                int idBankSoalTrial = 0;
+                if (int.TryParse(idBankSoalTrialValue, out idBankSoalTrial) == false)
+                {
+                    idBankSoalTrial = 0; // Default value
+                }
+
+                if (idBankSoalTrial == 0) {
+                    logger.LogError("referensi template soal trial tidak ditemukan");
+                    return Result.Failure<Guid>(UjianErrors.NotFoundQuestionTrial());
+                }
+                logger.LogInformation("referensi template soal trial ditemukan");
+
+                listMasterPertanyaanTrial = await templatePertanyaanApi.GetAllTemplatePertanyaanByBankSoal(idBankSoalTrial);
+            }
             
+
             //insert ujian
             var result = Domain.Ujian.Ujian.Create(request.NoReg, int.Parse(jadwalUjian?.Id??"0"));
             logger.LogInformation("result: {@result}", result);
@@ -66,6 +94,18 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.CreateUjian
             );
             await cbtRepository.InsertAsync(listPertanyaan);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            if (listMasterPertanyaanTrial.Count() > 0) {
+                logger.LogInformation("template soal trial ditemukan");
+                IEnumerable<Domain.Cbt.Cbt> listPertanyaanTrial = listMasterPertanyaanTrial.Select(item =>
+                    Domain.Cbt.Cbt.CreateTrial(
+                        currentUjian?.Id ?? 0,
+                        int.Parse(item.Id)
+                    ).Value
+                );
+                await cbtRepository.InsertAsync(listPertanyaanTrial);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
+            }
 
             try { 
                 await _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse

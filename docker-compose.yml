@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.3.1b
+    image: cbt:0.3.2
     security_opt:
       - "no-new-privileges:true"
       - apparmor=docker-default
@@ -18,6 +18,8 @@ services:
       - Sub=seb.unpak.ac.id
       - Key_Signed=UnpakCBTSecureKey1234567890!@$%#*&^
       - UrlReact=https://seb.unpak.ac.id
+      - EnableTrial=1
+      - IdBankSoalTrial=1 #id bank soal trial (int) 
       # - SEQ_SERVER_URL=http://host.docker.internal:5341
     ports:
       - "5000:8080"

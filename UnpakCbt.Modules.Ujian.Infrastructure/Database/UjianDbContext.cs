@@ -164,6 +164,9 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
 
                 entity.Property(e => e.JawabanBenar)
                       .HasColumnName("jawaban_benar");
+
+                entity.Property(e => e.Trial)
+                      .HasColumnName("trial");
             });
         }
     }

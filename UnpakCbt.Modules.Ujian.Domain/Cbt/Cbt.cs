@@ -19,6 +19,8 @@ namespace UnpakCbt.Modules.Ujian.Domain.Cbt
         public int IdTemplateSoal { get; private set; }
         [Column("jawaban_benar")]
         public int? JawabanBenar { get; private set; }
+        [Column("trial")]
+        public int Trial { get; private set; }
 
         public static CbtBuilder Update(Cbt prev) => new CbtBuilder(prev);
 
@@ -33,6 +35,25 @@ namespace UnpakCbt.Modules.Ujian.Domain.Cbt
                 Uuid = Guid.NewGuid(),
                 IdUjian = IdUjian,
                 IdTemplateSoal = IdTemplateSoal,
+                JawabanBenar = JawabanBenar,
+            };
+
+            asset.Raise(new CbtCreatedDomainEvent(asset.Uuid));
+
+            return asset;
+        }
+        public static Result<Cbt> CreateTrial(
+        int IdUjian,
+        int IdTemplateSoal,
+        int? JawabanBenar = null
+        )
+        {
+            var asset = new Cbt
+            {
+                Uuid = Guid.NewGuid(),
+                IdUjian = IdUjian,
+                IdTemplateSoal = IdTemplateSoal,
+                Trial = 1,
                 JawabanBenar = JawabanBenar,
             };
 

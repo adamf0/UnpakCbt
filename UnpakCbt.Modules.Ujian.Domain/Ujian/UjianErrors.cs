@@ -16,6 +16,9 @@ namespace UnpakCbt.Modules.Ujian.Domain.Ujian
         public static Error IdJadwalUjianNotFound(int Id) =>
             Error.Problem("UjianErrors.IdJadwalUjianNotFound", $"Exam schedule with reference IdJadwalUjian {Id} not found");
 
+        public static Error NotFoundQuestionTrial() =>
+            Error.Problem("UjianErrors.NotFoundQuestionTrial", "Reference to retrieve trial exam question data not found");
+        
         public static Error NoRegNotEmpty() =>
             Error.Problem("TemplatePertanyaan.NoRegNotEmpty", "The registration reference number in the exam schedule cannot be empty");
 
