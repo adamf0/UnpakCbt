@@ -114,7 +114,9 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
             if (existingCbt == null) {
                 return Result.Failure<Guid>(CbtErrors.NotFound(request.UuidUjian, request.uuidTemplateSoal, request.NoReg));
             }
-            //[PR] validasi jawaban yg terdaftar
+
+            //[PR] [BUG:Medium] validasi jawaban yg terdaftar
+            //[PR] [BUG:Height] validasi jawaban dan pertanyaan sesuai template (normal / trial)
 
             Result<Domain.Cbt.Cbt> currentCbt = Domain.Cbt.Cbt.Update(existingCbt)
                          .ChangeJawabanBenar(JawabanBenar)

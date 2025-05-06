@@ -11,7 +11,6 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
 {
     internal sealed class GetAllTemplatePertanyaanByBankSoalV2QueryHandler(IDbConnectionFactory _dbConnectionFactory) : IQueryHandler<GetAllTemplatePertanyaanByBankSoalV2Query, List<TemplatePertanyaanResponseV2>>
     {
-        //[PR] harus dipisah antara entry pertanyaan dan soal pertanyaan
         public async Task<Result<List<TemplatePertanyaanResponseV2>>> Handle(GetAllTemplatePertanyaanByBankSoalV2Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
