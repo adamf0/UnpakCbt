@@ -24,10 +24,12 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
                 ts.pertanyaan_text as Pertanyaan,
                 ts.pertanyaan_img as Gambar,
                 ts.bobot as Bobot,
-                ts.state as State 
+                ts.state as State,
+                uc.trial as Trial 
             FROM template_soal ts 
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id 
+            LEFT JOIN ujian_cbt uc ON ts.id = uc.id_template_soal 
             WHERE bs.uuid = @BankSoalUuid 
             AND ts.state != 'init' 
             AND (
