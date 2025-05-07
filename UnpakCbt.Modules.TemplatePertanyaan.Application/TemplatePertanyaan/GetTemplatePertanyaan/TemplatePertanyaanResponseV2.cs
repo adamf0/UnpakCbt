@@ -9,6 +9,5 @@
         public string Gambar { get; set; }
         public string Bobot { get; set; }
         public string State { get; set; }
-        public string Trial { get; set; }
     }
 }

@@ -25,12 +25,10 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Application.TemplatePertanyaan.Get
                 ts.pertanyaan_img as Gambar,
                 CAST(NULLIF(tp.uuid, '') as VARCHAR(36)) as UuidJawabanBenar,
                 ts.bobot as Bobot,
-                ts.state as State,
-                uc.trial as Trial 
+                ts.state as State 
             FROM template_soal ts 
             LEFT JOIN bank_soal bs ON ts.id_bank_soal = bs.id 
             LEFT JOIN template_pilihan tp ON ts.jawaban_benar = tp.id 
-            LEFT JOIN ujian_cbt uc ON ts.id = uc.id_template_soal 
             WHERE bs.uuid = @BankSoalUuid 
             ORDER BY ts.id ASC
             """;
