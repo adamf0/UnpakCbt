@@ -11,6 +11,7 @@
         public string jawabanText { get; set; }
         public string jawabanImg { get; set; }
         public string tipe { get; set; }
+        public string trial { get; set; }
         public string uuidJadwalUjian { get; set; }
         public string uuidBankSoal { get; set; }
     }

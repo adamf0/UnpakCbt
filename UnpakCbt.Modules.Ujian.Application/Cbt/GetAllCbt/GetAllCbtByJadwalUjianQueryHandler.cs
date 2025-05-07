@@ -27,6 +27,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Cbt.GetAllCbt
                 tp.jawaban_text as jawabanText,
                 tp.jawaban_img as jawabanImg,
                 ts.tipe as tipe,
+                uc.trial as trial,
                 CAST(NULLIF(ju.uuid, '') AS VARCHAR(36)) as uuidJadwalUjian,
                 CAST(NULLIF(bs.uuid, '') AS VARCHAR(36)) as uuidBankSoal
             from ujian_cbt uc 
