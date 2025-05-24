@@ -21,7 +21,7 @@ namespace UnpakCbt.Modules.Ujian.Presentation
             {
                 try
                 {
-                    //await mediator.Send(new AllDoneUjianCommand(), stoppingToken);
+                    await mediator.Send(new AllDoneUjianCommand(), stoppingToken);
                 }
                 catch (Exception ex)
                 { 

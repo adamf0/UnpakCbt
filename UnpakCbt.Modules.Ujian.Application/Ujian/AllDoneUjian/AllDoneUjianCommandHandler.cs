@@ -30,7 +30,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.AllDoneUjian
             u.status as Status 
             from ujian u
             join jadwal_ujian ju on u.id_jadwal_ujian = ju.id 
-            where CONVERT_TZ(NOW(), '+00:00', '+07:00') > concat(ju.tanggal, " ", ju.jam_akhir_ujian) and u.status != "done"
+            where NOW() > concat(ju.tanggal, " ", ju.jam_akhir_ujian) and u.status != "done"
             """;
 
             const string sqlUpdate =
@@ -39,7 +39,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.AllDoneUjian
             JOIN jadwal_ujian ju ON u.id_jadwal_ujian = ju.id
             SET u.status = 'done'
             WHERE 
-                CONVERT_TZ(NOW(), '+00:00', '+07:00') > CONCAT(ju.tanggal, ' ', ju.jam_akhir_ujian)
+                NOW() > CONCAT(ju.tanggal, ' ', ju.jam_akhir_ujian)
                 AND u.status != 'done';
             """;
 
