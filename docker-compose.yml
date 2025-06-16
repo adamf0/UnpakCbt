@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.3.3d
-    restart: always
+    image: cbt:0.3.3e
+    restart: unless-stopped
     security_opt:
       - "no-new-privileges:true"
       - apparmor=docker-default
