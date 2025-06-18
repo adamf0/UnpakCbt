@@ -6,7 +6,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetJadwalUjian
         public string Uuid { get; set; }
         public string? Deskripsi { get; set; } = default!;
         public string Kouta { get; set; }
-        public string SisaKouta { get; set; }
+        public string SisaKuota { get; set; }
         public string Tanggal { get; set; }
         public string JamMulai { get; set; }
         public string JamAkhir { get; set; }

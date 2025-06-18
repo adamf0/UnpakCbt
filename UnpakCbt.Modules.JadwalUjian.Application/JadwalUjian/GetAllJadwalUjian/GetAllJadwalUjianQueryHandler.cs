@@ -21,7 +21,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetAllJadwalUjian
                 CAST(NULLIF(ju.uuid, '') AS VARCHAR(36)) AS Uuid,
                 ju.deskripsi as Deskripsi,
                 ju.kuota AS Kouta,
-                (ju.kuota - (select count(*) from ujian where ujian.id_jadwal_ujian = ju.id)) AS SisaKouta,
+                (ju.kuota - (select count(*) from ujian where ujian.id_jadwal_ujian = ju.id)) AS SisaKuota,
                 ju.tanggal AS Tanggal,
                 ju.jam_mulai_ujian AS JamMulai,
                 ju.jam_akhir_ujian AS JamAkhir,
