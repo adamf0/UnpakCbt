@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.3.3e
+    image: cbt:0.3.4
     restart: unless-stopped
     security_opt:
       - "no-new-privileges:true"
