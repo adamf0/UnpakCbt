@@ -75,13 +75,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Account.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Account.Presentation", "UnpakCbt.Modules.Account.Presentation\UnpakCbt.Modules.Account.Presentation.csproj", "{CA6CE8C7-117E-499D-A6A8-31D026AA1AB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Application", "UnpakCbt.Modules.Laporan.Application\UnpakCbt.Modules.Laporan.Application.csproj", "{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Laporan.Application", "UnpakCbt.Modules.Laporan.Application\UnpakCbt.Modules.Laporan.Application.csproj", "{BB871C1E-A2BF-4A88-ACC5-5036D44FE985}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Domain", "UnpakCbt.Modules.Laporan.Domain\UnpakCbt.Modules.Laporan.Domain.csproj", "{1BABF954-E673-41D9-A3A6-31CCAA95DC86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Laporan.Domain", "UnpakCbt.Modules.Laporan.Domain\UnpakCbt.Modules.Laporan.Domain.csproj", "{1BABF954-E673-41D9-A3A6-31CCAA95DC86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Infrastructure", "UnpakCbt.Modules.Laporan.Infrastructure\UnpakCbt.Modules.Laporan.Infrastructure.csproj", "{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Laporan.Infrastructure", "UnpakCbt.Modules.Laporan.Infrastructure\UnpakCbt.Modules.Laporan.Infrastructure.csproj", "{1ACC8077-4CAA-4E63-B9CB-CA952683D57A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnpakCbt.Modules.Laporan.Presentation", "UnpakCbt.Modules.Laporan.Presentation\UnpakCbt.Modules.Laporan.Presentation.csproj", "{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpakCbt.Modules.Laporan.Presentation", "UnpakCbt.Modules.Laporan.Presentation\UnpakCbt.Modules.Laporan.Presentation.csproj", "{12DD57C5-86E7-4B4C-B14C-1AB9F4E12718}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92B071CB-6E04-4DD6-B430-BB4CF7AC0170}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,40 @@
+﻿<Project>
+	<ItemGroup>
+		<!-- Microsoft Packages -->
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.17" />
+		<PackageVersion Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+		<PackageVersion Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.3" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.17" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.17" />
+		<PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+		<PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
+
+		<!-- MySQL / EF Core Provider -->
+		<PackageVersion Include="MySql.EntityFrameworkCore" Version="8.0.14" />
+
+		<!-- Logging -->
+		<PackageVersion Include="Serilog" Version="4.2.0-dev-02328" />
+		<PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+		<PackageVersion Include="Serilog.Sinks.Seq" Version="9.0.0" />
+
+		<!-- API Docs -->
+		<PackageVersion Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+
+		<!-- JSON -->
+		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageVersion Include="System.Text.Json" Version="9.0.1" />
+
+		<!-- ORM & CQRS -->
+		<PackageVersion Include="Dapper" Version="2.1.35" />
+		<PackageVersion Include="MediatR" Version="12.4.1" />
+		<PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+
+		<!-- Redis -->
+		<PackageVersion Include="StackExchange.Redis" Version="2.8.24" />
+
+		<!-- MinIO -->
+		<PackageVersion Include="Minio.AspNetCore" Version="6.0.1" />
+	</ItemGroup>
+</Project>
