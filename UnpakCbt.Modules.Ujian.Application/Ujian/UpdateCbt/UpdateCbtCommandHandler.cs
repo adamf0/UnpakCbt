@@ -8,7 +8,7 @@ using UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban;
 using UnpakCbt.Modules.TemplateJawaban.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Domain.Cbt;
-using UnpakCbt.Modules.Ujian.Domain.Log;
+using UnpakCbt.Modules.Ujian.Domain.LogEvent;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
@@ -139,7 +139,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
-            Result<Domain.Log.Log> log = Domain.Log.Log.Create(request.NoReg, events);
+            Result<Domain.LogEvent.Log> log = Domain.LogEvent.Log.Create(request.NoReg, events);
             await logRepository.InsertAsync(log.Value, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

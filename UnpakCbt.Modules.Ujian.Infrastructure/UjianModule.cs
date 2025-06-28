@@ -6,11 +6,11 @@ using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Infrastructure.Data;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Domain.Cbt;
-using UnpakCbt.Modules.Ujian.Domain.Log;
+using UnpakCbt.Modules.Ujian.Domain.LogEvent;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 using UnpakCbt.Modules.Ujian.Infrastructure.Cbt;
 using UnpakCbt.Modules.Ujian.Infrastructure.Database;
-using UnpakCbt.Modules.Ujian.Infrastructure.Log;
+using UnpakCbt.Modules.Ujian.Infrastructure.LogEvent;
 using UnpakCbt.Modules.Ujian.Infrastructure.Ujian;
 using UnpakCbt.Modules.Ujian.Presentation;
 

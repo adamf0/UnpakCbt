@@ -7,7 +7,7 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
 {
     public sealed class UjianDbContext(DbContextOptions<UjianDbContext> options) : DbContext(options), IUnitOfWork
     {
-        internal DbSet<Domain.Log.Log> Log { get; set; }
+        internal DbSet<Domain.LogEvent.Log> Log { get; set; }
         internal DbSet<Domain.Ujian.Ujian> Ujian { get; set; }
         internal DbSet<Domain.Cbt.Cbt> Cbt { get; set; }
         internal DbSet<Domain.TemplatePertanyaan.TemplatePertanyaan> TemplatePertanyaan { get; set; }
@@ -172,9 +172,9 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
 
             ////
 
-            modelBuilder.Entity<Domain.Log.Log>().ToTable(Schemas.Log);
+            modelBuilder.Entity<Domain.LogEvent.Log>().ToTable(Schemas.Log);
             modelBuilder.ApplyConfiguration(new UjianConfiguration());
-            modelBuilder.Entity<Domain.Log.Log>(entity =>
+            modelBuilder.Entity<Domain.LogEvent.Log>(entity =>
             {
                 var guidConverter = new ValueConverter<Guid, string>(
                     v => v.ToString("D"), // Mengonversi Guid ke string dengan format "N" (tidak ada tanda hubung)

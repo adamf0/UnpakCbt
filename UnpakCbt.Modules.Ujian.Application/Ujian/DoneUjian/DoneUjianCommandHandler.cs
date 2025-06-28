@@ -6,7 +6,7 @@ using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Application.StreamHub;
 using UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian;
-using UnpakCbt.Modules.Ujian.Domain.Log;
+using UnpakCbt.Modules.Ujian.Domain.LogEvent;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
@@ -61,7 +61,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                     WriteIndented = true
                 });
 
-                Result<Domain.Log.Log> log = Domain.Log.Log.Create(request.NoReg, events);
+                Result<Domain.LogEvent.Log> log = Domain.LogEvent.Log.Create(request.NoReg, events);
                 await logRepository.InsertAsync(log.Value, cancellationToken);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
             }
@@ -107,7 +107,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.DoneUjian
                         WriteIndented = true
                     });
 
-                    Result<Domain.Log.Log> log = Domain.Log.Log.Create(request.NoReg, events);
+                    Result<Domain.LogEvent.Log> log = Domain.LogEvent.Log.Create(request.NoReg, events);
                     await logRepository.InsertAsync(log.Value, cancellationToken);
                     await unitOfWork.SaveChangesAsync(cancellationToken);
 
