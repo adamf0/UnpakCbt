@@ -66,7 +66,7 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
 
                 var eventObj = new
                 {
-                    @event = "start cbt",
+                    @event = "start ujian",
                     inputs = prevUjian.Value
                 };
 
