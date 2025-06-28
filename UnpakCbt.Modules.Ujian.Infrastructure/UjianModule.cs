@@ -6,9 +6,11 @@ using UnpakCbt.Common.Application.Data;
 using UnpakCbt.Common.Infrastructure.Data;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Domain.Cbt;
+using UnpakCbt.Modules.Ujian.Domain.Log;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 using UnpakCbt.Modules.Ujian.Infrastructure.Cbt;
 using UnpakCbt.Modules.Ujian.Infrastructure.Database;
+using UnpakCbt.Modules.Ujian.Infrastructure.Log;
 using UnpakCbt.Modules.Ujian.Infrastructure.Ujian;
 using UnpakCbt.Modules.Ujian.Presentation;
 
@@ -45,6 +47,7 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure
             services.AddScoped<IUjianRepository, UjianRepository>();
             services.AddScoped<ICbtRepository, CbtRepository>();
             services.AddScoped<ICounterRepository, CounterRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
 
             services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UjianDbContext>());
             services.AddHostedService<UpdateStatusUjianBackgroundJob>();

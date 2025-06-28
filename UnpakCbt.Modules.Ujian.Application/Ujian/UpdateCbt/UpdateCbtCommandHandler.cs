@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Globalization;
+using System.Text.Json;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.JadwalUjian.PublicApi;
@@ -7,11 +8,13 @@ using UnpakCbt.Modules.TemplateJawaban.Domain.TemplateJawaban;
 using UnpakCbt.Modules.TemplateJawaban.PublicApi;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Domain.Cbt;
+using UnpakCbt.Modules.Ujian.Domain.Log;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
 {
     internal sealed class UpdateCbtCommandHandler(
+    ILogRepository logRepository,
     IUjianRepository ujianRepository,
     ICbtRepository cbtRepository,
     IUnitOfWork unitOfWork,
@@ -117,13 +120,29 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.UpdateCbt
 
             //[PR] [BUG:Medium] validasi jawaban yg terdaftar
             //[PR] [BUG:Height] validasi jawaban dan pertanyaan sesuai template (normal / trial)
-
             Result<Domain.Cbt.Cbt> currentCbt = Domain.Cbt.Cbt.Update(existingCbt)
                          .ChangeJawabanBenar(JawabanBenar)
                          .Build();
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+
+            var eventObj = new
+            {
+                @event = "update cbt",
+                inputs = currentCbt.Value
+            };
+
+            string events = JsonSerializer.Serialize(eventObj, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
+
+            Result<Domain.Log.Log> log = Domain.Log.Log.Create(request.NoReg, events);
+            await logRepository.InsertAsync(log.Value, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Result.Success();
         }
     }

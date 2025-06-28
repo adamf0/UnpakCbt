@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using UnpakCbt.Common.Application.Messaging;
 using UnpakCbt.Common.Domain;
 using UnpakCbt.Modules.Ujian.Application.Abstractions.Data;
 using UnpakCbt.Modules.Ujian.Application.StreamHub;
 using UnpakCbt.Modules.Ujian.Application.Ujian.GetUjian;
+using UnpakCbt.Modules.Ujian.Domain.Log;
 using UnpakCbt.Modules.Ujian.Domain.Ujian;
 
 namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
 {
     internal sealed class StartUjianCommandHandler(
     IHubContext<JadwalUjianHub> _hubContext,
+    ILogRepository logRepository,
     IUjianRepository ujianRepository,
     IUnitOfWork unitOfWork,
     ILogger<StartUjianCommand> logger)
@@ -60,6 +63,24 @@ namespace UnpakCbt.Modules.Ujian.Application.Ujian.StartUjian
                 }
                 await unitOfWork.SaveChangesAsync(cancellationToken);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
+
+                var eventObj = new
+                {
+                    @event = "start cbt",
+                    inputs = prevUjian.Value
+                };
+
+                string events = JsonSerializer.Serialize(eventObj, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    WriteIndented = true,
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                });
+
+                Result<Domain.Log.Log> log = Domain.Log.Log.Create(request.NoReg, events);
+                await logRepository.InsertAsync(log.Value, cancellationToken);
+                await unitOfWork.SaveChangesAsync(cancellationToken);
+
                 try
                 {
                     await _hubContext.Clients.All.SendAsync("ReceiveJadwalUjianUpdate", new UjianDetailResponse

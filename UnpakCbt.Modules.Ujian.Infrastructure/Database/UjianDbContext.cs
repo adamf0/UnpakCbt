@@ -7,6 +7,7 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
 {
     public sealed class UjianDbContext(DbContextOptions<UjianDbContext> options) : DbContext(options), IUnitOfWork
     {
+        internal DbSet<Domain.Log.Log> Log { get; set; }
         internal DbSet<Domain.Ujian.Ujian> Ujian { get; set; }
         internal DbSet<Domain.Cbt.Cbt> Cbt { get; set; }
         internal DbSet<Domain.TemplatePertanyaan.TemplatePertanyaan> TemplatePertanyaan { get; set; }
@@ -167,6 +168,38 @@ namespace UnpakCbt.Modules.Ujian.Infrastructure.Database
 
                 entity.Property(e => e.Trial)
                       .HasColumnName("trial");
+            });
+
+            ////
+
+            modelBuilder.Entity<Domain.Log.Log>().ToTable(Schemas.Log);
+            modelBuilder.ApplyConfiguration(new UjianConfiguration());
+            modelBuilder.Entity<Domain.Log.Log>(entity =>
+            {
+                var guidConverter = new ValueConverter<Guid, string>(
+                    v => v.ToString("D"), // Mengonversi Guid ke string dengan format "N" (tidak ada tanda hubung)
+                    v => Guid.ParseExact(v, "D") // Mengonversi string kembali menjadi Guid
+                );
+                entity.ToTable(Schemas.Log);
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                      .HasColumnName("id");
+
+                entity.Property(e => e.Uuid)
+                      .HasColumnName("uuid")
+                      .HasColumnType("VARCHAR(36)");
+                //.HasConversion(guidConverter);
+
+                entity.Property(e => e.NoReg)
+                      .HasColumnName("noreg");
+
+                entity.Property(e => e.Events)
+                      .HasColumnName("event");
+
+                entity.Property(e => e.CreatedAt)
+                      .HasColumnName("created_at");
             });
         }
     }
