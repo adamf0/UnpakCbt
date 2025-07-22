@@ -17,7 +17,7 @@ RUN dotnet build "./UnpakCbt.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./UnpakCbt.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./UnpakCbt.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:PublishReadyToRun=true /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
