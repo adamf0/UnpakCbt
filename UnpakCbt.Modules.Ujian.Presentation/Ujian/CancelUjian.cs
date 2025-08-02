@@ -17,6 +17,8 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapDelete("Ujian/Cancel/{id}/{noReg}", async (string id, string noReg, ISender sender) =>
             {
+                return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Fitur diblock /Ujian/Cancel")));
+
                 if (!SecurityCheck.NotContainInvalidCharacters(id))
                 {
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Id mengandung karakter berbahaya")));

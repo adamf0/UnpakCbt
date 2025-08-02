@@ -26,16 +26,6 @@
 		<PackageReference Include="Swashbuckle.AspNetCore"/>
 	</ItemGroup>
 
-	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
-		<PropertyGroup>
-			<Nullable>disable</Nullable>
-		</PropertyGroup>
-	</Target>
-
-	<PropertyGroup>
-	  <PublishReadyToRun>true</PublishReadyToRun>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\UnpakCbt.BankSoal.Application\UnpakCbt.Modules.BankSoal.Application.csproj" />
 		<ProjectReference Include="..\UnpakCbt.BankSoal.Infrastructure\UnpakCbt.Modules.BankSoal.Infrastructure.csproj" />

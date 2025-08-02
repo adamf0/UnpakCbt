@@ -17,6 +17,8 @@ namespace UnpakCbt.Modules.Ujian.Presentation.Ujian
         {
             app.MapPost("Ujian", async (CreateUjianRequest request, ISender sender) =>
             {
+                return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "Fitur diblock /Ujian/Create")));
+
                 if (!SecurityCheck.NotContainInvalidCharacters(request.IdJadwalUjian))
                 {
                     return ApiResults.Problem(Result.Failure(Error.Problem("Request.Invalid", "IdJadwalUjian mengandung karakter berbahaya")));

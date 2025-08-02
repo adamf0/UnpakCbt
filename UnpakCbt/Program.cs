@@ -77,7 +77,7 @@ builder.Services.AddAccountModule(builder.Configuration);
 builder.Services.AddLaporanModule(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
