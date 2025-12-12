@@ -25,7 +25,8 @@ namespace UnpakCbt.Modules.BankSoal.Application.BankSoal.GetAllBankSoal
                 status AS Status,
                 (select count(*) from jadwal_ujian where jadwal_ujian.id_bank_soal = bank_soal.id) AS JadwalTerhubung,
                 disabled AS Disabled 
-            FROM bank_soal
+            FROM bank_soal 
+            ORDER BY id DESC
             """;
 
             var queryResult = await connection.QueryAsync<BankSoalResponse>(sql);

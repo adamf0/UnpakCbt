@@ -32,7 +32,8 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetAllJadwalUjian
                 ju.jam_akhir_ujian AS JamAkhir,
                 bs.uuid AS UuidBankSoal
             FROM jadwal_ujian ju 
-            LEFT JOIN bank_soal bs ON ju.id_bank_soal = bs.id
+            LEFT JOIN bank_soal bs ON ju.id_bank_soal = bs.id 
+            ORDER BY ju.tanggal DESC, ju.jam_mulai_ujian ASC
             """);
 
             var queryBuilder = new DynamicQueryBuilder();

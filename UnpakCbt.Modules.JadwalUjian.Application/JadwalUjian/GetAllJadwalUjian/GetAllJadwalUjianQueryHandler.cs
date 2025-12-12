@@ -28,7 +28,7 @@ namespace UnpakCbt.Modules.JadwalUjian.Application.JadwalUjian.GetAllJadwalUjian
                 bs.uuid AS UuidBankSoal
             FROM jadwal_ujian ju 
             LEFT JOIN bank_soal bs ON ju.id_bank_soal = bs.id 
-            ORDER BY ju.tanggal ASC, ju.jam_mulai_ujian ASC
+            ORDER BY ju.tanggal DESC, ju.jam_mulai_ujian ASC
             """;
 
             var queryResult = await connection.QueryAsync<JadwalUjianResponse>(sql);
