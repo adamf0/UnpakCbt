@@ -9,6 +9,7 @@ namespace UnpakCbt.Modules.TemplatePertanyaan.Presentation.TemplatePertanyaan
             CreateTemplatePertanyaan.MapEndpoint(app);
             UpdateTemplatePertanyaan.MapEndpoint(app);
             DeleteTemplatePertanyaan.MapEndpoint(app);
+            RemoveImageTemplatePertanyaan.MapEndpoint(app);
             GetTemplatePertanyaan.MapEndpoint(app);
             GetAllTemplatePertanyaan.MapEndpoint(app);
             GetAllTemplatePertanyaanWithPaging.MapEndpoint(app);

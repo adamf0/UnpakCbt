@@ -24,9 +24,7 @@
 		<ProjectReference Include="..\UnpakCbt.Modules.TemplatePertanyaan.PublicApi\UnpakCbt.Modules.TemplatePertanyaan.PublicApi.csproj" />
 	</ItemGroup>
 
-	<Target Name="DisableNullableForVisualStudioBuild"
-        BeforeTargets="CoreCompile"
-        Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
+	<Target Name="DisableNullableForVisualStudioBuild" BeforeTargets="CoreCompile" Condition="'$(BuildingInsideVisualStudio)' == 'True' And '$(BuildingProject)' == 'True' And '$(Configuration)' == 'Debug'">
 		<PropertyGroup>
 			<Nullable>disable</Nullable>
 		</PropertyGroup>
