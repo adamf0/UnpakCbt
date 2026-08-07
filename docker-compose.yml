@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   cbt:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.3.9
+    image: adamilkom00/cbt:latest
     restart: unless-stopped
     security_opt:
       - "no-new-privileges:true"
