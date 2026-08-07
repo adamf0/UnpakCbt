@@ -33,11 +33,11 @@ AppContext.SetSwitch("System.Runtime.Serialization.EnableUnsafeBinaryFormatterSe
 
 
 
-builder.Host.UseSerilog((context, loggerConfig) =>
-{
-    loggerConfig.ReadFrom.Configuration(context.Configuration);
-    //loggerConfig.WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_SERVER_URL") ?? "https://host.docker.internal:5341");
-});
+//builder.Host.UseSerilog((context, loggerConfig) =>
+//{
+//    loggerConfig.ReadFrom.Configuration(context.Configuration);
+//    //loggerConfig.WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_SERVER_URL") ?? "https://host.docker.internal:5341");
+//});
 builder.Services.AddSingleton<TokenValidator>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

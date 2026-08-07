@@ -6,12 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbt
-    image: cbt:0.3.8
+    image: cbt:0.3.9
     restart: unless-stopped
     security_opt:
       - "no-new-privileges:true"
       - apparmor=docker-default
-    environment:
+    environment: .
       - ConnectionStrings__Database=server=remote-db;port=3306;user=seb;password=s3bunp4k;database=unpak_seb;Connection Timeout=180;DefaultCommandTimeout=180;
       - Mode=prod
       - Issuer=seb.unpak.ac.id
@@ -36,32 +36,32 @@ services:
     extra_hosts:
       - "remote-db:172.16.20.135"
 
-  seq:
-    image: datalust/seq:latest
-    container_name: seq
-    environment:
-      - ACCEPT_EULA=Y
-    restart: always # Restart jika mati
-    ports:
-      - "5341:5341"
-      - "8081:80"
-    networks:
-      - minio-sample
+  # seq:
+  #   image: datalust/seq:latest
+  #   container_name: seq
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #   restart: always # Restart jika mati
+  #   ports:
+  #     - "5341:5341"
+  #     - "8081:80"
+  #   networks:
+  #     - minio-sample
 
-  counter:
-    container_name: counter
-    image: redis:latest
-    restart: always # Restart jika mati
-    command:
-      - 'redis-server'
-      - '--save 60 10000'
-      - '--appendonly yes'
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./docker/redis/data:/var/lib/redis
-    networks:
-      - minio-sample
+  # counter:
+  #   container_name: counter
+  #   image: redis:latest
+  #   restart: always # Restart jika mati
+  #   command:
+  #     - 'redis-server'
+  #     - '--save 60 10000'
+  #     - '--appendonly yes'
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - ./docker/redis/data:/var/lib/redis
+  #   networks:
+  #     - minio-sample
 
   # minio:
   #   container_name: minio
